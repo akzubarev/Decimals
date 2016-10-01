@@ -1,0 +1,3 @@
+include ':app', ':gridlayoutv7', ':SlidingMenu'
+include ':android_wheel'
+include ':SlideNavigation'
