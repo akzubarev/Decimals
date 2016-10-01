@@ -1,0 +1,282 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.education4all.mathcoach.SettingsSimpleActivity"
+    android:weightSum="1">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Сложение"
+            android:textSize="18sp"
+            android:textAllCaps="false"
+            android:layout_gravity="center_vertical|end" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="1"
+            android:onClick="onCheckBoxClick"
+            android:layout_gravity="center_vertical|center"
+            android:id="@+id/checkBoxAdd1" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="1"
+            android:onClick="onCheckBoxClick"
+            android:layout_gravity="center_vertical|center"
+            android:id="@+id/checkBoxAdd2" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="1"
+            android:onClick="onCheckBoxClick"
+            android:layout_gravity="center_vertical|center"
+            android:id="@+id/checkBoxAdd3" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxClick"
+            android:tag="1"
+            android:layout_gravity="center_vertical|center"
+            android:id="@+id/checkBoxAdd4" />
+        <Button
+            android:background="@android:color/transparent"
+            android:layout_width="wrap_content"
+            android:text=">"
+            android:textColor="@android:color/tertiary_text_dark"
+            android:textSize="40sp"
+            android:layout_gravity="center_vertical|start"
+            android:layout_height="match_parent"
+            android:onClick="startCompl"
+            android:tag="1"
+            android:paddingRight="20dp"
+            android:id="@+id/buttonAdd"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:text="Вычитание"
+            android:textSize="18sp"
+            android:textAllCaps="false"
+            android:onClick="startCompl"
+            android:layout_gravity="center_vertical|end"
+            android:tag="2"
+            android:id="@+id/buttonSub" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxClick"
+            android:tag="2"
+            android:id="@+id/checkBoxSub1" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxClick"
+            android:tag="2"
+            android:id="@+id/checkBoxSub2" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxClick"
+            android:tag="2"
+            android:id="@+id/checkBoxSub3" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxClick"
+            android:tag="2"
+            android:id="@+id/checkBoxSub4" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+        <Button
+            android:layout_width="185dp"
+            android:layout_height="80dp"
+            android:text="Умножение"
+            android:textSize="18sp"
+            android:textAllCaps="false"
+            android:onClick="startCompl"
+            android:layout_gravity="center_vertical|end"
+            android:tag="3"
+            android:id="@+id/buttonMul" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="3"
+            android:onClick="onCheckBoxClick"
+            android:id="@+id/checkBoxMul1" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="3"
+            android:onClick="onCheckBoxClick"
+            android:id="@+id/checkBoxMul2" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="3"
+            android:onClick="onCheckBoxClick"
+            android:id="@+id/checkBoxMul3" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="3"
+            android:onClick="onCheckBoxClick"
+            android:id="@+id/checkBoxMul4" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="181dp"
+            android:layout_height="80dp"
+            android:text="Деление"
+            android:layout_gravity="center_vertical|end"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:onClick="startCompl"
+            android:tag="4"
+            android:id="@+id/buttonDiv"
+            android:layout_weight="0.28" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxClick"
+            android:tag="4"
+            android:id="@+id/checkBoxDiv1" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxClick"
+            android:tag="4"
+            android:id="@+id/checkBoxDiv2" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxClick"
+            android:tag="4"
+            android:id="@+id/checkBoxDiv3" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onCheckBoxClick"
+            android:tag="4"
+            android:id="@+id/checkBoxDiv4" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginBottom="0dp"
+        android:paddingBottom="0dp"
+        android:layout_weight="0.19">
+
+
+
+        <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:id="@+id/firstMinus"
+            android:text="-"
+            android:onClick="firstMinus"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:gravity="center"
+            android:focusable="true"
+            android:layout_weight="1"
+            android:id="@+id/editText" />
+        <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:id="@+id/firstPlus"
+            android:text="+"
+            android:onClick="firstPlus"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Длина раунда \n(мин.)"
+            android:textSize="20sp"
+            android:paddingRight="20dp"
+            android:id="@+id/textView" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_margin="-10dp">
+
+        <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:id="@+id/secondMinus"
+            android:layout_gravity="center"
+            android:text="-"
+            android:onClick="secondMinus"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:focusable="true"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/editText2" />
+        <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:id="@+id/secondPlus"
+            android:layout_gravity="center"
+            android:text="+"
+            android:onClick="secondPlus"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Время исчезновения задания (cек.)"
+            android:textSize="20sp"
+            android:id="@+id/textView2" />
+    </LinearLayout>
+
+</LinearLayout>
