@@ -221,16 +221,16 @@ public class SettingsSimpleActivity extends AppCompatActivity {
             wm.getDefaultDisplay().getMetrics(metrics);
         final float width = metrics.widthPixels/2 - 20;
         final float height = metrics.heightPixels / 8;
-        LinearLayout.LayoutParams layoutParamsWidth50 = new LinearLayout.LayoutParams(
-                (int) (width) , (int) (height) );
-        Button currentButton = (Button)findViewById(R.id.buttonAdd);
-        currentButton.setLayoutParams(layoutParamsWidth50);
-        currentButton = (Button)findViewById(R.id.buttonSub);
-        currentButton.setLayoutParams(layoutParamsWidth50);
-        currentButton = (Button)findViewById(R.id.buttonMul);
-        currentButton.setLayoutParams(layoutParamsWidth50);
-        currentButton = (Button)findViewById(R.id.buttonDiv);
-        currentButton.setLayoutParams(layoutParamsWidth50);
+//        LinearLayout.LayoutParams layoutParamsWidth50 = new LinearLayout.LayoutParams(
+//                (int) (width) , (int) (height) );
+//        Button currentButton = (Button)findViewById(R.id.buttonAdd);
+//        currentButton.setLayoutParams(layoutParamsWidth50);
+//        currentButton = (Button)findViewById(R.id.buttonSub);
+//        currentButton.setLayoutParams(layoutParamsWidth50);
+//        currentButton = (Button)findViewById(R.id.buttonMul);
+//        currentButton.setLayoutParams(layoutParamsWidth50);
+//        currentButton = (Button)findViewById(R.id.buttonDiv);
+//        currentButton.setLayoutParams(layoutParamsWidth50);
     }
 
     public void startCompl(View view) {
