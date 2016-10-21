@@ -8,11 +8,11 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_settings">SettingsActivity</string>
-    <string name="title_activity_settings_simple">Настройки сложности</string>
-    <string name="title_activity_complexity">Сложность</string>
+    <string name="title_activity_settings_simple">Настройки</string>
+    <string name="title_activity_complexity">Настроки сложности</string>
     <string name="back_space_button">DEL</string>
-    <string name="title_activity_statisctics">Статистика</string>
-    <string name="title_activity_stat_tour">Статистика по туру</string>
+    <string name="title_activity_statisctics">Общая статистика</string>
+    <string name="title_activity_stat_tour">Статистика раунда</string>
     <string name="title_activity_wheel_picker">wheel_picker</string>>
     <string-array name="screen_array">
         <item>Прервать тренировку</item>
