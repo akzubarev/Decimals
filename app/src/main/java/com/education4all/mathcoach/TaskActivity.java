@@ -335,37 +335,36 @@ public class TaskActivity extends AppCompatActivity {
     //нажатие на кнопку "ОК", проверяем правильность ответа и заносим в статистику
     public void okButtonClick(View view) {
         ++currentTour.totalTasks;
-        if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis) {
-            endRound();
-        } else {
-            if (!answer.equals("")) {
+        if (!answer.equals("")) {
+            if (!answerShown) {
+                newTask.userAnswer += answer + ':' + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
+                prevTaskTime = System.currentTimeMillis();
+            } else {
+                newTask.userAnswer += "Показан ответ" + ':' + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
+                prevTaskTime = System.currentTimeMillis();
+            }
+            if (answer.equals(newTask.answer)) {
+                newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
                 if (!answerShown) {
-                    newTask.userAnswer += answer + ':' + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
-                    prevTaskTime = System.currentTimeMillis();
-                } else {
-                    newTask.userAnswer += "Показан ответ" + ':' + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
-                    prevTaskTime = System.currentTimeMillis();
+                    ++currentTour.rightTasks;
                 }
-                if (answer.equals(newTask.answer)) {
-                    newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
-                    if (!answerShown) {
-                        ++currentTour.rightTasks;
-                    }
-                    currentTour.tourTasks.add(newTask);
-                    newTask = new Task();
-                    answerShown = false;
-                    showTask = true;
-                    newTask.generate(allowedTasks);
-                    answer = "";
-                    if (disapTime > -1) {
-                        taskDisapHandler.postDelayed(disapTask, (long) (disapTime * 1000));
-                    }
-                    textViewUpdate();
-
+                currentTour.tourTasks.add(newTask);
+                newTask = new Task();
+                answerShown = false;
+                showTask = true;
+                newTask.generate(allowedTasks);
+                answer = "";
+                if (disapTime > -1) {
+                    taskDisapHandler.postDelayed(disapTask, (long) (disapTime * 1000));
+                }
+                if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis) {
+                    endRound();
                 } else {
-                    answer = "";
                     textViewUpdate();
                 }
+            } else {
+                answer = "";
+                textViewUpdate();
             }
         }
     }
