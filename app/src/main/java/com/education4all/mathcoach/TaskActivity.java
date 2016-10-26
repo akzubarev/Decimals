@@ -340,7 +340,7 @@ public class TaskActivity extends AppCompatActivity {
                 newTask.userAnswer += answer + ':' + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
                 prevTaskTime = System.currentTimeMillis();
             } else {
-                newTask.userAnswer += "Показан ответ" + ':' + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
+                newTask.userAnswer += "..." + ':' + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
                 prevTaskTime = System.currentTimeMillis();
             }
             if (answer.equals(newTask.answer)) {
@@ -428,7 +428,7 @@ public class TaskActivity extends AppCompatActivity {
     //пропуск задания
     public void skipTask() {
         ++currentTour.totalTasks;
-        newTask.userAnswer += "Задание пропущено:" + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
+        newTask.userAnswer += "...:" + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
         prevTaskTime = System.currentTimeMillis();
         newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
         currentTour.tourTasks.add(newTask);
