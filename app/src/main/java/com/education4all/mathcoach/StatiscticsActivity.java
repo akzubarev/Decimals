@@ -58,18 +58,21 @@ public class StatiscticsActivity extends ActionBarActivity {
             newTour.setTag(tourNumber);
             newTour.setTextSize(20);
             newTour.setOnClickListener(tourClick);
-            ImageView arrow = new ImageView((this));
+
+            TextView arrow = new TextView((this));
             arrow.setTag(tourNumber);
             arrow.setOnClickListener(tourClick);
-            arrow.setImageResource(R.drawable.right_arrow);
+            arrow.setText(">");
+            arrow.setTextSize(40);
             LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(120,120);
-            layoutParams.gravity= Gravity.RIGHT;
+            layoutParams.gravity= Gravity.CENTER;
             arrow.setLayoutParams(layoutParams);
             arrow.setMinimumHeight(40);
             arrow.setMinimumWidth(40);
             row.addView(newTour);
             row.addView(arrow);
             justALayout.addView(row);
+
             bar = new View(this);
             bar.setVisibility(View.VISIBLE);
             bar.setMinimumHeight(1);
