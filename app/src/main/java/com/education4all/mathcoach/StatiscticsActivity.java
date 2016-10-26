@@ -48,7 +48,8 @@ public class StatiscticsActivity extends ActionBarActivity {
         bar.setPadding(50,0,50,0);
         bar.setBackgroundColor(Color.DKGRAY);
         justALayout.addView(bar);
-        for (int tourNumber = 0; tourNumber < tourCount; ++tourNumber) {
+        Tours.addView(justALayout);
+        for (int tourNumber = tourCount - 1; tourNumber >= 0; --tourNumber) {
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -80,7 +81,6 @@ public class StatiscticsActivity extends ActionBarActivity {
             bar.setBackgroundColor(Color.DKGRAY);
             justALayout.addView(bar);
         }
-        Tours.addView(justALayout);
     }
 
 
