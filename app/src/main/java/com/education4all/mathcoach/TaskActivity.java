@@ -442,9 +442,9 @@ public class TaskActivity extends AppCompatActivity {
         }
         if ( Calendar.getInstance().getTimeInMillis() - tourStartTime >=  millis) {
             endRound();
+        } else {
+            textViewUpdate();
         }
-        textViewUpdate();
-
     }
 
 
