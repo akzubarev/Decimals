@@ -226,26 +226,30 @@ public class TaskActivity extends AppCompatActivity {
 
     //досрочное завершение раунда по нажатию выхода
     public void crossClick(View view) {
-        new AlertDialog.Builder(TaskActivity.this)
-                .setTitle("Внимание!")
-                .setMessage("Завершить раунд")
-                .setPositiveButton("Без сохранения", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNeutralButton("С сохранением", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        saveTaskStatistic();
-                        StatisticMaker.saveTour(currentTour, context);
-                        finish();
-                    }
-                })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .show();
+        if (currentTour.totalTasks == 0) {
+            finish();
+        } else {
+            new AlertDialog.Builder(TaskActivity.this)
+                    .setTitle("Внимание!")
+                    .setMessage("Завершить раунд")
+                    .setPositiveButton("Без сохранения", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setNeutralButton("С сохранением", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+//                        saveTaskStatistic(); //Текущее задание не записываем!
+                            StatisticMaker.saveTour(currentTour, context);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .show();
+        }
     }
 
     //обновляем поля вывода выражения
