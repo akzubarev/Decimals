@@ -127,6 +127,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
             ); //closing the setOnClickListener method
 
         }
+
     void addComplexityFromPopup(boolean one, boolean two) {
         StringBuilder currentComplexity = new StringBuilder();
         SharedPreferences.Editor editor = getSharedPreferences(COMPLEXITY_SETTINGS, MODE_PRIVATE).edit();
@@ -157,11 +158,11 @@ public class SettingsSimpleActivity extends AppCompatActivity {
             currentComplexity.append("4").append(",");
         }
 
-
         editor.putString(action, currentComplexity.toString());
         editor.apply();
     }
-        @Override
+
+    @Override
     protected void onResume() {
             super.onResume();
         for (int i = 1; i <= 4; ++i) {
@@ -245,23 +246,6 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         field.requestFocus();
     }
 
-    @Override
-    public void onBackPressed() {
-        EditText field = (EditText)findViewById(R.id.editText);
-        if (field.getText().length() > 0) {
-            DataReader.SaveRoundTime(Float.parseFloat(field.getText().toString()), this);
-        } else {
-            DataReader.SaveRoundTime(5, this);
-        }
-        EditText field2 = (EditText)findViewById(R.id.editText2);
-        if (!field2.getText().toString().equals(NODISAPEARCHAR) && !field2.getText().toString().equals("")) {
-            DataReader.SaveDisapRoundTime(Float.parseFloat(field2.getText().toString()), this);
-        } else {
-            DataReader.SaveDisapRoundTime(-1, this);
-        }
-        finish();
-    }
-
     public void firstPlus(View p_v) {
         EditText field = (EditText)findViewById(R.id.editText);
         float text = Float.parseFloat(field.getText().toString());
@@ -271,7 +255,21 @@ public class SettingsSimpleActivity extends AppCompatActivity {
             text = 1;
         }
         field.setText(Long.toString((long) text));
+        DataReader.SaveRoundTime(Float.parseFloat(field.getText().toString()), this);
     }
+
+    public void firstMinus(View p_v) {
+        EditText field = (EditText)findViewById(R.id.editText);
+        float text = Float.parseFloat(field.getText().toString());
+        if (text > 1) {
+            --text;
+        } else {
+            text = 60;
+        }
+        field.setText(Long.toString((long)text));
+        DataReader.SaveRoundTime(Float.parseFloat(field.getText().toString()), this);
+    }
+
     public void secondPlus(View p_v) {
         EditText field = (EditText)findViewById(R.id.editText2);
         String str = field.getText().toString();
@@ -286,17 +284,13 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         } else {
             field.setText("1");
         }
-    }
-    public void firstMinus(View p_v) {
-        EditText field = (EditText)findViewById(R.id.editText);
-        float text = Float.parseFloat(field.getText().toString());
-        if (text > 1) {
-            --text;
+        if (!field.getText().toString().equals(NODISAPEARCHAR)) {
+            DataReader.SaveDisapRoundTime(Float.parseFloat(field.getText().toString()), this);
         } else {
-            text = 60;
+            DataReader.SaveDisapRoundTime(-1, this);
         }
-        field.setText(Long.toString((long)text));
     }
+
     public void secondMinus(View p_v) {
         EditText field = (EditText)findViewById(R.id.editText2);
         String str = field.getText().toString();
@@ -312,9 +306,13 @@ public class SettingsSimpleActivity extends AppCompatActivity {
             float text = 60;
             field.setText(Long.toString((long)text));
         }
-
-
+        if (!field.getText().toString().equals(NODISAPEARCHAR)) {
+            DataReader.SaveDisapRoundTime(Float.parseFloat(field.getText().toString()), this);
+        } else {
+            DataReader.SaveDisapRoundTime(-1, this);
+        }
     }
+
     public void onCheckBoxClick(View view) {
         StringBuilder currentComplexity = new StringBuilder();
         SharedPreferences.Editor editor = getSharedPreferences(COMPLEXITY_SETTINGS, MODE_PRIVATE).edit();
@@ -340,6 +338,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         if (chk.isChecked()) {
             currentComplexity.append("0").append(",");
         }
+
         name = "checkBox" + action + "2";
         resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
         chk = (CheckBox)findViewById(resID);
@@ -353,6 +352,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         if (chk.isChecked()) {
             currentComplexity.append("2").append(",");
         }
+
         name = "checkBox" + action + "4";
         resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
         chk = (CheckBox)findViewById(resID);
