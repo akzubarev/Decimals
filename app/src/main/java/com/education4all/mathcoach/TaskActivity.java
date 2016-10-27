@@ -143,12 +143,58 @@ public class TaskActivity extends AppCompatActivity {
         }
     }
 
-    //вышло время раунда
+    //сохраняем информацию о данной попытке и обновляем информацию раунда
+    private void saveTaskStatistic() {
+        if (answer.equals(newTask.answer)) ++currentTour.rightTasks; // увеличиваем счетчик правильных заданий, если ответ правильный
+        newTask.userAnswer += answer + ":" + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
+        prevTaskTime = System.currentTimeMillis();
+        newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000; //??? вычисляем время, потраченное пользователем на ПРАВИЛЬНОЕ решение текущего задания
+        currentTour.tourTasks.add(newTask); //сохраняем информацию о текущем задании
+        currentTour.tourTime = (Calendar.getInstance().getTimeInMillis() - currentTour.tourDateTime) / 1000; //обновляем реальную продолжительность раунда
+        ++currentTour.totalTasks; //увеличиваем счетчик количества заданий в раунде TODO почему-то при досрочном завершении раунда счетчик показывает на 1 задание больше, чем нужно
+    }
+
+    //нажатие на кнопку "ОК", проверяем правильность ответа и заносим в статистику
+    public void okButtonClick(View view) {
+        if (answer.equals("")) return;
+        if (answerShown) answer = "...";
+        saveTaskStatistic();
+
+        if (answer.equals(newTask.answer)) {
+            startNewTask();
+        } else {
+            answer = "";
+            textViewUpdate();
+        }
+    }
+
+    //пропуск задания
+    public void skipTask(View view) {
+        answer = "...";
+        saveTaskStatistic();
+        startNewTask();
+    }
+
+    //запуск нового задания
+    private void startNewTask() {
+        newTask = new Task();
+        answerShown = false;
+        showTask = true;
+        newTask.generate(allowedTasks);
+        answer = "";
+        if (disapTime > -1) {
+            taskDisapHandler.postDelayed(disapTask, (long) (disapTime * 1000));
+        }
+        if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis) {
+            endRound();
+        } else {
+            textViewUpdate();
+        }
+    }
+
+    //завершение раунда по окончанию таймера
     private void endRound() {
-        newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
-        currentTour.tourTasks.add(newTask);
-        currentTour.tourTime = (Calendar.getInstance().getTimeInMillis() - currentTour.tourDateTime) / 1000;
-        currentTour.totalTasks = currentTour.tourTasks.size() + 1;
+//        saveTaskStatistic();
         StatisticMaker.saveTour(currentTour, context);
         new AlertDialog.Builder(TaskActivity.this)
                 .setTitle("Раунд завершён")
@@ -178,12 +224,28 @@ public class TaskActivity extends AppCompatActivity {
                 .show();
     }
 
-    //нажатие на цифровую кнопку
-    public void numberPress(View view) {
-        if (!answerShown) {
-            answer = answer + view.getTag();
-            textViewUpdate();
-        }
+    //досрочное завершение раунда по нажатию выхода
+    public void crossClick(View view) {
+        new AlertDialog.Builder(TaskActivity.this)
+                .setTitle("Внимание!")
+                .setMessage("Завершить раунд")
+                .setPositiveButton("Без сохранения", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNeutralButton("С сохранением", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveTaskStatistic();
+                        StatisticMaker.saveTour(currentTour, context);
+                        finish();
+                    }
+                })
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                .show();
     }
 
     //обновляем поля вывода выражения
@@ -201,6 +263,14 @@ public class TaskActivity extends AppCompatActivity {
         }
     }
 
+    //нажатие на цифровую кнопку
+    public void numberPress(View view) {
+        if (!answerShown) {
+            answer = answer + view.getTag();
+            textViewUpdate();
+        }
+    }
+
     //удаление одного символа
     public void charDelete(View view) {
         if (!answerShown) {
@@ -211,70 +281,11 @@ public class TaskActivity extends AppCompatActivity {
         }
     }
 
-    //нажатие на кнопку "ОК", проверяем правильность ответа и заносим в статистику
-    public void okButtonClick(View view) {
-        ++currentTour.totalTasks;
-        if (!answer.equals("")) {
-            if (!answerShown) {
-                newTask.userAnswer += answer + ':' + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
-                prevTaskTime = System.currentTimeMillis();
-            } else {
-                newTask.userAnswer += "..." + ':' + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
-                prevTaskTime = System.currentTimeMillis();
-            }
-            if (answer.equals(newTask.answer)) {
-                newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
-                if (!answerShown) {
-                    ++currentTour.rightTasks;
-                }
-                currentTour.tourTasks.add(newTask);
-                newTask = new Task();
-                answerShown = false;
-                showTask = true;
-                newTask.generate(allowedTasks);
-                answer = "";
-                if (disapTime > -1) {
-                    taskDisapHandler.postDelayed(disapTask, (long) (disapTime * 1000));
-                }
-                if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis) {
-                    endRound();
-                } else {
-                    textViewUpdate();
-                }
-            } else {
-                answer = "";
-                textViewUpdate();
-            }
-        }
-    }
-
     //показать ответ
     public void showAnswer(View view) {
         answer = newTask.answer;
         answerShown = true;
         textViewUpdate();
-    }
-
-    //пропуск задания
-    public void skipTask(View view) {
-        ++currentTour.totalTasks;
-        newTask.userAnswer += "...:" + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
-        prevTaskTime = System.currentTimeMillis();
-        newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
-        currentTour.tourTasks.add(newTask);
-        newTask = new Task();
-        answerShown = false;
-        showTask = true;
-        newTask.generate(allowedTasks);
-        answer = "";
-        if (disapTime > -1) {
-            taskDisapHandler.postDelayed(disapTask, (long)(disapTime* 1000));
-        }
-        if (Calendar.getInstance().getTimeInMillis() - tourStartTime >=  millis) {
-            endRound();
-        } else {
-            textViewUpdate();
-        }
     }
 
     //таймер для исчезновения задания
@@ -292,32 +303,6 @@ public class TaskActivity extends AppCompatActivity {
             taskDisapHandler.postDelayed(disapTask, (long) (disapTime * 1000));
         }
         textViewUpdate();
-    }
-
-    //досрочное завершение раунда по нажатию выхода
-    public void crossClick(View view) {
-        new AlertDialog.Builder(TaskActivity.this)
-                .setTitle("Внимание!")
-                .setMessage("Завершить раунд")
-                .setPositiveButton("Без сохранения", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNeutralButton("С сохранением", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
-                    currentTour.tourTasks.add(newTask);
-                    currentTour.tourTime = (Calendar.getInstance().getTimeInMillis() - currentTour.tourDateTime) / 1000;
-                    StatisticMaker.saveTour(currentTour, context);
-                    finish();
-                }
-                })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .show();
     }
 
     //при выходе из активности необходимо остановить все таймеры
