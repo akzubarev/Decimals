@@ -57,81 +57,11 @@ public class TaskActivity extends AppCompatActivity {
     long tourStartTime; //время начала раунда
     long millis; //время раунда в миллисекундах
 
-    //листнер для элементов шторки
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }
-
-    //описание действий для кнопок шторки
-    private void selectItem(int pos) {
-        switch (pos) {
-            case 0:
-                showAnswer();
-                break;
-            case 1:
-                skipTask();
-                break;
-            case 2:
-                finishRound();
-                break;
-            case 3:
-                cancelRound();
-                break;
-        }
-        mDrawerLayout.closeDrawer(mDrawerList);
-
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task);
-
-        //заполняем шторку
-//        mDrawerList = (ListView)findViewById(R.id.left_drawer);
-//        addDrawerItems();
-//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-//        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        Field mDragger = null;//mRightDragger for right obviously
-//        try {
-//            mDragger = mDrawerLayout.getClass().getDeclaredField(
-//                    "mLeftDragger");
-//        } catch (NoSuchFieldException e) {
-//            e.printStackTrace();
-//        }
-//        mDragger.setAccessible(true);
-//        ViewDragHelper draggerObj = null;
-//        try {
-//            draggerObj = (ViewDragHelper) mDragger
-//                    .get(mDrawerLayout);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-//
-//        Field mEdgeSize = null;
-//        try {
-//            mEdgeSize = draggerObj.getClass().getDeclaredField(
-//                    "mEdgeSize");
-//        } catch (NoSuchFieldException e) {
-//            e.printStackTrace();
-//        }
-//        mEdgeSize.setAccessible(true);
-//        int edge = 0;
-//        try {
-//            edge = mEdgeSize.getInt(draggerObj);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            mEdgeSize.setInt(draggerObj, edge * 10);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
 
         //заполняем GridLayout
         android.support.v7.widget.GridLayout gl = (android.support.v7.widget.GridLayout)findViewById(R.id.buttonsLayout);
@@ -198,30 +128,20 @@ public class TaskActivity extends AppCompatActivity {
         prevTaskTime = tourStartTime;
     }
 
-
-
-    //таймер для конца раунда
-    private Runnable endRound = new Runnable() {
-        public void run() {
-                new AlertDialog.Builder(TaskActivity.this)
-                        .setTitle("Раунд завершён")
-                        .setMessage("Время раунда вышло")
-                        .setCancelable(false)
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
-                                currentTour.tourTasks.add(newTask);
-                                ++currentTour.totalTasks;
-                                currentTour.tourTime = (Calendar.getInstance().getTimeInMillis() - currentTour.tourDateTime) / 1000;
-                                StatisticMaker.saveTour(currentTour, context);
-                                finish();
-                            }
-                        })
-                        .show();
-
-
+    //делаем все кнопки одинакового размера внутри GridLayout
+    public void fillView(android.support.v7.widget.GridLayout parent) {
+        Button child;
+        for (int i = 0;  i < parent.getChildCount(); i++) {
+            child = (Button)parent.getChildAt(i);
+            android.support.v7.widget.GridLayout.LayoutParams params = (android.support.v7.widget.GridLayout.LayoutParams) child.getLayoutParams();
+            int margin = -8;
+            params.setMargins(margin, margin, margin, margin);
+            params.width = (parent.getWidth() / parent.getColumnCount()) - params.rightMargin - params.leftMargin;
+            params.height = (parent.getHeight() / parent.getRowCount()) - params.bottomMargin - params.topMargin;
+            child.setLayoutParams(params);
+            child.setBackgroundColor(parent.getDrawingCacheBackgroundColor());
         }
-    };
+    }
 
     //вышло время раунда
     private void endRound() {
@@ -237,14 +157,12 @@ public class TaskActivity extends AppCompatActivity {
                 .setNeutralButton("Ещё один раунд", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         finish();
                         startActivity(getIntent());
                     }
                 })
                 .setPositiveButton("В главное меню", new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int which) {
-
                      finish();
                    }
                 })
@@ -258,43 +176,6 @@ public class TaskActivity extends AppCompatActivity {
                     }
                 })
                 .show();
-    }
-
-    //таймер для исчезновения задания
-    private Runnable disapTask = new Runnable() {
-        public void run() {
-           showTask = false;
-           textViewUpdate();
-
-        }
-    };
-
-
-
-
-    //делаем все кнопки одинакового размера внутри GridLayout
-    public void fillView(android.support.v7.widget.GridLayout parent)
-    {
-        Button child;
-//
-//        //Stretch buttons
-//        int idealChildHeight = (int) ((gl.getHeight())/gl.getRowCount() - gl.getPaddingTop() - gl.getPaddingBottom());
-//        int idealChildWidth = (int) ((gl.getWidth())/gl.getColumnCount() - gl.getPaddingLeft() - gl.getPaddingRight());
-//        for (int i = 0;  i < gl.getChildCount(); i++) {
-//            buttonTemp = (Button) gl.getChildAt(i);
-//            buttonTemp.setWidth(idealChildWidth);
-//            buttonTemp.setHeight(idealChildHeight);
-//        }
-        for (int i = 0;  i < parent.getChildCount(); i++) {
-            child = (Button)parent.getChildAt(i);
-            android.support.v7.widget.GridLayout.LayoutParams params = (android.support.v7.widget.GridLayout.LayoutParams) child.getLayoutParams();
-            int margin = -8;
-            params.setMargins(margin, margin, margin, margin);
-            params.width = (parent.getWidth() / parent.getColumnCount()) - params.rightMargin - params.leftMargin;
-            params.height = (parent.getHeight() / parent.getRowCount()) - params.bottomMargin - params.topMargin;
-            child.setLayoutParams(params);
-            child.setBackgroundColor(parent.getDrawingCacheBackgroundColor());
-        }
     }
 
     //нажатие на цифровую кнопку
@@ -311,14 +192,12 @@ public class TaskActivity extends AppCompatActivity {
         if (showTask) {
             expressionTV.setText(newTask.expression + " = " + answer);
         } else {
-            //expressionTV.setText("Нажмите, чтобы показать задание" + " = " + answer);
             expressionTV.setText( " = " + answer);
             int x = expressionTV.getLeft();
             int y = expressionTV.getBottom() - expressionTV.getHeight() /4;
             Toast toast = Toast.makeText(this, "Нажмите, чтобы показать задание", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP, x, y);
             toast.show();;
-
         }
     }
 
@@ -369,64 +248,15 @@ public class TaskActivity extends AppCompatActivity {
         }
     }
 
-    //нажатие кнопки назад
-    @Override
-    public void onBackPressed() {
-//        roundTimeHandler.removeCallbacks(endRound);
-//        new AlertDialog.Builder(TaskActivity.this)
-//                .setTitle("Внимание!")
-//                .setMessage("Завершить раунд без сохранения?")
-//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        finish();
-//                    }
-//                })
-//                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                    }
-//                })
-//                .show();
-        cancelRound();
-    }
-
-    //при выходи из активности необходимо остановить все таймеры
-    @Override
-    protected void onDestroy(){
-        roundTimeHandler.removeCallbacks(endRound);
-        taskDisapHandler.removeCallbacks(disapTask);
-        super.onDestroy();
-    }
-
-    //показать ответ(вариант с кнопкой)
-    public void showAnswer(View view) {
-        showAnswer();
-    }
-
     //показать ответ
-    public void showAnswer() {
+    public void showAnswer(View view) {
         answer = newTask.answer;
         answerShown = true;
         textViewUpdate();
     }
 
-    //пропуск задания, вариант с кнопкой (view)
-    public void skipTask(View view) {
-        skipTask();
-//        newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
-//        currentTour.tourTasks.add(newTask);
-//        newTask = new Task();
-//        answerShown = false;
-//        showTask = true;
-//        newTask.generate(allowedTasks);
-//        answer = "";
-//        if (disapTime > -1) {
-//            taskDisapHandler.postDelayed(disapTask, (long)(disapTime*1000));
-//        }
-//        textViewUpdate();
-    }
-
     //пропуск задания
-    public void skipTask() {
+    public void skipTask(View view) {
         ++currentTour.totalTasks;
         newTask.userAnswer += "...:" + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
         prevTaskTime = System.currentTimeMillis();
@@ -440,95 +270,20 @@ public class TaskActivity extends AppCompatActivity {
         if (disapTime > -1) {
             taskDisapHandler.postDelayed(disapTask, (long)(disapTime* 1000));
         }
-        if ( Calendar.getInstance().getTimeInMillis() - tourStartTime >=  millis) {
+        if (Calendar.getInstance().getTimeInMillis() - tourStartTime >=  millis) {
             endRound();
         } else {
             textViewUpdate();
         }
     }
 
-
-    //завершение раунда с сохранением статистики (вариант с кнопкой - View)
-    public void finishRound(View view) {
-        finishRound();
-//        new AlertDialog.Builder(TaskActivity.this)
-//                .setTitle("Внимание!")
-//                .setMessage("Завершить раунд?")
-//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
-//                        currentTour.tourTasks.add(newTask);
-//                        currentTour.tourTime = (Calendar.getInstance().getTimeInMillis() - currentTour.tourDateTime) / 1000;
-//                        currentTour.totalTasks = currentTour.tourTasks.size() + 1;
-//                        StatisticMaker.saveTour(currentTour, context);
-//                        finish();
-//                    }
-//                })
-//                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                    }
-//                })
-//                .show();
-
-    }
-
-    //завершение раунда с сохранением статистики
-    public void finishRound() {
-        new AlertDialog.Builder(TaskActivity.this)
-                .setTitle("Внимание!")
-                .setMessage("Завершить раунд? Результаты будут сохранены")
-                .setPositiveButton("Завершить", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000;
-                        currentTour.tourTasks.add(newTask);
-                        currentTour.tourTime = (Calendar.getInstance().getTimeInMillis() - currentTour.tourDateTime) / 1000;
-                        StatisticMaker.saveTour(currentTour, context);
-                        finish();
-                    }
-                })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .show();
-
-    }
-
-    //завершение раунда без сохранения (вариант с кнопкой, поэтому добавляется параметр View)
-    public void cancelRound(View view) {
-//        new AlertDialog.Builder(TaskActivity.this)
-//                .setTitle("Внимание!")
-//                .setMessage("Завершить раунд без сохранения?")
-//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        finish();
-//                    }
-//                })
-//                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                    }
-//                })
-//                .show();
-        cancelRound();
-    }
-
-    //завершение раунда без сохранения
-    public void cancelRound() {
-        new AlertDialog.Builder(TaskActivity.this)
-                .setTitle("Внимание!")
-                .setMessage("Завершить раунд без сохранения?")
-                .setPositiveButton("Завершить", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                })
-                .show();
-
-    }
+    //таймер для исчезновения задания
+    private Runnable disapTask = new Runnable() {
+        public void run() {
+            showTask = false;
+            textViewUpdate();
+        }
+    };
 
     //просмотр ответа, если он исчез
     public void lookAnswer(View view) {
@@ -539,14 +294,7 @@ public class TaskActivity extends AppCompatActivity {
         textViewUpdate();
     }
 
-    //заполняем шторку
-//    private void addDrawerItems() {
-//        String[] osArray = { "Показать ответ", "Пропустить задание", "Закончить упражнение", "Прервать упражнение"};
-//        mAdapter = new ArrayAdapter<String>(this, R.layout.drawer_list_item, osArray);
-//        mDrawerList.setAdapter(mAdapter);
-//    }
-
-
+    //досрочное завершение раунда по нажатию выхода
     public void crossClick(View view) {
         new AlertDialog.Builder(TaskActivity.this)
                 .setTitle("Внимание!")
@@ -570,5 +318,12 @@ public class TaskActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    //при выходе из активности необходимо остановить все таймеры
+    @Override
+    protected void onDestroy(){
+        taskDisapHandler.removeCallbacks(disapTask);
+        super.onDestroy();
     }
 }
