@@ -282,10 +282,6 @@ public class TaskActivity extends AppCompatActivity {
         }
         answer = answer + view.getTag();
         textViewUpdate();
-//        if (!answerShown) {
-//            answer = answer + view.getTag();
-//            textViewUpdate();
-//        }
     }
 
     //удаление одного символа
