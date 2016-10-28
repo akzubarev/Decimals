@@ -96,7 +96,7 @@
                 android:textSize="30sp"
                 android:textColor="@android:color/tertiary_text_light"
                 android:background="@android:color/transparent"
-                android:tag="1"
+                android:tag="2"
                 android:onClick="startCompl"
                 />
 
@@ -113,25 +113,25 @@
 
             <CheckBox android:id="@+id/checkBoxMul1"
                 android:layout_gravity="center"
-                android:tag="2"
+                android:tag="3"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxMul2"
                 android:layout_gravity="center"
-                android:tag="2"
+                android:tag="3"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxMul3"
                 android:layout_gravity="center"
-                android:tag="2"
+                android:tag="3"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxMul4"
                 android:layout_gravity="center"
-                android:tag="2"
+                android:tag="3"
                 android:onClick="onCheckBoxClick"
                 />
 
@@ -141,7 +141,7 @@
                 android:textSize="30sp"
                 android:textColor="@android:color/tertiary_text_light"
                 android:background="@android:color/transparent"
-                android:tag="2"
+                android:tag="3"
                 android:onClick="startCompl"
                 />
 
