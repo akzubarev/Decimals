@@ -151,13 +151,17 @@ public class TaskActivity extends AppCompatActivity {
         newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000; //??? вычисляем время, потраченное пользователем на ПРАВИЛЬНОЕ решение текущего задания
         currentTour.tourTasks.add(newTask); //сохраняем информацию о текущем задании
         currentTour.tourTime = (Calendar.getInstance().getTimeInMillis() - currentTour.tourDateTime) / 1000; //обновляем реальную продолжительность раунда
-        ++currentTour.totalTasks; //увеличиваем счетчик количества заданий в раунде TODO почему-то при досрочном завершении раунда счетчик показывает на 1 задание больше, чем нужно
+        ++currentTour.totalTasks; //увеличиваем счетчик количества заданий в раунде
     }
 
     //нажатие на кнопку "ОК", проверяем правильность ответа и заносим в статистику
     public void okButtonClick(View view) {
         if (answer.equals("")) return;
-        if (answerShown) answer = "...";
+        if (answerShown) {
+            answer = "...";
+            answerShown = false;
+            textViewUpdate();
+        }
         saveTaskStatistic();
 
         if (answer.equals(newTask.answer)) {
@@ -194,11 +198,11 @@ public class TaskActivity extends AppCompatActivity {
 
     //завершение раунда по окончанию таймера
     private void endRound() {
-//        saveTaskStatistic();
+//        saveTaskStatistic(); // Здесь сохранять статистику задания не нужно!
         StatisticMaker.saveTour(currentTour, context);
         new AlertDialog.Builder(TaskActivity.this)
                 .setTitle("Раунд завершён")
-                .setMessage("Решено " + Integer.toString(currentTour.rightTasks) + " из " + Integer.toString(currentTour.totalTasks) )
+                .setMessage("Решено заданий: " + Integer.toString(currentTour.rightTasks) + " из " + Integer.toString(currentTour.totalTasks) )
                 .setCancelable(false)
                 .setNeutralButton("Ещё один раунд", new DialogInterface.OnClickListener() {
                     @Override
@@ -241,7 +245,7 @@ public class TaskActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
 //                        saveTaskStatistic(); //Текущее задание не записываем!
                             StatisticMaker.saveTour(currentTour, context);
-                            finish();
+                            endRound();
                         }
                     })
                     .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
@@ -269,10 +273,19 @@ public class TaskActivity extends AppCompatActivity {
 
     //нажатие на цифровую кнопку
     public void numberPress(View view) {
-        if (!answerShown) {
-            answer = answer + view.getTag();
+        if (answerShown && answer.length() > 0) {
+            return;
+        }
+        if (answer.equals("0")) {
+            answer = "";
             textViewUpdate();
         }
+        answer = answer + view.getTag();
+        textViewUpdate();
+//        if (!answerShown) {
+//            answer = answer + view.getTag();
+//            textViewUpdate();
+//        }
     }
 
     //удаление одного символа
