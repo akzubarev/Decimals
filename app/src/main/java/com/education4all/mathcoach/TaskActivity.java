@@ -204,19 +204,19 @@ public class TaskActivity extends AppCompatActivity {
                 .setTitle("Раунд завершён")
                 .setMessage("Решено заданий: " + Integer.toString(currentTour.rightTasks) + " из " + Integer.toString(currentTour.totalTasks) )
                 .setCancelable(false)
-                .setNeutralButton("Ещё один раунд", new DialogInterface.OnClickListener() {
+                .setNeutralButton("Ещё раунд", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                         startActivity(getIntent());
                     }
                 })
-                .setPositiveButton("В главное меню", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Домой", new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int which) {
                      finish();
                    }
                 })
-                .setNegativeButton("Детальная статистика",  new DialogInterface.OnClickListener() {
+                .setNegativeButton("Результаты",  new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                         int tourCount = StatisticMaker.getTourCount(context);
@@ -234,14 +234,14 @@ public class TaskActivity extends AppCompatActivity {
             finish();
         } else {
             new AlertDialog.Builder(TaskActivity.this)
-                    .setTitle("Внимание!")
-                    .setMessage("Завершить раунд")
-                    .setPositiveButton("Без сохранения", new DialogInterface.OnClickListener() {
+                    .setTitle("Досрочное завершение раунда")
+                    .setMessage("Сохранить результаты?")
+                    .setPositiveButton("Нет", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             finish();
                         }
                     })
-                    .setNeutralButton("С сохранением", new DialogInterface.OnClickListener() {
+                    .setNeutralButton("Да", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
 //                        saveTaskStatistic(); //Текущее задание не записываем!
 //                            StatisticMaker.saveTour(currentTour, context); // Результаты тура тут сохранять не нужно, они сохранятся при завершении раунда.
