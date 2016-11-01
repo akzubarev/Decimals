@@ -13,7 +13,7 @@ public class Task {
 	public long taskTime;
 	public long timeTaken;
 	public Random rnd;
-	public final char[] operations = {'+', '-', '*', ':'};
+	public final char[] operations = {'+', '−', '∙', ':'};
 
 	public Task() {
 		expression = "2 + 2";
