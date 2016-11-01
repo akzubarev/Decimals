@@ -63,8 +63,8 @@ public class StatiscticsActivity extends ActionBarActivity {
             TextView arrow = new TextView((this));
             arrow.setTag(tourNumber);
             arrow.setOnClickListener(tourClick);
-            arrow.setText(">");
-            arrow.setTextSize(40);
+            arrow.setText("〉");
+            arrow.setTextSize(20);
             LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(120,120);
             layoutParams.gravity= Gravity.CENTER;
             arrow.setLayoutParams(layoutParams);
