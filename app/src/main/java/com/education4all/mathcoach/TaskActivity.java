@@ -244,7 +244,7 @@ public class TaskActivity extends AppCompatActivity {
                     .setNeutralButton("С сохранением", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
 //                        saveTaskStatistic(); //Текущее задание не записываем!
-                            StatisticMaker.saveTour(currentTour, context);
+//                            StatisticMaker.saveTour(currentTour, context); // Результаты тура тут сохранять не нужно, они сохранятся при завершении раунда.
                             endRound();
                         }
                     })
