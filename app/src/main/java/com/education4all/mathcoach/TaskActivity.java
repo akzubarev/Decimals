@@ -211,7 +211,7 @@ public class TaskActivity extends AppCompatActivity {
                         startActivity(getIntent());
                     }
                 })
-                .setPositiveButton("Домой", new DialogInterface.OnClickListener() {
+                .setPositiveButton("В начало", new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int which) {
                      finish();
                    }
