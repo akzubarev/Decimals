@@ -232,7 +232,7 @@
                 android:inputType="numberDecimal"
                 android:ems="10"
                 android:gravity="center"
-                android:focusable="true"
+                android:focusable="false"
                 />
 
             <Button android:id="@+id/firstPlus"
@@ -294,7 +294,7 @@
                 android:layout_gravity="center"
                 android:inputType="numberSigned"
                 android:ems="10"
-                android:focusable="true"
+                android:focusable="false"
                 android:gravity="center"
                 />
 
