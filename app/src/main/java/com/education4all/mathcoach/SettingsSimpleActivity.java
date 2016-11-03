@@ -32,7 +32,7 @@ import java.text.DecimalFormatSymbols;
 public class SettingsSimpleActivity extends AppCompatActivity {
 
     public static final String COMPLEXITY_SETTINGS = "ComplexitySettings";
-    public static final String NODISAPEARCHAR = "-"; //DecimalFormatSymbols.getInstance().getInfinity()
+    public static final String NODISAPEARCHAR = "∞"; //DecimalFormatSymbols.getInstance().getInfinity()
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
