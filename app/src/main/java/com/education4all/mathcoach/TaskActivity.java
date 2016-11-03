@@ -75,16 +75,12 @@ public class TaskActivity extends AppCompatActivity {
 
         //обнуляем переменные и инициализируем элементы layout
         Intent intent = getIntent();
-        G_progressBar = (ProgressBar)findViewById(R.id.taskProgress);
         newTask = new Task();
         allowedTasks = DataReader.readAllowedTasks(this);
-        tourStartTime = Calendar.getInstance().getTimeInMillis();
-        answer = new String();
-        RoundTime = DataReader.GetRoundTime(this);
         if (!newTask.areTasks(allowedTasks)) {
             new AlertDialog.Builder(TaskActivity.this)
-                    .setTitle("Ошибка")
-                    .setMessage("Не выбраны задания для генерации")
+//                    .setTitle("Ошибка")
+                    .setMessage("Пожалуйста, сначала выберите виды заданий.")
                     .setCancelable(false)
                     .setPositiveButton("Настройки", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -95,37 +91,43 @@ public class TaskActivity extends AppCompatActivity {
                     })
                     .show();
         } else {
-            newTask.generate(allowedTasks);
-        }
-        millis =(long)(RoundTime * 1000 * 60);
-        final Context l_context = this;
-        new Thread(new Runnable() {
-            public void run() {
-                while (progressStatus < 100) {
-                    progressStatus += 1;
-                    progressBarHandler.post(new Runnable() {
-                        public void run() {
-                            G_progressBar.setProgress(progressStatus);
+            tourStartTime = Calendar.getInstance().getTimeInMillis();
+            prevTaskTime = tourStartTime;
+            currentTour.totalTasks = 0;
+            currentTour.rightTasks = 0;
+            answer = new String();
+
+            G_progressBar = (ProgressBar)findViewById(R.id.taskProgress);
+            RoundTime = DataReader.GetRoundTime(this);
+            millis =(long)(RoundTime * 1000 * 60);
+            final Context l_context = this;
+            new Thread(new Runnable() {
+                public void run() {
+                    while (progressStatus < 100) {
+                        progressStatus += 1;
+                        progressBarHandler.post(new Runnable() {
+                            public void run() {
+                                G_progressBar.setProgress(progressStatus);
+                            }
+                        });
+                        try {
+                            Thread.sleep((long)(RoundTime * 600));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-                    });
-                    try {
-                        Thread.sleep((long)(RoundTime * 600));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
+            }).start();
+
+            disapTime = DataReader.GetDisapRoundTime(this);
+            //roundTimeHandler.postDelayed(endRound, millis);
+            if (disapTime > -1) {
+                taskDisapHandler.postDelayed(disapTask, (long)(disapTime*1000));
             }
-        }).start();
 
-        disapTime = DataReader.GetDisapRoundTime(this);
-
-        //roundTimeHandler.postDelayed(endRound, millis);
-        if (disapTime > -1) {
-            taskDisapHandler.postDelayed(disapTask, (long)(disapTime*1000));
+            newTask.generate(allowedTasks);
+            textViewUpdate();
         }
-        textViewUpdate();
-        currentTour.totalTasks = 0;
-        prevTaskTime = tourStartTime;
     }
 
     //делаем все кнопки одинакового размера внутри GridLayout
@@ -145,7 +147,9 @@ public class TaskActivity extends AppCompatActivity {
 
     //сохраняем информацию о данной попытке и обновляем информацию раунда
     private void saveTaskStatistic() {
-        if (answer.equals(newTask.answer)) ++currentTour.rightTasks; // увеличиваем счетчик правильных заданий, если ответ правильный
+        if (answer.equals(newTask.answer)) {
+            ++currentTour.rightTasks; // увеличиваем счетчик правильных заданий, если ответ правильный
+        }
         newTask.userAnswer += answer + ":" + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
         prevTaskTime = System.currentTimeMillis();
         newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000; //??? вычисляем время, потраченное пользователем на ПРАВИЛЬНОЕ решение текущего задания
@@ -162,6 +166,7 @@ public class TaskActivity extends AppCompatActivity {
             answerShown = false;
             textViewUpdate();
         }
+
         saveTaskStatistic();
 
         if (answer.equals(newTask.answer)) {
