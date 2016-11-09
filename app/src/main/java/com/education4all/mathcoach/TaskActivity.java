@@ -162,7 +162,7 @@ public class TaskActivity extends AppCompatActivity {
     public void okButtonClick(View view) {
         if (answer.equals("")) return;
         if (answerShown) {
-            answer = "...";
+            answer = "\u2026";
             answerShown = false;
             textViewUpdate();
         }
@@ -179,7 +179,7 @@ public class TaskActivity extends AppCompatActivity {
 
     //пропуск задания
     public void skipTask(View view) {
-        answer = "...";
+        answer = "\u2026";
         saveTaskStatistic();
         startNewTask();
     }
