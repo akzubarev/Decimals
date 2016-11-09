@@ -13,7 +13,7 @@ public class Task {
 	public long taskTime;
 	public long timeTaken;
 	public Random rnd;
-	public final char[] operations = {'+', '−', '∙', ':'};
+	public final String[] operations = {"\u2006+\u2006", "\u2006−\u2006", "\u22C5", "\u2006:\u2006"};
 
 	public Task() {
 		expression = "2 + 2";
@@ -169,9 +169,9 @@ public class Task {
 	        timeTaken = Integer.parseInt(line.substring(0, found));
 	    }
 	    
-	    public char getOperation(int n) {
-	    	return operations[n];	    	
-	    }
+//	    public String getOperation(int n) {
+//	    	return operations[n];
+//	    }
 	    
     	// ����� ������ ��������
 	    private int operationRandomizer(final int[][] allowedTasks) {
