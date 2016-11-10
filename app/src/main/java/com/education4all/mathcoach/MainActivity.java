@@ -26,11 +26,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        //getSupportActionBar().setCustomView(R.layout.abs_layout);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//        getSupportActionBar().setCustomView(R.layout.abs_layout);
     }
 
     @Override
@@ -53,18 +53,15 @@ public class MainActivity extends AppCompatActivity {
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
     public void startTasks(View view) {
         Intent intent = new Intent(this, TaskActivity.class);
         startActivity(intent);
-
     }
 
     public void startSettings(View view) {
-
         Intent intent = new Intent(this, SettingsSimpleActivity.class);
         startActivity(intent);
     }
