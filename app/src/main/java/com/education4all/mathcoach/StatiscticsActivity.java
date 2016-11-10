@@ -6,7 +6,11 @@ import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,9 +38,9 @@ public class StatiscticsActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statisctics);
 
-
-        ActionBar myActionBar = getSupportActionBar();
-        myActionBar.setDisplayHomeAsUpEnabled(true);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         int tourCount = StatisticMaker.getTourCount(this);
         ScrollView Tours = (ScrollView)findViewById(R.id.scrollView);
@@ -83,10 +87,30 @@ public class StatiscticsActivity extends ActionBarActivity {
         }
     }
 
-
-
-    private void touClick(View view) {
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.statisctics, menu);
+        return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete_stats:
+                StatisticMaker.removeStatistics(this);
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
 }
