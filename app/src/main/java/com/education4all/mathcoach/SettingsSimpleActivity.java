@@ -32,7 +32,7 @@ import java.text.DecimalFormatSymbols;
 public class SettingsSimpleActivity extends AppCompatActivity {
 
     public static final String COMPLEXITY_SETTINGS = "ComplexitySettings";
-    public static final String NODISAPEARCHAR = "-"; //DecimalFormatSymbols.getInstance().getInfinity()
+    public static final String NODISAPEARCHAR = "∞"; //DecimalFormatSymbols.getInstance().getInfinity()
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +127,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
             ); //closing the setOnClickListener method
 
         }
+
     void addComplexityFromPopup(boolean one, boolean two) {
         StringBuilder currentComplexity = new StringBuilder();
         SharedPreferences.Editor editor = getSharedPreferences(COMPLEXITY_SETTINGS, MODE_PRIVATE).edit();
@@ -157,11 +158,11 @@ public class SettingsSimpleActivity extends AppCompatActivity {
             currentComplexity.append("4").append(",");
         }
 
-
         editor.putString(action, currentComplexity.toString());
         editor.apply();
     }
-        @Override
+
+    @Override
     protected void onResume() {
             super.onResume();
         for (int i = 1; i <= 4; ++i) {
@@ -221,16 +222,16 @@ public class SettingsSimpleActivity extends AppCompatActivity {
             wm.getDefaultDisplay().getMetrics(metrics);
         final float width = metrics.widthPixels/2 - 20;
         final float height = metrics.heightPixels / 8;
-        LinearLayout.LayoutParams layoutParamsWidth50 = new LinearLayout.LayoutParams(
-                (int) (width) , (int) (height) );
-        Button currentButton = (Button)findViewById(R.id.buttonAdd);
-        currentButton.setLayoutParams(layoutParamsWidth50);
-        currentButton = (Button)findViewById(R.id.buttonSub);
-        currentButton.setLayoutParams(layoutParamsWidth50);
-        currentButton = (Button)findViewById(R.id.buttonMul);
-        currentButton.setLayoutParams(layoutParamsWidth50);
-        currentButton = (Button)findViewById(R.id.buttonDiv);
-        currentButton.setLayoutParams(layoutParamsWidth50);
+//        LinearLayout.LayoutParams layoutParamsWidth50 = new LinearLayout.LayoutParams(
+//                (int) (width) , (int) (height) );
+//        Button currentButton = (Button)findViewById(R.id.buttonAdd);
+//        currentButton.setLayoutParams(layoutParamsWidth50);
+//        currentButton = (Button)findViewById(R.id.buttonSub);
+//        currentButton.setLayoutParams(layoutParamsWidth50);
+//        currentButton = (Button)findViewById(R.id.buttonMul);
+//        currentButton.setLayoutParams(layoutParamsWidth50);
+//        currentButton = (Button)findViewById(R.id.buttonDiv);
+//        currentButton.setLayoutParams(layoutParamsWidth50);
     }
 
     public void startCompl(View view) {
@@ -245,76 +246,112 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         field.requestFocus();
     }
 
-    @Override
-    public void onBackPressed() {
-        EditText field = (EditText)findViewById(R.id.editText);
-        if (field.getText().length() > 0) {
-            DataReader.SaveRoundTime(Float.parseFloat(field.getText().toString()), this);
+    public void firstPlus(View p_v) {
+        EditText field = (EditText) findViewById(R.id.editText);
+        String str = field.getText().toString();
+        float value;
+
+        if (textIsInt(str)) {
+            value = Float.parseFloat(str);
+            if (value < 60) {
+                ++value;
+            } else {
+                value = 1;
+            }
         } else {
-            DataReader.SaveRoundTime(5, this);
+            value = 1;
         }
-        EditText field2 = (EditText)findViewById(R.id.editText2);
-        if (!field2.getText().toString().equals(NODISAPEARCHAR) && !field2.getText().toString().equals("")) {
-            DataReader.SaveDisapRoundTime(Float.parseFloat(field2.getText().toString()), this);
-        } else {
-            DataReader.SaveDisapRoundTime(-1, this);
-        }
-        finish();
+        field.setText(Long.toString((long) value));
+        DataReader.SaveRoundTime(value, this);
     }
 
-    public void firstPlus(View p_v) {
-        EditText field = (EditText)findViewById(R.id.editText);
-        float text = Float.parseFloat(field.getText().toString());
-        if (text < 60) {
-            ++text;
+    public void firstMinus(View p_v) {
+        EditText field = (EditText) findViewById(R.id.editText);
+        String str = field.getText().toString();
+        float value;
+
+        if (textIsInt(str)) {
+            value = Float.parseFloat(str);
+            if (value > 1) {
+                --value;
+            } else {
+                value = 60;
+            }
         } else {
-            text = 1;
+            value = 60;
         }
-        field.setText(Long.toString((long) text));
+        field.setText(Long.toString((long) value));
+        DataReader.SaveRoundTime(value, this);
     }
+
     public void secondPlus(View p_v) {
         EditText field = (EditText)findViewById(R.id.editText2);
         String str = field.getText().toString();
-        if (!str.equals(NODISAPEARCHAR)) {
-            float text = Float.parseFloat(field.getText().toString());
-            if (text < 60) {
-                ++text;
-                field.setText(Long.toString((long)text));
+        float value;
+        String newFieldText;
+
+        if (textIsInt(str)) {
+            value = Float.parseFloat(str);
+            if (value < 60) {
+                ++value;
+                newFieldText = Long.toString((long)value);
             } else {
-                field.setText(NODISAPEARCHAR);
+                value = -1;
+                newFieldText = NODISAPEARCHAR;
             }
         } else {
-            field.setText("1");
+            value = 1;
+            newFieldText = Long.toString((long)value);
         }
+        field.setText(newFieldText);
+        DataReader.SaveDisapRoundTime(value, this);
     }
-    public void firstMinus(View p_v) {
-        EditText field = (EditText)findViewById(R.id.editText);
-        float text = Float.parseFloat(field.getText().toString());
-        if (text > 1) {
-            --text;
-        } else {
-            text = 60;
-        }
-        field.setText(Long.toString((long)text));
-    }
+
     public void secondMinus(View p_v) {
         EditText field = (EditText)findViewById(R.id.editText2);
         String str = field.getText().toString();
-        if (!str.equals(NODISAPEARCHAR)) {
-            float text = Float.parseFloat(field.getText().toString());
-            if (text > 1) {
-                --text;
-                field.setText(Long.toString((long)text));
+        float value;
+        String newFieldText;
+
+        if (textIsInt(str)) {
+            value = Float.parseFloat(str);
+            if (value > 1) {
+                --value;
+                newFieldText = Long.toString((long)value);
             } else {
-                field.setText(NODISAPEARCHAR);
+                value = -1;
+                newFieldText = NODISAPEARCHAR;
             }
         } else {
-            float text = 60;
-            field.setText(Long.toString((long)text));
+            value = 60;
+            newFieldText = Long.toString((long)value);
+        }
+        field.setText(newFieldText);
+        DataReader.SaveDisapRoundTime(value, this);
+    }
+
+    public boolean textIsInt(String text) {
+        if (text.length() == 0) {
+            return false;
         }
 
-
+        boolean isInt;
+        for (int i = 0; i < text.length(); ++i) {
+            isInt = false;
+            for (int j = 0; j <= 9; ++j) {
+                String a = text.substring(i, i+1);
+                String n = Long.toString((long)j);
+                if (a.equals(n)) {
+                    isInt = true;
+                }
+            }
+            if (!isInt) {
+                return false;
+            }
+        }
+        return true;
     }
+
     public void onCheckBoxClick(View view) {
         StringBuilder currentComplexity = new StringBuilder();
         SharedPreferences.Editor editor = getSharedPreferences(COMPLEXITY_SETTINGS, MODE_PRIVATE).edit();
@@ -340,6 +377,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         if (chk.isChecked()) {
             currentComplexity.append("0").append(",");
         }
+
         name = "checkBox" + action + "2";
         resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
         chk = (CheckBox)findViewById(resID);
@@ -353,6 +391,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         if (chk.isChecked()) {
             currentComplexity.append("2").append(",");
         }
+
         name = "checkBox" + action + "4";
         resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
         chk = (CheckBox)findViewById(resID);

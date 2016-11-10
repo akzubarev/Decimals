@@ -1,18 +1,20 @@
 <resources>
     <string name="app_name">Математика в уме</string>
-    <string name="action_settings">Настойки</string>
+    <string name="action_about">О программе</string>
+    <string name="action_settings">Настройки</string>
+    <string name='action_delete_stats'>Удалить статистику</string>
     <string name="start_button">Старт</string>
-    <string name="stats_button">Статистика</string>
+    <string name="stats_button">Результаты</string>
     <string name="settings_button">Настройки</string>
     <string name="title_activity_task">TaskActivity</string>
-
+    <string name="action_delete_tour">Удалить тур</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_settings">SettingsActivity</string>
-    <string name="title_activity_settings_simple">Настройки сложности</string>
-    <string name="title_activity_complexity">Сложность</string>
+    <string name="title_activity_settings_simple">Настройки</string>
+    <string name="title_activity_complexity">Настройки сложности</string>
     <string name="back_space_button">DEL</string>
-    <string name="title_activity_statisctics">Статистика</string>
-    <string name="title_activity_stat_tour">Статистика по туру</string>
+    <string name="title_activity_statisctics">Результаты</string>
+    <string name="title_activity_stat_tour">Результаты раунда</string>
     <string name="title_activity_wheel_picker">wheel_picker</string>>
     <string-array name="screen_array">
         <item>Прервать тренировку</item>
@@ -20,4 +22,5 @@
         <item>Пропустить задание</item>
         <item>Показать ответ</item>>
     </string-array>
+    <string name="title_activity_authors">AuthorsActivity</string>
 </resources>

@@ -13,7 +13,7 @@ public class Task {
 	public long taskTime;
 	public long timeTaken;
 	public Random rnd;
-	public final char[] operations = {'+', '-', '*', ':'};
+	public final char[] operations = {'+', '−', '∙', ':'};
 
 	public Task() {
 		expression = "2 + 2";
@@ -43,14 +43,14 @@ public class Task {
 
 	public static String DepictTask(String line) {
 		Task l_task = new Task(line);
-		return l_task.expression + " = " + l_task.userAnswer + "(" + l_task.answer + ") " + l_task.timeTaken + " сек. ";
+//		return l_task.expression + " = " + l_task.userAnswer + "(" + l_task.answer + ") " + l_task.timeTaken + " сек. ";
+		return l_task.expression + " = " + l_task.userAnswer + " " + l_task.timeTaken + " сек. ";
 	}
 
 	public static ArrayList<String> DepictTaskExtended(String line, ArrayList<String> answers ) {
 		Task l_task = new Task(line);
 		ArrayList<String> res = new ArrayList<String>();
 		String firstPart = l_task.expression + " = ";
-		String secondPart = "(" + l_task.answer + ") ";
 		String partToBeParsed =  l_task.userAnswer;
 		int commaIndex;
 		int colonIndex;
@@ -62,7 +62,7 @@ public class Task {
 			if (colonIndex > 0) {
 				oneAnswer = partToBeParsed.substring(0, colonIndex);
 				oneAnswerTime = partToBeParsed.substring(colonIndex + 1, commaIndex);
-				res.add(firstPart + oneAnswer + secondPart + oneAnswerTime + " сек.");
+				res.add(firstPart + oneAnswer + "  (" + oneAnswerTime + " сек)");
 				answers.add(oneAnswer);
 			}
 			partToBeParsed = partToBeParsed.substring(commaIndex + 1, partToBeParsed.length());

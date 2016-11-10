@@ -1,42 +1,61 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    tools:context=".MainActivity"
     android:orientation="vertical"
     android:weightSum="1">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="@string/stats_button"
-        android:textAllCaps="false"
-        android:id="@+id/stat_button"
-        android:layout_weight="0.33"
-        android:textSize="20sp"
-        android:onClick="startStatistic"/>
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="@string/settings_button"
-        android:id="@+id/settings_button"
-        android:layout_gravity="bottom"
-        android:layout_weight="0.33"
-        android:textAllCaps="false"
-        android:textSize="20sp"
-        android:onClick="startSettings"/>
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/stats_button"
+            android:textAllCaps="false"
+            android:id="@+id/stat_button"
+            android:layout_weight="0.33"
+            android:textSize="20sp"
+            android:onClick="startStatistic"/>
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:text="@string/start_button"
-        android:id="@+id/start_button"
-        android:textAllCaps="false"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0.33"
-        android:textSize="20sp"
-        android:onClick="startTasks"/>
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/settings_button"
+            android:id="@+id/settings_button"
+            android:layout_gravity="bottom"
+            android:layout_weight="0.33"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:onClick="startSettings"/>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="@string/start_button"
+            android:id="@+id/start_button"
+            android:textAllCaps="false"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.33"
+            android:textSize="20sp"
+            android:onClick="startTasks"/>
+    </android.support.v7.widget.LinearLayoutCompat>>
 </LinearLayout>
