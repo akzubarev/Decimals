@@ -269,7 +269,7 @@ public class TaskActivity extends AppCompatActivity {
         } else {
             expressionTV.setText( " = " + answer);
             int x = expressionTV.getLeft();
-            int y = expressionTV.getBottom() - expressionTV.getHeight() /4;
+            int y = expressionTV.getBottom() - expressionTV.getHeight() /3;
             Toast toast = Toast.makeText(this, "Нажмите, чтобы показать задание", Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP, x, y);
             toast.show();;
