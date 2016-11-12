@@ -11,12 +11,11 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label=""
+            android:label="@string/short_app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -29,13 +28,13 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         </activity>
 
-        <activity
-            android:name=".SettingsActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait">
+        <!--<activity-->
+            <!--android:name=".SettingsActivity"-->
+            <!--android:configChanges="keyboardHidden|orientation|screenSize"-->
+            <!--android:label="@string/title_activity_settings"-->
+            <!--android:screenOrientation="portrait">-->
+        <!--</activity>-->
 
-        </activity>
         <activity
             android:name=".SettingsSimpleActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -78,10 +77,10 @@
                 android:value="com.education4all.mathcoach.StatiscticsActivity" />
         </activity>
 
-        <activity
-            android:name=".wheel_picker"
-            android:label="@string/title_activity_wheel_picker">
-        </activity>
+        <!--<activity-->
+            <!--android:name=".wheel_picker"-->
+            <!--android:label="@string/title_activity_wheel_picker">-->
+        <!--</activity>-->
 
         <activity
             android:name=".AuthorsActivity"
