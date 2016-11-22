@@ -13,7 +13,7 @@ public class Task {
 	public long taskTime;
 	public long timeTaken;
 	public Random rnd;
-	public final String[] operations = {"\u2006+\u2006", "\u2006−\u2006", "\u22C5", "\u2006:\u2006"};
+	public final String[] operations = {"\u2006+\u2006", "\u2006−\u2006", "\u2006\u22C5\u2006", "\u2006:\u2006"};
 
 	public Task() {
 		expression = "2 + 2";
