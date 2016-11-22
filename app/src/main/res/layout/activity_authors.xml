@@ -1,13 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_authors"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.education4all.mathcoach.AuthorsActivity">
+    tools:context="com.education4all.mathcoach.AuthorsActivity"
+    android:weightSum="1">
 
-</RelativeLayout>
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+
+            android:text="@string/about_text"
+            android:textSize="20sp"
+            android:textColor="@android:color/tertiary_text_dark"
+            />
+
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+
+            android:text="@string/email"
+            android:textSize="20sp"
+            android:textColor="@android:color/tertiary_text_dark"
+
+            android:autoLink="email"
+            />
+
+</LinearLayout>

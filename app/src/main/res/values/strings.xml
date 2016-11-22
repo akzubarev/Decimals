@@ -16,6 +16,9 @@
     <string name="title_activity_statisctics">Результаты</string>
     <string name="title_activity_stat_tour">Результаты раунда</string>
     <string name="title_activity_wheel_picker">wheel_picker</string>>
+    <string name="about_text">Математика в уме\n(тренажёр устного счёта)\n\nИдея:\nАртём Казанович\n\nПрограммирование:\nАлександр Умнов\nАртём Казанович\n</string>>
+    <string name="email">mathcoach.support@yandex.ru</string>>
+
     <string-array name="screen_array">
         <item>Прервать тренировку</item>
         <item>Закончить тренировку</item>
