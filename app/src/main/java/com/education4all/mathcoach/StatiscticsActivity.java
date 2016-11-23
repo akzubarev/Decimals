@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -47,6 +48,7 @@ public class StatiscticsActivity extends ActionBarActivity {
         ScrollView Tours = (ScrollView)findViewById(R.id.scrollView);
         LinearLayout justALayout = new LinearLayout(this);
         justALayout.setOrientation(LinearLayout.VERTICAL);
+
         View bar = new View(this);
         bar.setVisibility(View.VISIBLE);
         bar.setMinimumHeight(1);
@@ -54,11 +56,12 @@ public class StatiscticsActivity extends ActionBarActivity {
         bar.setBackgroundColor(Color.DKGRAY);
         justALayout.addView(bar);
         Tours.addView(justALayout);
+
         for (int tourNumber = tourCount - 1; tourNumber >= 0; --tourNumber) {
-            LinearLayout row = new LinearLayout(this);
-            row.setOrientation(LinearLayout.HORIZONTAL);
+            RelativeLayout row = new RelativeLayout(this);
 
             TextView newTour = new TextView(this);
+            newTour.setId(tourNumber);
             String tourInfo = StatisticMaker.getTourInfo(this,tourNumber);
             newTour.setText(Tour.DepictTour(tourInfo));
             newTour.setTag(tourNumber);
@@ -70,16 +73,16 @@ public class StatiscticsActivity extends ActionBarActivity {
             arrow.setOnClickListener(tourClick);
 //            arrow.setText("\u232A");
             arrow.setText("〉");
-
             arrow.setTextSize(20);
             arrow.setTextColor(Color.WHITE);
             arrow.setBackgroundColor(Color.TRANSPARENT);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(300,120);
-            layoutParams.gravity= Gravity.FILL;
-            arrow.setLayoutParams(layoutParams);
             arrow.setGravity(Gravity.CENTER_VERTICAL|Gravity.END);
-            arrow.setMinimumHeight(40);
-            arrow.setMinimumWidth(40);
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_TOP, newTour.getId());
+            layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, newTour.getId());
+            arrow.setLayoutParams(layoutParams);
 
             row.addView(newTour);
             row.addView(arrow);
@@ -118,6 +121,4 @@ public class StatiscticsActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 }
