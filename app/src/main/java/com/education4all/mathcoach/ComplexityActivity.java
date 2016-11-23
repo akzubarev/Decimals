@@ -33,13 +33,15 @@ import java.util.jar.Attributes;
 public class ComplexityActivity extends ActionBarActivity {
     private int actionType;
     public static final String COMPLEXITY_SETTINGS = "ComplexitySettings";
+    public static final String ADD = "\u2006+\u2006";
+    public static final String SUB = "\u2006−\u2006";
+    public static final String MUL = "\u2006\u22C5\u2006";
+    public static final String DIV = "\u2006:\u2006";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.complexity);
-
-
 
         ActionBar myActionBar = getSupportActionBar();
         myActionBar.setDisplayHomeAsUpEnabled(true);
@@ -102,9 +104,6 @@ public class ComplexityActivity extends ActionBarActivity {
                 break;
         }
         StupidTextFill(actionType);
-
-
-
     }
 
     private void StupidTextFill(int operation) {
@@ -113,73 +112,73 @@ public class ComplexityActivity extends ActionBarActivity {
         switch (actionType) {
             case 1:
                 chk = (CheckBox)findViewById(R.id.checkBox1);
-                chk.setText("5 + 7");
+                chk.setText("5" + ADD + "7");
                 txv = (TextView)findViewById(R.id.textView3);
                 txv.setText("Сложение в пределах однозначных чисел");
                 chk = (CheckBox)findViewById(R.id.checkBox2);
-                chk.setText("55 + 77");
+                chk.setText("55" + ADD + "77");
                 txv = (TextView)findViewById(R.id.textView4);
                 txv.setText("Сложение в пределах двузначных чисел");
                 chk = (CheckBox)findViewById(R.id.checkBox3);
-                chk.setText("555 + 777");
+                chk.setText("555" + ADD + "777");
                 txv = (TextView)findViewById(R.id.textView5);
                 txv.setText("Сложение в пределах трёхзначных чисел");
                 chk = (CheckBox)findViewById(R.id.checkBox4);
-                chk.setText("5555 + 7777");
+                chk.setText("5555" + ADD + "7777");
                 txv = (TextView)findViewById(R.id.textView6);
                 txv.setText("Сложение в пределах четырёхзначных чисел");
                 break;
             case 2:
                 chk = (CheckBox)findViewById(R.id.checkBox1);
-                chk.setText("7 - 5");
+                chk.setText("7" + SUB + "5");
                 txv = (TextView)findViewById(R.id.textView3);
                 txv.setText("Вычитание в пределах однозначных чисел");
                 chk = (CheckBox)findViewById(R.id.checkBox2);
-                chk.setText("77 - 55");
+                chk.setText("77" + SUB + "55");
                 txv = (TextView)findViewById(R.id.textView4);
                 txv.setText("Вычитание в пределах двузначных чисел");
                 chk = (CheckBox)findViewById(R.id.checkBox3);
-                chk.setText("777 - 555");
+                chk.setText("777" + SUB + "555");
                 txv = (TextView)findViewById(R.id.textView5);
                 txv.setText("Вычитание в пределах трёхзначных чисел");
                 chk = (CheckBox)findViewById(R.id.checkBox4);
-                chk.setText("7777 - 5555");
+                chk.setText("7777" + SUB + "5555");
                 txv = (TextView)findViewById(R.id.textView6);
                 txv.setText("Вычитание в пределах четырёхзначных чисел");
                 break;
             case 3:
                 chk = (CheckBox)findViewById(R.id.checkBox1);
-                chk.setText("5 * 5");
+                chk.setText("5" + MUL + "5");
                 txv = (TextView)findViewById(R.id.textView3);
                 txv.setText("Умножение однозначных чисел");
                 chk = (CheckBox)findViewById(R.id.checkBox2);
-                chk.setText("5 * 25");
+                chk.setText("5" + MUL + "25");
                 txv = (TextView)findViewById(R.id.textView4);
                 txv.setText("Умножение двузначного числа на однозначное");
                 chk = (CheckBox)findViewById(R.id.checkBox3);
-                chk.setText("5 * 525");
+                chk.setText("5" + MUL + "525");
                 txv = (TextView)findViewById(R.id.textView5);
                 txv.setText("Умножение трёхзначного числа на однозначное");
                 chk = (CheckBox)findViewById(R.id.checkBox4);
-                chk.setText("25 * 25");
+                chk.setText("25" + MUL + "25");
                 txv = (TextView)findViewById(R.id.textView6);
                 txv.setText("Умножение двузначных чисел");
                 break;
             case 4:
                 chk = (CheckBox)findViewById(R.id.checkBox1);
-                chk.setText("25 : 5");
+                chk.setText("25" + DIV + "5");
                 txv = (TextView)findViewById(R.id.textView3);
                 txv.setText("Деление двузначного числа на однозначное");
                 chk = (CheckBox)findViewById(R.id.checkBox2);
-                chk.setText("275 : 5");
+                chk.setText("275" + DIV + "5");
                 txv = (TextView)findViewById(R.id.textView4);
                 txv.setText("Деление трёхзначного числа на однозначное");
                 chk = (CheckBox)findViewById(R.id.checkBox3);
-                chk.setText("2775 : 5");
+                chk.setText("2775" + DIV + "5");
                 txv = (TextView)findViewById(R.id.textView5);
                 txv.setText("Деление четырёхзначного числа на однозначное");
                 chk = (CheckBox)findViewById(R.id.checkBox4);
-                chk.setText("3025 : 25");
+                chk.setText("3025" + DIV + "25");
                 txv = (TextView)findViewById(R.id.textView6);
                 txv.setText("Деление четырёхзначного числа на двузначное");
                 break;
@@ -231,23 +230,20 @@ public class ComplexityActivity extends ActionBarActivity {
             }
         }
 
-
-
-
         editor.putString(action, currentComplexity.toString());
         editor.apply();
         finish();
     }
+
     @Override
     protected void onDestroy() {
         onBackPressed();
         super.onDestroy();
     }
+
     @Override
     protected void onPause() {
         onBackPressed();
         super.onPause();
     }
-
-
 }
