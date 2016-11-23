@@ -11,14 +11,13 @@
     android:stretchColumns="*"
     >
 
-
         <TableRow>
 
             <TextView
                 android:layout_gravity="center_vertical|start"
                 android:text="Сложение"
                 android:textSize="20sp"
-                android:textColor="@android:color/tertiary_text_dark"
+                android:textColor="@android:color/darker_gray"
                 />
 
             <CheckBox android:id="@+id/checkBoxAdd1"
@@ -47,9 +46,10 @@
 
             <Button android:id="@+id/buttonAdd"
                 android:layout_gravity="center_vertical|end"
-                android:text="〉"
+                android:gravity="center_vertical|end"
+                android:text="〉"
                 android:textSize="20sp"
-                android:textColor="@android:color/tertiary_text_light"
+                android:textColor="@android:color/white"
                 android:background="@android:color/transparent"
                 android:tag="1"
                 android:onClick="startCompl"
@@ -63,7 +63,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:text="Вычитание"
                 android:textSize="20sp"
-                android:textColor="@android:color/tertiary_text_dark"
+                android:textColor="@android:color/darker_gray"
                 />
 
             <CheckBox android:id="@+id/checkBoxSub1"
@@ -92,9 +92,10 @@
 
             <Button android:id="@+id/buttonSub"
                 android:layout_gravity="center_vertical|end"
-                android:text="〉"
+                android:gravity="center_vertical|end"
+                android:text="〉"
                 android:textSize="20sp"
-                android:textColor="@android:color/tertiary_text_light"
+                android:textColor="@android:color/white"
                 android:background="@android:color/transparent"
                 android:tag="2"
                 android:onClick="startCompl"
@@ -108,7 +109,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:text="Умножение"
                 android:textSize="20sp"
-                android:textColor="@android:color/tertiary_text_dark"
+                android:textColor="@android:color/darker_gray"
                 />
 
             <CheckBox android:id="@+id/checkBoxMul1"
@@ -137,9 +138,10 @@
 
             <Button android:id="@+id/buttonMul"
                 android:layout_gravity="center_vertical|end"
-                android:text="〉"
+                android:gravity="center_vertical|end"
+                android:text="〉"
                 android:textSize="20sp"
-                android:textColor="@android:color/tertiary_text_light"
+                android:textColor="@android:color/white"
                 android:background="@android:color/transparent"
                 android:tag="3"
                 android:onClick="startCompl"
@@ -153,7 +155,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:text="Деление"
                 android:textSize="20sp"
-                android:textColor="@android:color/tertiary_text_dark"
+                android:textColor="@android:color/darker_gray"
                 />
 
             <CheckBox android:id="@+id/checkBoxDiv1"
@@ -182,9 +184,10 @@
 
             <Button android:id="@+id/buttonDiv"
                 android:layout_gravity="center_vertical|end"
-                android:text="〉"
+                android:gravity="center_vertical|end"
+                android:text="〉"
                 android:textSize="20sp"
-                android:textColor="@android:color/tertiary_text_light"
+                android:textColor="@android:color/white"
                 android:background="@android:color/transparent"
                 android:tag="4"
                 android:onClick="startCompl"
@@ -213,7 +216,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Длина \nраунда"
                 android:textSize="20sp"
-                android:textColor="@android:color/tertiary_text_dark"
+                android:textColor="@android:color/darker_gray"
                 />
 
             <Button android:id="@+id/firstMinus"
@@ -247,9 +250,10 @@
             <TextView android:id="@+id/roundMinText"
                 android:layout_weight="1"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="мин."
-                android:textColor="@android:color/tertiary_text_light"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
                 />
 
@@ -275,7 +279,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Условие \nисчезнет \nчерез"
                 android:textSize="20sp"
-                android:textColor="@android:color/tertiary_text_dark"
+                android:textColor="@android:color/darker_gray"
                 />
 
             <Button android:id="@+id/secondMinus"
@@ -311,9 +315,10 @@
             <TextView android:id="@+id/hideSecText"
                 android:layout_weight="1"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="cек."
-                android:textColor="@android:color/tertiary_text_light"
+                android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"
                 />
         </TableRow>
