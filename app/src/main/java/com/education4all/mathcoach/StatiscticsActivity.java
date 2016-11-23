@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -64,16 +65,22 @@ public class StatiscticsActivity extends ActionBarActivity {
             newTour.setTextSize(20);
             newTour.setOnClickListener(tourClick);
 
-            TextView arrow = new TextView((this));
+            Button arrow = new Button((this));
             arrow.setTag(tourNumber);
             arrow.setOnClickListener(tourClick);
-            arrow.setText("〉");
+//            arrow.setText("\u232A");
+            arrow.setText("〉");
+
             arrow.setTextSize(20);
-            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(120,120);
-            layoutParams.gravity= Gravity.CENTER;
+            arrow.setTextColor(Color.WHITE);
+            arrow.setBackgroundColor(Color.TRANSPARENT);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(300,120);
+            layoutParams.gravity= Gravity.FILL;
             arrow.setLayoutParams(layoutParams);
+            arrow.setGravity(Gravity.CENTER_VERTICAL|Gravity.END);
             arrow.setMinimumHeight(40);
             arrow.setMinimumWidth(40);
+
             row.addView(newTour);
             row.addView(arrow);
             justALayout.addView(row);
