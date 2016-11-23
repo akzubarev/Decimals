@@ -40,13 +40,13 @@ public class StatTourActivity extends AppCompatActivity {
             justALayout.setOrientation(LinearLayout.VERTICAL);
             ArrayList<String> deTour = StatisticMaker.loadTour(this, TourNumber).serialize();
 
-            int skip = 0; // костыль
+// КОСТЫЛЬ (на самом деле сейчас в TaskActivity сохраняются лишние дубликаты строк, а здесь из них приходится отбирать нужные) TODO когда-нибудь поправить это
+            int jump = 0; // костыль
             for (int i = 1; i < deTour.size() - 1; ++i) {
                 ArrayList<String> answers = new ArrayList<String>();
                 Task currentTask = new Task(deTour.get(i));
                 ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), answers);
 
-// КОСТЫЛЬ (на самом деле сейчас в TaskActivity сохраняются лишние дубликаты строк, а здесь из них приходится отбирать нужные) TODO когда-нибудь поправить это
                 for (int j = 0; j < TaskDepiction.size(); ++j) {
                     TextView newTask = new TextView(this);
                     TextView userTimeTV = new TextView(this);
@@ -61,13 +61,8 @@ public class StatTourActivity extends AppCompatActivity {
 
                     String testPart = ", i=" + Integer.toString(i) + " of " + Integer.toString(deTour.size())
                             + ", j=" + Integer.toString(j) + " of " + Integer.toString(TaskDepiction.size());
-                    testPart += ", skip=" + skip;
-                    taskAndUserAnswer += testPart; // Вывод данных в тестовом режиме, TODO закомментировать перед релизом
-
-                    if (0 == j && 0 < skip  && !answers.get(j).equals("\u2026")) { //
-                        break;
-//                    output += "_" + answers.get(j);
-                    }
+                    testPart += ", jump=" + jump;
+//                    taskAndUserAnswer += testPart; // Вывод данных в тестовом режиме, TODO закомментировать перед релизом
 
                     newTask.setText(taskAndUserAnswer);
                     newTask.setTextSize(20);
@@ -78,25 +73,33 @@ public class StatTourActivity extends AppCompatActivity {
                             RelativeLayout.LayoutParams.MATCH_PARENT);
                     userTimeTV.setLayoutParams(layoutParams);
 
-                    if (answers.get(j).equals(currentTask.answer)) {
+                    boolean userAnswerIsCorrect = answers.get(j).equals(currentTask.answer);
+                    if (userAnswerIsCorrect) {
                         int clr = Color.parseColor("#1B5E20");
                         newTask.setTextColor(clr);
                         userTimeTV.setTextColor(clr);
-                        i += skip;
-                        skip = 0;
                     }
                     else {
                         newTask.setTextColor(Color.GRAY);
                         userTimeTV.setTextColor(Color.GRAY);
-                        ++skip;
+                    }
+
+                    // костыль
+                    boolean taskWasSkipped = answers.get(j).equals("\u2026");
+                    if (userAnswerIsCorrect || taskWasSkipped) {
+                        i += jump;
+                        jump = 0;
+                    }
+                    else {
+                        ++jump;
+                    }
+                    if (i + jump == deTour.size() - 2) {
+                        i += jump;
                     }
 
                     row.addView(newTask);
                     row.addView(userTimeTV);
                     justALayout.addView(row);
-
-//                    newTask = new TextView(this);
-//                    userTimeTV = new TextView(this);
                 }
 ;//ИСХОДНЫЙ КОД
 //                for (int j = 0; j < TaskDepiction.size(); ++j) {
