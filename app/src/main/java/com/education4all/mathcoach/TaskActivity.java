@@ -150,6 +150,7 @@ public class TaskActivity extends AppCompatActivity {
         if (answer.equals(newTask.answer)) {
             ++currentTour.rightTasks; // увеличиваем счетчик правильных заданий, если ответ правильный
         }
+//        newTask.userAnswer = answer + ":" + (System.currentTimeMillis() - prevTaskTime) / 1000;
         newTask.userAnswer += answer + ":" + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
         prevTaskTime = System.currentTimeMillis();
         newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000; //??? вычисляем время, потраченное пользователем на ПРАВИЛЬНОЕ решение текущего задания
@@ -162,11 +163,10 @@ public class TaskActivity extends AppCompatActivity {
     public void okButtonClick(View view) {
         if (answer.equals("")) return;
         if (answerShown) {
-            answer = "\u2026";
+            answer = "?";
             answerShown = false;
             textViewUpdate();
         }
-
         saveTaskStatistic();
 
         if (answer.equals(newTask.answer)) {
@@ -179,7 +179,11 @@ public class TaskActivity extends AppCompatActivity {
 
     //пропуск задания
     public void skipTask(View view) {
-        answer = "\u2026";
+        if (answerShown) {
+            answer = "?";
+        } else {
+            answer = "\u2026";
+        }
         saveTaskStatistic();
         startNewTask();
     }
@@ -201,10 +205,15 @@ public class TaskActivity extends AppCompatActivity {
         }
     }
 
-    //завершение раунда по окончанию таймера
+    //завершение раунда
     private void endRound() {
 //        saveTaskStatistic(); // Здесь сохранять статистику задания не нужно!
+        if (answerShown) {
+            answer = "?";
+            saveTaskStatistic();
+        }
         StatisticMaker.saveTour(currentTour, context);
+
         new AlertDialog.Builder(TaskActivity.this)
                 .setTitle("Раунд завершён")
                 .setMessage("Решено заданий: " + Integer.toString(currentTour.rightTasks) + " из " + Integer.toString(currentTour.totalTasks) )
@@ -235,7 +244,7 @@ public class TaskActivity extends AppCompatActivity {
 
     //досрочное завершение раунда по нажатию выхода
     public void crossClick(View view) {
-        if (currentTour.totalTasks == 0) {
+        if (currentTour.totalTasks == 0 && !answerShown) {
             finish();
         } else {
             new AlertDialog.Builder(TaskActivity.this)
