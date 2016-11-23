@@ -75,13 +75,14 @@ public class StatTourActivity extends AppCompatActivity {
 
                     boolean userAnswerIsCorrect = answers.get(j).equals(currentTask.answer);
                     if (userAnswerIsCorrect) {
-                        int clr = Color.parseColor("#1B5E20");
+//                        int clr = Color.parseColor("#1B5E20");
+                        int clr = Color.GREEN;
                         newTask.setTextColor(clr);
                         userTimeTV.setTextColor(clr);
                     }
                     else {
-                        newTask.setTextColor(Color.GRAY);
-                        userTimeTV.setTextColor(Color.GRAY);
+                        newTask.setTextColor(Color.LTGRAY);
+                        userTimeTV.setTextColor(Color.LTGRAY);
                     }
 
                     // костыль
