@@ -7,10 +7,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -40,40 +42,63 @@ public class StatTourActivity extends AppCompatActivity {
 
             int skip = 0; // костыль
             for (int i = 1; i < deTour.size() - 1; ++i) {
-                TextView newTask = new TextView(this);
                 ArrayList<String> answers = new ArrayList<String>();
                 Task currentTask = new Task(deTour.get(i));
                 ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), answers);
 
 // КОСТЫЛЬ (на самом деле сейчас в TaskActivity сохраняются лишние дубликаты строк, а здесь из них приходится отбирать нужные) TODO когда-нибудь поправить это
                 for (int j = 0; j < TaskDepiction.size(); ++j) {
+                    TextView newTask = new TextView(this);
+                    TextView userTimeTV = new TextView(this);
+                    LinearLayout row = new LinearLayout(this);
+                    row.setOrientation(LinearLayout.HORIZONTAL);
+
                     String output = TaskDepiction.get(j);
+                    int ind = output.indexOf('(');
+                    String taskAndUserAnswer = output.substring(0, ind - 2);
+                    int end = output.indexOf(')');
+                    String userTime = output.substring(ind + 1, end)  + ".";
+
                     String testPart = ", i=" + Integer.toString(i) + " of " + Integer.toString(deTour.size())
                             + ", j=" + Integer.toString(j) + " of " + Integer.toString(TaskDepiction.size());
                     testPart += ", skip=" + skip;
-//                    output += testPart; // Вывод данных в тестовом режиме, TODO убрать
+                    taskAndUserAnswer += testPart; // Вывод данных в тестовом режиме, TODO закомментировать перед релизом
 
                     if (0 == j && 0 < skip  && !answers.get(j).equals("\u2026")) { //
                         break;
 //                    output += "_" + answers.get(j);
                     }
-                    newTask.setText(output);
+
+                    newTask.setText(taskAndUserAnswer);
+                    newTask.setTextSize(20);
+                    userTimeTV.setText(userTime);
+                    userTimeTV.setGravity(Gravity.END);
+                    userTimeTV.setTextSize(20);
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.MATCH_PARENT);
+                    userTimeTV.setLayoutParams(layoutParams);
 
                     if (answers.get(j).equals(currentTask.answer)) {
-                        newTask.setTextColor(Color.parseColor("#1B5E20"));
+                        int clr = Color.parseColor("#1B5E20");
+                        newTask.setTextColor(clr);
+                        userTimeTV.setTextColor(clr);
                         i += skip;
                         skip = 0;
                     }
                     else {
                         newTask.setTextColor(Color.GRAY);
+                        userTimeTV.setTextColor(Color.GRAY);
                         ++skip;
                     }
-                    newTask.setTextSize(20);
-                    justALayout.addView(newTask);
-                    newTask = new TextView(this);
-                }
 
-//  ИСХОДНЫЙ КОД
+                    row.addView(newTask);
+                    row.addView(userTimeTV);
+                    justALayout.addView(row);
+
+//                    newTask = new TextView(this);
+//                    userTimeTV = new TextView(this);
+                }
+;//ИСХОДНЫЙ КОД
 //                for (int j = 0; j < TaskDepiction.size(); ++j) {
 //                    String output = TaskDepiction.get(j);
 //                    String testPart = ", i=" + Integer.toString(i) + " of " + Integer.toString(deTour.size())
