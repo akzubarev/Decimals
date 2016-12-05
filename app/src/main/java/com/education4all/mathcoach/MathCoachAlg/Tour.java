@@ -19,7 +19,6 @@ public class Tour {
     	totalTasks = 0;
     	rightTasks = 0;
     	tourDateTime = System.currentTimeMillis();
-    	
     }
 
     public static String DepictTour(String line) {
@@ -107,5 +106,4 @@ public class Tour {
 	        tourTasks.add(myTask);
 	    }
 	}
-
 }
