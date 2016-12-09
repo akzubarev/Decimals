@@ -13,7 +13,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/short_app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar.OldMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -57,7 +57,7 @@
 
         <activity
             android:name=".StatiscticsActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/Theme.AppCompat.NoActionBar.OldMenu"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_statisctics"
             android:screenOrientation="portrait">
@@ -68,7 +68,7 @@
 
         <activity
             android:name=".StatTourActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/Theme.AppCompat.NoActionBar.OldMenu"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_stat_tour"
             android:screenOrientation="portrait">

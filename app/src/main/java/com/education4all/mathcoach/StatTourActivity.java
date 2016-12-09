@@ -143,6 +143,8 @@ public class StatTourActivity extends AppCompatActivity {
             case R.id.action_delete_tour:
                 StatisticMaker.removeTour(this, TourNumber);
                 Intent intent = new Intent(this, StatiscticsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 finish();
                 startActivity(intent);
                 // User chose the "Settings" item, show the app settings UI...
