@@ -105,14 +105,18 @@ public class StatiscticsActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete_stats:
+                finish();
                 StatisticMaker.removeStatistics(this);
                 Intent intent = getIntent();
-                finish();
                 startActivity(intent);
-                // User chose the "Settings" item, show the app settings UI...
                 return true;
 
             default:
