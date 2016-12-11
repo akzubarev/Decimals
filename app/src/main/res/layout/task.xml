@@ -41,7 +41,7 @@
     <ProgressBar
         android:layout_width="fill_parent"
         style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_height="15dp"
+        android:layout_height="10dp"
         android:id="@+id/taskProgress"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -63,8 +63,6 @@
                 app:useDefaultMargins="false"
                 >
 
-
-
                 <Button android:text = "DEL"
                     android:includeFontPadding="false"
                     android:textSize="35sp"
@@ -82,7 +80,6 @@
                     android:layout_margin="-8dp"
                     app:layout_rowSpan = "1"
                     app:layout_gravity = "fill"
-                    android:layout_alignParentTop="true"
                     android:gravity="center"
                     app:layout_column="3"
                     app:layout_row="1"
@@ -171,6 +168,7 @@
                     android:layout_margin="-8dp"/>
 
                 <Button android:text = "3"
+                    android:gravity="center"
                     android:includeFontPadding="false"
                     android:textSize="35sp"
                     android:tag="3"
@@ -205,13 +203,11 @@
                     app:layout_row="2"
                     app:layout_rowSpan="1"
                     app:layout_gravity = "fill"
+                    android:gravity="center"
                     android:textSize="35sp"
                     app:layout_column="3"
                     android:onClick="showAnswer"/>
 
-
-
             </android.support.v7.widget.GridLayout>
     </LinearLayout>
-
 </LinearLayout>
