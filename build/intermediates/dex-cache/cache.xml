@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="D:\GIT\MathCoachAndroid\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="907031a6086e7ba6c79b2d0e69de1c26d8281033">
+        <dex dex="D:\GIT\MathCoachAndroid\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_fe9f2adafbe4b575f894c873a8f84aa5f5c59e35\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\GIT\MathCoachAndroid\app\build\intermediates\exploded-aar\com.android.support\gridlayout-v7\22.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="1e47268e271ff279aca3dfdd62587b8c90b6da14">
+        <dex dex="D:\GIT\MathCoachAndroid\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-gridlayout-v7-22.2.1_b41654a109387f1084993ae57f4bcd75408c2672\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\GIT\MathCoachAndroid\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="D:\GIT\MathCoachAndroid\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-22.2.1_dc93f182fad186555e3e7ec5fd6b88aeb8e3718b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\GIT\MathCoachAndroid\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="D:\GIT\MathCoachAndroid\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-22.2.1_f7266e2326221af986da624eb3aa3c55c0b38647\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\AndroidSDK\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="D:\GIT\MathCoachAndroid\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-22.2.1_e6d73b1272d94fb2ab05be57e20d3f695e5f8eb1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\GIT\MathCoachAndroid\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="D:\GIT\MathCoachAndroid\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-22.2.1_bbf9b8adeb294e5abe98a65d283532d95ce9ceaa\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\GIT\MathCoachAndroid\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.3"
+        sha1="9693ab9769443c3fd429356b191ba5fde441f6fa">
+        <dex dex="D:\GIT\MathCoachAndroid\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_cbc34a6ff3a5fe4b3147e23af429491467eaaa81\classes.dex" />
+    </item>
+
+</items>
