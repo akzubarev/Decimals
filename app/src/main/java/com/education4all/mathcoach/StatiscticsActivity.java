@@ -63,7 +63,9 @@ public class StatiscticsActivity extends ActionBarActivity {
             TextView newTour = new TextView(this);
             newTour.setId(tourNumber);
             String tourInfo = StatisticMaker.getTourInfo(this,tourNumber);
-            newTour.setText(Tour.DepictTour(tourInfo));
+            String txt = Tour.DepictTour(tourInfo);
+            boolean isAllTasksRight = (txt.substring(0, 1).equals("_"));
+            newTour.setText(txt.substring(1));
             newTour.setTag(tourNumber);
             newTour.setTextSize(20);
             newTour.setOnClickListener(tourClick);
@@ -74,9 +76,13 @@ public class StatiscticsActivity extends ActionBarActivity {
 //            arrow.setText("\u232A");
             arrow.setText("〉");
             arrow.setTextSize(20);
-            arrow.setTextColor(Color.WHITE);
             arrow.setBackgroundColor(Color.TRANSPARENT);
             arrow.setGravity(Gravity.CENTER_VERTICAL|Gravity.END);
+
+            if (isAllTasksRight) {
+                newTour.setTextColor(Color.GREEN);
+                arrow.setTextColor(Color.GREEN);
+            }
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT);

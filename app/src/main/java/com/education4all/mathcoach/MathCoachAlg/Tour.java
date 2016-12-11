@@ -39,9 +39,11 @@ public class Tour {
         calendar.setTimeInMillis(l_tourDateTime);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM',' HH:mm ");
-		String str = sdf.format(calendar.getTime()) + ". ";
+		String str = (l_rightTasks == l_totalTasks ? "_" : "");
+		str += sdf.format(calendar.getTime()) + ". ";
 		str += ((l_tourTime / 60 == 0) ? "1" : Long.toString(l_tourTime / 60)) + " мин. " + "\n";
 		str += "Решено заданий: " + Integer.toString(l_rightTasks) + " из " + Integer.toString(l_totalTasks);
+		str += " (" + l_rightTasks * 100 / l_totalTasks + "%)";
 		return str;
     }
     
