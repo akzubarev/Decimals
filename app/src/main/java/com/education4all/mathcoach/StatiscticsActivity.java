@@ -64,7 +64,7 @@ public class StatiscticsActivity extends ActionBarActivity {
             newTour.setId(tourNumber);
             String tourInfo = StatisticMaker.getTourInfo(this,tourNumber);
             String txt = Tour.DepictTour(tourInfo);
-            boolean isAllTasksRight = (txt.substring(0, 1).equals("_"));
+            boolean isAllTasksRight = (txt.substring(0, 1).equals("="));
             newTour.setText(txt.substring(1));
             newTour.setTag(tourNumber);
             newTour.setTextSize(20);
