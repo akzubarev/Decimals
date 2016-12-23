@@ -19,7 +19,7 @@
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:gravity="center"
-            android:onClick="lookAnswer"
+            android:onClick="showTask"
             android:clickable="true"
             android:textSize="40sp"/>
 

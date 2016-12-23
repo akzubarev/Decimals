@@ -326,7 +326,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     //просмотр задания, если оно исчезло
-    public void lookAnswer(View view) {
+    public void showTask(View view) {
         showTaskSetTrueAndRestartDisappearTimer();
         textViewUpdate();
     }
