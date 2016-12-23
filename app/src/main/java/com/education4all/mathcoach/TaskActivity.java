@@ -186,8 +186,6 @@ public class TaskActivity extends AppCompatActivity {
         answerShown = false;
         newTask.generate(allowedTasks);
         answer = "";
-//        showTask = true;
-//        restartDisappearTimer(); //Здесь вроде не нужно
         if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis) {
             endRound();
         } else {
@@ -266,7 +264,7 @@ public class TaskActivity extends AppCompatActivity {
         if (showTask) {
             expressionTV.setText(newTask.expression + " = " + answer);
         } else {
-            expressionTV.setText( " = " + answer);
+            expressionTV.setText( "\u2026 = " + answer);
             int x = expressionTV.getLeft();
             int y = expressionTV.getBottom() - expressionTV.getHeight() /3;
             Toast toast = Toast.makeText(this, "Нажмите, чтобы показать задание", Toast.LENGTH_SHORT);
