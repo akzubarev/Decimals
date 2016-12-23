@@ -14,7 +14,18 @@
         android:layout_height="fill_parent">
 
         <TextView
+            android:id = "@+id/pressToShowTaskTV"
+            android:background="@android:color/transparent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center|bottom"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="\Нажмите, чтобы показать задание"
+            />
+
+        <TextView
             android:id = "@+id/expTextView"
+            android:background="@android:color/transparent"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"

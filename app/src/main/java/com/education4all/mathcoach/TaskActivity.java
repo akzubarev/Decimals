@@ -265,11 +265,12 @@ public class TaskActivity extends AppCompatActivity {
             expressionTV.setText(newTask.expression + " = " + answer);
         } else {
             expressionTV.setText( "\u2026 = " + answer);
-            int x = expressionTV.getLeft();
-            int y = expressionTV.getBottom() - expressionTV.getHeight() /3;
-            Toast toast = Toast.makeText(this, "Нажмите, чтобы показать задание", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.TOP, x, y);
-            toast.show();;
+//            pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
+//            int x = expressionTV.getLeft();
+//            int y = expressionTV.getBottom() - expressionTV.getHeight() /3;
+//            Toast toast = Toast.makeText(this, "Нажмите, чтобы показать задание", Toast.LENGTH_SHORT);
+//            toast.setGravity(Gravity.TOP, x, y);
+//            toast.show();;
         }
     }
 
@@ -308,6 +309,8 @@ public class TaskActivity extends AppCompatActivity {
         public void run() {
             showTask = false;
             textViewUpdate();
+            TextView pressToShowTaskTV = (TextView)findViewById(R.id.pressToShowTaskTV);
+            pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
         }
     };
 
@@ -317,6 +320,8 @@ public class TaskActivity extends AppCompatActivity {
     //При перезапуске таймера необходимо показать задание. Это нужно делать перед textViewUpdate.
     private void showTaskSetTrueAndRestartDisappearTimer() {
         showTask = true;
+        TextView pressToShowTaskTV = (TextView)findViewById(R.id.pressToShowTaskTV);
+        pressToShowTaskTV.setText("");
         taskDisapHandler.removeCallbacks(disapTask);
         if (disapTime > -1) {
             taskDisapHandler.postDelayed(disapTask, (long) (disapTime * 1000));
@@ -326,6 +331,8 @@ public class TaskActivity extends AppCompatActivity {
     //просмотр задания, если оно исчезло
     public void showTask(View view) {
         showTaskSetTrueAndRestartDisappearTimer();
+        TextView pressToShowTaskTV = (TextView)findViewById(R.id.pressToShowTaskTV);
+        pressToShowTaskTV.setText("");
         textViewUpdate();
     }
 
