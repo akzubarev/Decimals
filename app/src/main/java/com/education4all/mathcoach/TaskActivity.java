@@ -1,6 +1,5 @@
 package com.education4all.mathcoach;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,19 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import java.lang.Runnable;
-import java.lang.reflect.Field;
 import java.util.Calendar;
 
-import android.preference.DialogPreference;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.ViewDragHelper;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -121,10 +114,7 @@ public class TaskActivity extends AppCompatActivity {
 
             disapTime = DataReader.GetDisapRoundTime(this);
             //roundTimeHandler.postDelayed(endRound, millis);
-            if (disapTime > -1) {
-                taskDisapHandler.postDelayed(disapTask, (long)(disapTime*1000));
-            }
-
+            showTaskSetTrueAndRestartDisappearTimer();
             newTask.generate(allowedTasks);
             textViewUpdate();
         }
@@ -161,6 +151,7 @@ public class TaskActivity extends AppCompatActivity {
 
     //нажатие на кнопку "ОК", проверяем правильность ответа и заносим в статистику
     public void okButtonClick(View view) {
+        showTaskSetTrueAndRestartDisappearTimer();
         if (answer.equals("")) return;
         if (answerShown) {
             answer = "?";
@@ -179,6 +170,7 @@ public class TaskActivity extends AppCompatActivity {
 
     //пропуск задания
     public void skipTask(View view) {
+        showTaskSetTrueAndRestartDisappearTimer();
         if (answerShown) {
             answer = "?";
         } else {
@@ -192,12 +184,10 @@ public class TaskActivity extends AppCompatActivity {
     private void startNewTask() {
         newTask = new Task();
         answerShown = false;
-        showTask = true;
         newTask.generate(allowedTasks);
         answer = "";
-        if (disapTime > -1) {
-            taskDisapHandler.postDelayed(disapTask, (long) (disapTime * 1000));
-        }
+//        showTask = true;
+//        restartDisappearTimer(); //Здесь вроде не нужно
         if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis) {
             endRound();
         } else {
@@ -323,12 +313,21 @@ public class TaskActivity extends AppCompatActivity {
         }
     };
 
-    //просмотр ответа, если он исчез
-    public void lookAnswer(View view) {
+    //Таймер перезапускается в 4-х случаях:
+    //1) При первичной инициализации, 2) при нажатии на ОК, 3) при нажатии на пропуск задания, 4) при нажатии на showTask.
+    //Не перезапускается при цифровых кнопках, DEL, показывании ответа
+    //При перезапуске таймера необходимо показать задание. Это нужно делать перед textViewUpdate.
+    private void showTaskSetTrueAndRestartDisappearTimer() {
         showTask = true;
+        taskDisapHandler.removeCallbacks(disapTask);
         if (disapTime > -1) {
             taskDisapHandler.postDelayed(disapTask, (long) (disapTime * 1000));
         }
+    }
+
+    //просмотр задания, если оно исчезло
+    public void lookAnswer(View view) {
+        showTaskSetTrueAndRestartDisappearTimer();
         textViewUpdate();
     }
 
