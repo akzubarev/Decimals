@@ -6,7 +6,7 @@
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://C:/AndroidSDK/extras/android/m2repository/com/android/support/gridlayout-v7/22.2.1/gridlayout-v7-22.2.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../Sdk/extras/android/m2repository/com/android/support/gridlayout-v7/22.2.1/gridlayout-v7-22.2.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
