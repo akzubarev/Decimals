@@ -1,5 +1,8 @@
 package MathCoachAlg;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -202,30 +205,109 @@ public class Task {
 		complexity = complexityRandomizer(allowedTasks);;
 		switch (complexity) {
 			case 0:
-				n = rnd.nextInt(9 + 1);
-				m = rnd.nextInt(9 + 1);
+				n = rnd.nextInt(9 + 1); //От 0 до 9
+				m = rnd.nextInt(9 + 1); //От 0 до 9
 				break;
 			case 1:
-				n = rnd.nextInt(99 - 10 + 1) + 10;
-				//m = rnd.nextInt(99 - 10 + 1) + 10;
-				m = rnd.nextInt(99 + 1) ;
+				n = rnd.nextInt(99 - 10 + 1) + 10; //От 10 до 99
+				m = rnd.nextInt(99 + 1) ; //От 0 до 99
 				break;
 			case 2:
-				n = rnd.nextInt(999 - 100 + 1) + 100;
-				//m = rnd.nextInt(999 - 100 + 1) + 100;
+				n = rnd.nextInt(999 - 100 + 1) + 100; //От 100 до 999
 				m = rnd.nextInt(999 + 1) ;
 				break;
 			case 3:
-				n = rnd.nextInt(9999 - 1000 + 1) + 1000;
-				//m = rnd.nextInt(9999 - 1000 + 1) + 1000;
-				m = rnd.nextInt(9999  + 1);
+				n = rnd.nextInt(9999 - 1000 + 1) + 1000; //От 1000 до 9999
+				m = rnd.nextInt(9999  + 1); //От 0 до 9999
 				break;
 			default:
 				////DatasaveErrorLog("No valid complexity for addition, yet called");
 				break;
 		}
+		if (rnd.nextInt(1) == 0)
+		{
+			int k = n;
+			n = m;
+			m = k;
+		}
 		expression = Integer.toString(n) + operations[0] + Integer.toString(m);
 		answer = Integer.toString(n + m);
+	}
+
+	// -
+	private void substraction(final int[][] allowedTasks) {
+		int m = 0;
+		int n = 0;
+		complexity = complexityRandomizer(allowedTasks);;
+		switch (complexity) {
+			case 0:
+				n = rnd.nextInt(9 + 1); //От 0 до 9
+				m = rnd.nextInt(9 + 1); //От 0 до 9
+				break;
+			case 1:
+				n = rnd.nextInt(99 - 10 + 1) + 10; //От 10 до 99
+				m = rnd.nextInt(99 + 1) ; //От 0 до 99
+				break;
+			case 2:
+				n = rnd.nextInt(999 - 100 + 1) + 100; //От 100 до 999
+				m = rnd.nextInt(999 + 1) ;
+				break;
+			case 3:
+				n = rnd.nextInt(9999 - 1000 + 1) + 1000; //От 1000 до 9999
+				m = rnd.nextInt(9999  + 1); //От 0 до 9999
+				break;
+			default:
+				////DatasaveErrorLog("No valid complexity for addition, yet called");
+				break;
+		}
+		if (rnd.nextInt(1) == 0)
+		{
+			int k = n;
+			n = m;
+			m = k;
+		}
+		expression = Integer.toString(m + n) + operations[1] + Integer.toString(m);
+		answer = Integer.toString(n);
+	}
+
+	// *
+	private void multiplication(final int[][] allowedTasks) {
+		int n = 0;
+		int m = 0;
+		complexity = complexityRandomizer(allowedTasks);;
+		switch (complexity) {
+			case 0:
+				n = rnd.nextInt(8) + 2;
+				m = rnd.nextInt(8) + 2;
+				break;
+			case 1:
+				n = rnd.nextInt(8) + 2;
+				m = rnd.nextInt(90) + 10;
+				if (rnd.nextInt(2) == 1) {
+					int k = n;
+					n = m;
+					m = k;
+				}
+				break;
+			case 2:
+				n = rnd.nextInt(8) + 2;
+				m = rnd.nextInt(900) + 100;
+				if (rnd.nextInt(2) == 1) {
+					int k = n;
+					n = m;
+					m = k;
+				}
+				break;
+			case 3:
+				n = rnd.nextInt(90) + 10;
+				m = rnd.nextInt(90) + 10;
+				break;
+			default:
+				//DatasaveErrorLog("No valid complexity for multiplication, yet called");
+				break;
+		}
+		expression = Integer.toString(n) + operations[2] + Integer.toString(m);
+		answer = Integer.toString(n * m);
 	}
 
 	// :
@@ -281,78 +363,5 @@ public class Task {
 		}
 		expression = Integer.toString(k*l) + operations[3] + Integer.toString(k);
 		answer = Integer.toString(l);
-	}
-
-	// -
-	private void substraction(final int[][] allowedTasks) {
-		int m = 0;
-		int n = 0;
-		complexity = complexityRandomizer(allowedTasks);;
-		switch (complexity) {
-			case 0:
-				n = rnd.nextInt(10);
-				m = rnd.nextInt(19 - n) + (n);
-				break;
-			case 1:
-				//n = rnd.nextInt(80) + 9;
-				n = rnd.nextInt(89);
-				m = rnd.nextInt(89 - n) + n;
-				break;
-			case 2:
-				//n = rnd.nextInt(800) + 99;
-				n = rnd.nextInt(899);
-				m = rnd.nextInt(899 - n) + n;
-				break;
-			case 3:
-				//n = rnd.nextInt(8000) + 999;
-				n = rnd.nextInt(8999);
-				m = rnd.nextInt(8999 - n) + n;
-				break;
-			default:
-				//DatasaveErrorLog("No valid complexity for substraction, yet called");
-				break;
-		}
-		expression = Integer.toString(m) + operations[1] + Integer.toString(n);
-		answer = Integer.toString(m - n);
-	}
-
-	// *
-	private void multiplication(final int[][] allowedTasks) {
-		int n = 0;
-		int m = 0;
-		complexity = complexityRandomizer(allowedTasks);;
-		switch (complexity) {
-			case 0:
-				n = rnd.nextInt(8) + 2;
-				m = rnd.nextInt(8) + 2;
-				break;
-			case 1:
-				n = rnd.nextInt(8) + 2;
-				m = rnd.nextInt(90) + 10;
-				if (rnd.nextInt(2) == 1) {
-					int k = n;
-					n = m;
-					m = k;
-				}
-				break;
-			case 2:
-				n = rnd.nextInt(8) + 2;
-				m = rnd.nextInt(900) + 100;
-				if (rnd.nextInt(2) == 1) {
-					int k = n;
-					n = m;
-					m = k;
-				}
-				break;
-			case 3:
-				n = rnd.nextInt(90) + 10;
-				m = rnd.nextInt(90) + 10;
-				break;
-			default:
-				//DatasaveErrorLog("No valid complexity for multiplication, yet called");
-				break;
-		}
-		expression = Integer.toString(n) + operations[2] + Integer.toString(m);
-		answer = Integer.toString(n * m);
 	}
 }
