@@ -5,8 +5,9 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.Menu;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.jar.Attributes;
 
 
-public class ComplexityActivity extends ActionBarActivity {
+public class ComplexityActivity extends AppCompatActivity {
     private int actionType;
     public static final String COMPLEXITY_SETTINGS = "ComplexitySettings";
     public static final String ADD = "\u2006+\u2006";

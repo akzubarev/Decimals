@@ -4,28 +4,32 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+
 import java.lang.Runnable;
 import java.util.Calendar;
 
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
+import androidx.gridlayout.widget.GridLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.education4all.mathcoach.MathCoachAlg.DataReader;
 import com.education4all.mathcoach.MathCoachAlg.StatisticMaker;
 
-import MathCoachAlg.Task;
-import MathCoachAlg.Tour;
+
+import com.education4all.mathcoach.MathCoachAlg.Tour;
+import com.education4all.mathcoach.MathCoachAlg.Task;
 
 
 public class TaskActivity extends AppCompatActivity {
@@ -39,7 +43,7 @@ public class TaskActivity extends AppCompatActivity {
     private ProgressBar G_progressBar; // прогресс бар
     private int progressStatus = 0; //позиция прогресс бара
     private Context context = this; // переменная контекста, нужна чтобы передавть её в другие классы
-    private boolean answerShown = false; // показан и ответ
+    private boolean answerShown = false; // показан ли ответ
     private boolean showTask = true; // показано ли задание
     private float disapTime; // время изсчезновения задания
     private int[][] allowedTasks; // массив разрешённых заданий
@@ -57,14 +61,17 @@ public class TaskActivity extends AppCompatActivity {
         setContentView(R.layout.task);
 
         //заполняем GridLayout
-        android.support.v7.widget.GridLayout gl = (android.support.v7.widget.GridLayout)findViewById(R.id.buttonsLayout);
+        GridLayout gl = (GridLayout) findViewById(R.id.buttonsLayout);
         ViewTreeObserver vto = gl.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {@Override public void onGlobalLayout() {
-        android.support.v7.widget.GridLayout gl = (android.support.v7.widget.GridLayout) findViewById(R.id.buttonsLayout);
-        fillView(gl);
-            ViewTreeObserver obs = gl.getViewTreeObserver();
-            obs.removeGlobalOnLayoutListener(this);
-        }});
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                GridLayout gl = (GridLayout) findViewById(R.id.buttonsLayout);
+                fillView(gl);
+                ViewTreeObserver obs = gl.getViewTreeObserver();
+                obs.removeGlobalOnLayoutListener(this);
+            }
+        });
 
         //обнуляем переменные и инициализируем элементы layout
         Intent intent = getIntent();
@@ -90,9 +97,9 @@ public class TaskActivity extends AppCompatActivity {
             currentTour.rightTasks = 0;
             answer = new String();
 
-            G_progressBar = (ProgressBar)findViewById(R.id.taskProgress);
+            G_progressBar = (ProgressBar) findViewById(R.id.taskProgress);
             RoundTime = DataReader.GetRoundTime(this);
-            millis =(long)(RoundTime * 1000 * 60);
+            millis = (long) (RoundTime * 1000 * 60);
             final Context l_context = this;
             new Thread(new Runnable() {
                 public void run() {
@@ -104,7 +111,7 @@ public class TaskActivity extends AppCompatActivity {
                             }
                         });
                         try {
-                            Thread.sleep((long)(RoundTime * 600));
+                            Thread.sleep((long) (RoundTime * 600));
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -118,20 +125,70 @@ public class TaskActivity extends AppCompatActivity {
             newTask.generate(allowedTasks);
             textViewUpdate();
         }
+        findViewById(R.id.But_del).setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                answer="";
+                textViewUpdate();
+                return true;
+            }
+        }); ;
     }
 
     //делаем все кнопки одинакового размера внутри GridLayout
-    public void fillView(android.support.v7.widget.GridLayout parent) {
-        Button child;
-        for (int i = 0;  i < parent.getChildCount(); i++) {
-            child = (Button)parent.getChildAt(i);
-            android.support.v7.widget.GridLayout.LayoutParams params = (android.support.v7.widget.GridLayout.LayoutParams) child.getLayoutParams();
+    public void fillView(GridLayout parent) {
+        //Button child;
+        View child;
+        parent.setBackgroundColor(Color.DKGRAY);
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            // child = (Button)parent.getChildAt(i);
+            child = parent.getChildAt(i);
+            GridLayout.LayoutParams params = (GridLayout.LayoutParams) child.getLayoutParams();
             int margin = -8;
             params.setMargins(margin, margin, margin, margin);
+
+//            if (child.getClass() == FrameLayout.class) {
+//                Button grandson = (Button) ((FrameLayout) child).getChildAt(0);
+//                FrameLayout.LayoutParams gsparams = (FrameLayout.LayoutParams) grandson.getLayoutParams();
+//                gsparams.width = (parent.getWidth() / parent.getColumnCount()) - params.rightMargin - params.leftMargin;
+//                gsparams.height = (parent.getHeight() / parent.getRowCount()) - params.bottomMargin - params.topMargin;
+//                grandson.setBackgroundColor(Color.DKGRAY);
+//                grandson.setLayoutParams(gsparams);
+//            } else {
             params.width = (parent.getWidth() / parent.getColumnCount()) - params.rightMargin - params.leftMargin;
             params.height = (parent.getHeight() / parent.getRowCount()) - params.bottomMargin - params.topMargin;
+            child.setBackgroundColor(Color.DKGRAY);
+            //}
             child.setLayoutParams(params);
-            child.setBackgroundColor(parent.getDrawingCacheBackgroundColor());
+            //child.setBackgroundColor(parent.getDrawingCacheBackgroundColor());
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentTour.totalTasks == 0 && !answerShown) {
+            finish();
+        } else {
+            new AlertDialog.Builder(TaskActivity.this)
+                    .setTitle("Досрочное завершение раунда")
+                    .setMessage("Сохранить результаты?")
+                    .setNeutralButton("Отмена", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+//                        saveTaskStatistic(); //Текущее задание не записываем!
+//                            StatisticMaker.saveTour(currentTour, context); // Результаты тура тут сохранять не нужно, они сохранятся при завершении раунда.
+                            endRound();
+                        }
+                    })
+                    .show();
         }
     }
 
@@ -141,7 +198,7 @@ public class TaskActivity extends AppCompatActivity {
             ++currentTour.rightTasks; // увеличиваем счетчик правильных заданий, если ответ правильный
         }
 //        newTask.userAnswer = answer + ":" + (System.currentTimeMillis() - prevTaskTime) / 1000;
-        newTask.userAnswer += answer + ":" + (System.currentTimeMillis() - prevTaskTime) / 1000 + ',';
+        newTask.userAnswer += answer + ":" + (System.currentTimeMillis() - prevTaskTime) / 1000 + '|';
         prevTaskTime = System.currentTimeMillis();
         newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000; //??? вычисляем время, потраченное пользователем на ПРАВИЛЬНОЕ решение текущего задания
         currentTour.tourTasks.add(newTask); //сохраняем информацию о текущем задании
@@ -204,7 +261,7 @@ public class TaskActivity extends AppCompatActivity {
 
         new AlertDialog.Builder(TaskActivity.this)
                 .setTitle("Раунд завершён")
-                .setMessage("Решено заданий: " + Integer.toString(currentTour.rightTasks) + " из " + Integer.toString(currentTour.totalTasks) )
+                .setMessage("Решено заданий: " + Integer.toString(currentTour.rightTasks) + " из " + Integer.toString(currentTour.totalTasks))
                 .setCancelable(false)
                 .setNeutralButton("Ещё раунд", new DialogInterface.OnClickListener() {
                     @Override
@@ -213,12 +270,12 @@ public class TaskActivity extends AppCompatActivity {
                         startActivity(getIntent());
                     }
                 })
-                .setNegativeButton("Результат",  new DialogInterface.OnClickListener() {
+                .setNegativeButton("Подробнее", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                         int tourCount = StatisticMaker.getTourCount(context);
                         Intent i = new Intent(context, StatTourActivity.class);
-                        i.putExtra("Tour", (Integer)(tourCount - 1));
+                        i.putExtra("Tour", (Integer) (tourCount - 1));
                         startActivity(i);
                     }
                 })
@@ -260,11 +317,11 @@ public class TaskActivity extends AppCompatActivity {
 
     //обновляем поля вывода выражения
     private void textViewUpdate() {
-        TextView expressionTV = (TextView)findViewById(R.id.expTextView);
+        TextView expressionTV = (TextView) findViewById(R.id.expTextView);
         if (showTask) {
             expressionTV.setText(newTask.expression + " = " + answer);
         } else {
-            expressionTV.setText( "\u2026 = " + answer);
+            expressionTV.setText("\u2026 = " + answer);
 //            pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
 //            int x = expressionTV.getLeft();
 //            int y = expressionTV.getBottom() - expressionTV.getHeight() /3;
@@ -279,11 +336,12 @@ public class TaskActivity extends AppCompatActivity {
         if (answerShown && answer.length() > 0) {
             return;
         }
-        if (answer.equals("0")) {
+        String symbol = view.getTag().toString();
+        if (answer.equals("0") && !symbol.equals(",")) {
             answer = "";
             textViewUpdate();
         }
-        answer = answer + view.getTag();
+        answer = answer + symbol;
         textViewUpdate();
     }
 
@@ -309,7 +367,7 @@ public class TaskActivity extends AppCompatActivity {
         public void run() {
             showTask = false;
             textViewUpdate();
-            TextView pressToShowTaskTV = (TextView)findViewById(R.id.pressToShowTaskTV);
+            TextView pressToShowTaskTV = (TextView) findViewById(R.id.pressToShowTaskTV);
             pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
         }
     };
@@ -320,7 +378,7 @@ public class TaskActivity extends AppCompatActivity {
     //При перезапуске таймера необходимо показать задание. Это нужно делать перед textViewUpdate.
     private void showTaskSetTrueAndRestartDisappearTimer() {
         showTask = true;
-        TextView pressToShowTaskTV = (TextView)findViewById(R.id.pressToShowTaskTV);
+        TextView pressToShowTaskTV = (TextView) findViewById(R.id.pressToShowTaskTV);
         pressToShowTaskTV.setText("");
         taskDisapHandler.removeCallbacks(disapTask);
         if (disapTime > -1) {
@@ -331,14 +389,14 @@ public class TaskActivity extends AppCompatActivity {
     //просмотр задания, если оно исчезло
     public void showTask(View view) {
         showTaskSetTrueAndRestartDisappearTimer();
-        TextView pressToShowTaskTV = (TextView)findViewById(R.id.pressToShowTaskTV);
+        TextView pressToShowTaskTV = (TextView) findViewById(R.id.pressToShowTaskTV);
         pressToShowTaskTV.setText("");
         textViewUpdate();
     }
 
     //при выходе из активности необходимо остановить все таймеры
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
         taskDisapHandler.removeCallbacks(disapTask);
         super.onDestroy();
     }

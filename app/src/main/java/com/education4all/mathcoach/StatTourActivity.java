@@ -1,12 +1,13 @@
 package com.education4all.mathcoach;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +20,7 @@ import android.widget.TextView;
 import com.education4all.mathcoach.MathCoachAlg.StatisticMaker;
 
 import java.util.ArrayList;
-import MathCoachAlg.Task;
+import com.education4all.mathcoach.MathCoachAlg.Task;
 
 
 public class StatTourActivity extends AppCompatActivity {
@@ -137,17 +138,40 @@ public class StatTourActivity extends AppCompatActivity {
         return true;
     }
 
+    private void deleteTour()
+    {
+
+        StatisticMaker.removeTour(this, TourNumber);
+        Intent intent = new Intent(this, StatiscticsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        finish();
+        startActivity(intent);
+        // User chose the "Settings" item, show the app settings UI...
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete_tour:
-                StatisticMaker.removeTour(this, TourNumber);
-                Intent intent = new Intent(this, StatiscticsActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                finish();
-                startActivity(intent);
-                // User chose the "Settings" item, show the app settings UI...
+
+                new AlertDialog.Builder(StatTourActivity.this)
+                        .setTitle("Удаление результатов")
+                        .setMessage("Вы уверены? Это действие нельзя будет отменить.")
+
+                        .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+//                        saveTaskStatistic(); //Текущее задание не записываем!
+//                            StatisticMaker.saveTour(currentTour, context); // Результаты тура тут сохранять не нужно, они сохранятся при завершении раунда.
+                                deleteTour();
+                            }
+                        })
+                        .show();
                 return true;
 
             default:

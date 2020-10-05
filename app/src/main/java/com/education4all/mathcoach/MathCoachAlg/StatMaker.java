@@ -1,4 +1,4 @@
-package MathCoachAlg;
+package com.education4all.mathcoach.MathCoachAlg;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,17 +8,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import  com.education4all.mathcoach.MathCoachAlg.Tour;
+
 public class StatMaker {
-	public ArrayList<MathCoachAlg.Tour> tours;
+	public ArrayList<Tour> tours;
 	public String statsPath = "./stats.stf"; //
 	
 	public StatMaker() {
-		tours = new ArrayList<MathCoachAlg.Tour>();
+		tours = new ArrayList<Tour>();
 		
 	}
 	
 	
-	public void saveStats(MathCoachAlg.Tour myTour) throws IOException {
+	public void saveStats(Tour myTour) throws IOException {
 		File statsFile = new File(statsPath);
 		if (!statsFile.exists()) {
 			statsFile.createNewFile();

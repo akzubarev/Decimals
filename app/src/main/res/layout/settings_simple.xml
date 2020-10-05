@@ -1,49 +1,70 @@
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.education4all.mathcoach.SettingsSimpleActivity"
-    android:weightSum="1"
-    android:stretchColumns="*"
-    >
+    android:orientation="vertical"
+    tools:context="com.education4all.mathcoach.SettingsSimpleActivity">
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="com.education4all.mathcoach.SettingsSimpleActivity"
+        android:weightSum="1"
+        android:stretchColumns="*"
+        >
+
+
+        <TextView
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Выберите вид заданий\n и уровень сложности:"
+            android:textSize="20sp"
+            android:textColor="@android:color/darker_gray"
+            />
+
 
         <TableRow>
 
             <TextView
                 android:layout_gravity="center_vertical|start"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:text="Сложение"
                 android:textSize="20sp"
                 android:textColor="@android:color/darker_gray"
                 />
 
             <CheckBox android:id="@+id/checkBoxAdd1"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:layout_gravity="center"
                 android:tag="1"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxAdd2"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:layout_gravity="center"
                 android:tag="1"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxAdd3"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:layout_gravity="center"
                 android:tag="1"
                 android:onClick="onCheckBoxClick"
                 />
 
-            <CheckBox android:id="@+id/checkBoxAdd4"
-                android:gravity="center_vertical|left"
+            <CheckBox
+                android:id="@+id/checkBoxAdd4"
+                android:gravity="center_vertical|start"
                 android:layout_gravity="center"
                 android:tag="1"
                 android:onClick="onCheckBoxClick"
@@ -52,9 +73,9 @@
             <Button android:id="@+id/buttonAdd"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center"
-                android:text="〉"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"
+                android:text=">"
+                android:textSize="30sp"
+                android:textColor="@android:color/darker_gray"
                 android:background="@android:color/transparent"
                 android:tag="1"
                 android:onClick="startCompl"
@@ -66,7 +87,7 @@
 
             <TextView
                 android:layout_gravity="center_vertical|start"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:text="Вычитание"
                 android:textSize="20sp"
                 android:textColor="@android:color/darker_gray"
@@ -74,28 +95,28 @@
 
             <CheckBox android:id="@+id/checkBoxSub1"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="2"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxSub2"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="2"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxSub3"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="2"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxSub4"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="2"
                 android:onClick="onCheckBoxClick"
                 />
@@ -103,9 +124,9 @@
             <Button android:id="@+id/buttonSub"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center"
-                android:text="〉"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"
+                android:text=">"
+                android:textSize="30sp"
+                android:textColor="@android:color/darker_gray"
                 android:background="@android:color/transparent"
                 android:tag="2"
                 android:onClick="startCompl"
@@ -117,7 +138,7 @@
 
             <TextView
                 android:layout_gravity="center_vertical|start"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:text="Умножение"
                 android:textSize="20sp"
                 android:textColor="@android:color/darker_gray"
@@ -125,28 +146,28 @@
 
             <CheckBox android:id="@+id/checkBoxMul1"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="3"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxMul2"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="3"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxMul3"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="3"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxMul4"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="3"
                 android:onClick="onCheckBoxClick"
                 />
@@ -154,9 +175,9 @@
             <Button android:id="@+id/buttonMul"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center"
-                android:text="〉"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"
+                android:text=">"
+                android:textSize="30sp"
+                android:textColor="@android:color/darker_gray"
                 android:background="@android:color/transparent"
                 android:tag="3"
                 android:onClick="startCompl"
@@ -168,7 +189,7 @@
 
             <TextView
                 android:layout_gravity="center_vertical|start"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:text="Деление"
                 android:textSize="20sp"
                 android:textColor="@android:color/darker_gray"
@@ -176,28 +197,28 @@
 
             <CheckBox android:id="@+id/checkBoxDiv1"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="4"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxDiv2"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="4"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxDiv3"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="4"
                 android:onClick="onCheckBoxClick"
                 />
 
             <CheckBox android:id="@+id/checkBoxDiv4"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|left"
+                android:gravity="center_vertical|start"
                 android:tag="4"
                 android:onClick="onCheckBoxClick"
                 />
@@ -205,9 +226,9 @@
             <Button android:id="@+id/buttonDiv"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center"
-                android:text="〉"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"
+                android:text=">"
+                android:textSize="30sp"
+                android:textColor="@android:color/darker_gray"
                 android:background="@android:color/transparent"
                 android:tag="4"
                 android:onClick="startCompl"
@@ -228,20 +249,33 @@
                 />
 
         </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="com.education4all.mathcoach.SettingsSimpleActivity"
+        android:weightSum="1"
+        android:stretchColumns="*"
+        >
 
         <TableRow>
 
-            <TextView android:id="@+id/textView"
+            <TextView
+                android:id="@+id/textView"
                 android:layout_gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Длина \nраунда"
-                android:textSize="20sp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/darker_gray"
-                />
+                android:textSize="20sp" />
 
             <Button android:id="@+id/firstMinus"
                 android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="4dp"
                 android:text="−"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"
@@ -249,7 +283,7 @@
                 />
 
             <EditText android:id="@+id/editText"
-                android:layout_width="0dp"
+                android:layout_width="4dp"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:inputType="numberDecimal"
@@ -260,7 +294,7 @@
 
             <Button android:id="@+id/firstPlus"
                 android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="4dp"
                 android:text="+"
                 android:textSize="20sp"
                 android:textColor="@android:color/black"
@@ -304,7 +338,7 @@
 
             <Button android:id="@+id/secondMinus"
                 android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="4dp"
                 android:layout_gravity="center"
                 android:text="−"
                 android:textSize="20sp"
@@ -313,7 +347,7 @@
                 />
 
             <EditText android:id="@+id/editText2"
-                android:layout_width="0dp"
+                android:layout_width="4dp"
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:inputType="numberSigned"
@@ -324,7 +358,7 @@
 
             <Button android:id="@+id/secondPlus"
                 android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="4dp"
                 android:layout_gravity="center"
                 android:text="+"
                 android:textSize="20sp"
@@ -343,5 +377,5 @@
                 />
         </TableRow>
 
-
-</TableLayout>
+    </TableLayout>
+</LinearLayout>

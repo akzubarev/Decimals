@@ -1,19 +1,24 @@
 package com.education4all.mathcoach;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+
+import androidx.appcompat.app.ActionBar;
+
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -21,16 +26,16 @@ import android.widget.TextView;
 
 import com.education4all.mathcoach.MathCoachAlg.StatisticMaker;
 
-import MathCoachAlg.Tour;
+import com.education4all.mathcoach.MathCoachAlg.Tour;
 
-public class StatiscticsActivity extends ActionBarActivity {
+public class StatiscticsActivity extends AppCompatActivity {
     private Context l_context = this;
 
     View.OnClickListener tourClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Intent i = new Intent(l_context, StatTourActivity.class);
-            i.putExtra("Tour", (Integer)(v.getTag()));
+            i.putExtra("Tour", (Integer) (v.getTag()));
             startActivity(i);
         }
     };
@@ -45,14 +50,14 @@ public class StatiscticsActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         int tourCount = StatisticMaker.getTourCount(this);
-        ScrollView Tours = (ScrollView)findViewById(R.id.scrollView);
+        ScrollView Tours = (ScrollView) findViewById(R.id.scrollView);
         LinearLayout justALayout = new LinearLayout(this);
         justALayout.setOrientation(LinearLayout.VERTICAL);
 
         View bar = new View(this);
         bar.setVisibility(View.VISIBLE);
         bar.setMinimumHeight(1);
-        bar.setPadding(50,0,50,0);
+        bar.setPadding(50, 0, 50, 0);
         bar.setBackgroundColor(Color.DKGRAY);
         justALayout.addView(bar);
         Tours.addView(justALayout);
@@ -62,7 +67,7 @@ public class StatiscticsActivity extends ActionBarActivity {
 
             TextView newTour = new TextView(this);
             newTour.setId(tourNumber);
-            String tourInfo = StatisticMaker.getTourInfo(this,tourNumber);
+            String tourInfo = StatisticMaker.getTourInfo(this, tourNumber);
             String txt = Tour.DepictTour(tourInfo);
             boolean isAllTasksRight = (txt.substring(0, 1).equals("="));
             newTour.setText(txt.substring(1));
@@ -74,10 +79,11 @@ public class StatiscticsActivity extends ActionBarActivity {
             arrow.setTag(tourNumber);
             arrow.setOnClickListener(tourClick);
 //            arrow.setText("\u232A");
-            arrow.setText("〉");
-            arrow.setTextSize(20);
+            arrow.setText(">");
+            arrow.setTextSize(30);
+            arrow.setTextColor(Color.GRAY);
             arrow.setBackgroundColor(Color.TRANSPARENT);
-            arrow.setGravity(Gravity.CENTER_VERTICAL|Gravity.END);
+            arrow.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
 
             if (isAllTasksRight) {
                 newTour.setTextColor(Color.GREEN);
@@ -97,7 +103,7 @@ public class StatiscticsActivity extends ActionBarActivity {
             bar = new View(this);
             bar.setVisibility(View.VISIBLE);
             bar.setMinimumHeight(1);
-            bar.setPadding(50,0,50,0);
+            bar.setPadding(50, 0, 50, 0);
             bar.setBackgroundColor(Color.DKGRAY);
             justALayout.addView(bar);
         }
@@ -115,14 +121,35 @@ public class StatiscticsActivity extends ActionBarActivity {
         finish();
     }
 
+
+    public void DeleteStatistics() {
+
+        finish();
+        StatisticMaker.removeStatistics(this);
+        Intent intent = getIntent();
+        startActivity(intent);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete_stats:
-                finish();
-                StatisticMaker.removeStatistics(this);
-                Intent intent = getIntent();
-                startActivity(intent);
+                new AlertDialog.Builder(StatiscticsActivity.this)
+                        .setTitle("Удаление результатов")
+                        .setMessage("Вы уверены? Это действие нельзя будет отменить.")
+
+                        .setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                DeleteStatistics();
+                            }
+                        })
+                        .show();
+
                 return true;
 
             default:

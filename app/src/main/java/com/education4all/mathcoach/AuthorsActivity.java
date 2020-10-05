@@ -1,8 +1,8 @@
 package com.education4all.mathcoach;
 
 import android.os.Bundle;
-import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class AuthorsActivity extends AppCompatActivity {
 

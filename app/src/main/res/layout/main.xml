@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -25,9 +25,9 @@
             android:textSize="@dimen/main_window_text_size"
             android:layout_gravity="center"
             />
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
-    <android.support.v7.widget.LinearLayoutCompat
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/main_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,6 +41,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:text="@string/stats_button"
+
             android:textAllCaps="false"
             android:id="@+id/stat_button"
             android:layout_weight="0.33"
@@ -68,5 +69,5 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="0.33"
             android:onClick="startTasks"/>
-    </android.support.v7.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>

@@ -1,10 +1,9 @@
-package MathCoachAlg;
-
+package com.education4all.mathcoach.MathCoachAlg;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import MathCoachAlg.Task;
+import com.education4all.mathcoach.MathCoachAlg.Task;
 
 public class Tour {
 	public  ArrayList<Task> tourTasks;

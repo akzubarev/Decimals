@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 import java.util.ArrayList;
 
-import MathCoachAlg.Tour;
-
 /**
  * Created by Александр on 03.05.2015.b
  */
