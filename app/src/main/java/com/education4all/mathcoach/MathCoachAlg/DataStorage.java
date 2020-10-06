@@ -15,6 +15,7 @@ public class DataStorage {
 	public int[][] allowedTasks;
 	public double tourTime;
 	public double disapTime;
+	public boolean timervisible;
 	
 	public DataStorage() {
 		allowedTasks = new int[][]{{0},{0},{0},{0}};
@@ -30,6 +31,8 @@ public class DataStorage {
 			tourTime = Double.parseDouble(line);
 			line = fileReader.readLine();
 			disapTime = Double.parseDouble(line);
+			line = fileReader.readLine();
+			timervisible = Boolean.parseBoolean(line);
 			ArrayList<int[]> buf = new ArrayList<int[]>();
 			for (line = fileReader.readLine(); line != null; line = fileReader.readLine()) {
 				buf.add(LineToArr(line));
@@ -48,6 +51,7 @@ public class DataStorage {
 
 			disapTime = -1;
 			tourTime = 1*60;
+			timervisible=true;
 			saveSettings();
 		}
 	}
@@ -63,6 +67,8 @@ public class DataStorage {
  		String line = Double.toString(tourTime);
  		pw.println(line);
  		line = Double.toString(disapTime);
+ 		pw.println(line);
+ 		line = Boolean.toString(timervisible);
  		pw.println(line);
 	    for (int i = 0; i < allowedTasks.length; ++i) {        
 	    	line = "";

@@ -199,28 +199,33 @@ public class Task {
         }
     }
 
-    int generateRandomInclusive(int left, int right) {
-        return rnd.nextInt(right - left + 1) + left;
+    int randomInclusive(int left, int right, boolean nozeroes) {
+        int result = rnd.nextInt(right - left + 1) + left;
 
+        if (nozeroes)
+            while (result % 10 == 0)
+                result = rnd.nextInt(right - left + 1) + left;
+
+        return result;
     }
 
     String withPrecision(double value) {
         int precision = 0;
         double temp = value;
         while (temp - (int) temp > 0.00001) {
-            if (precision > 50 || temp - (int) temp >= 1) {
-                //Log.v("Endless loop", String.format("%f", value));
-                int temp1 = (int)temp+1;
-                while (temp1%10==0)
-                {
-                    temp1/=10;
-                    precision--;
-                }
-                break;
-            }
-            temp *= 10f;
+            temp *= 10;
             precision++;
 
+            if (precision > 5 || temp - (int) temp >= 1) {
+                int temp1 = (int) temp + 1;
+                while (temp1 % 10 == 0) {
+                    temp1 /= 10;
+                    precision--;
+
+                }
+//                Log.v("EndlessLoop", String.format("%d", temp1 % 10));
+                break;
+            }
         }
         if (precision == 0)
             return String.format("%d", (int) value);
@@ -237,77 +242,77 @@ public class Task {
         ;
         switch (complexity) {
             case 0:
-                switch (generateRandomInclusive(0, 2)) {
+                switch (randomInclusive(0, 2, true)) {
                     case 0:
-                        n = generateRandomInclusive(1, 9);
+                        n = randomInclusive(1, 9, true);
                         break;
                     case 1:
-                        n = generateRandomInclusive(10, 99);
+                        n = randomInclusive(10, 99, true);
                         break;
                     case 2:
                     default:
-                        n = generateRandomInclusive(100, 999);
+                        n = randomInclusive(100, 999, true);
                         break;
                 }
-                m = generateRandomInclusive(1, 9);
+                m = randomInclusive(1, 9, true);
                 break;
             case 1:
-                switch (generateRandomInclusive(0, 1)) {
+                switch (randomInclusive(0, 1, true)) {
                     case 0:
-                        n = generateRandomInclusive(10, 99);
+                        n = randomInclusive(10, 99, true);
                         break;
                     case 1:
                     default:
-                        n = generateRandomInclusive(100, 999);
+                        n = randomInclusive(100, 999, true);
                         break;
                 }
-                m = generateRandomInclusive(10, 99);
+                m = randomInclusive(10, 99, true);
                 break;
             case 2:
                 if (rnd.nextBoolean())
-                    switch (generateRandomInclusive(0, 3)) {
+                    switch (randomInclusive(0, 3, true)) {
                         case 0:
-                            n = generateRandomInclusive(1, 9) * 10;
-                            m = generateRandomInclusive(10, 99);
+                            n = randomInclusive(1, 9, true) * 10;
+                            m = randomInclusive(10, 99, true);
                             break;
                         case 1:
-                            n = generateRandomInclusive(1, 9) * 10;
-                            m = generateRandomInclusive(100, 999);
+                            n = randomInclusive(1, 9, true) * 10;
+                            m = randomInclusive(100, 999, true);
                             break;
                         case 2:
-                            n = generateRandomInclusive(10, 99) * 10;
-                            m = generateRandomInclusive(10, 99);
+                            n = randomInclusive(10, 99, true) * 10;
+                            m = randomInclusive(10, 99, true);
                             break;
                         case 3:
                         default:
-                            n = generateRandomInclusive(100, 999) * 10;
-                            m = generateRandomInclusive(10, 99);
+                            n = randomInclusive(100, 999, true) * 10;
+                            m = randomInclusive(10, 99, true);
                             break;
                     }
                 else
-                    switch (generateRandomInclusive(0, 2)) {
+                    switch (randomInclusive(0, 2, true)) {
                         case 0:
-                            n = generateRandomInclusive(1, 9) * 100;
-                            m = generateRandomInclusive(100, 999);
+                            n = randomInclusive(1, 9, true) * 100;
+                            m = randomInclusive(100, 999, true);
                             break;
                         case 1:
-                            n = generateRandomInclusive(10, 99) * 100;
-                            m = generateRandomInclusive(100, 999);
+                            n = randomInclusive(10, 99, true) * 100;
+                            m = randomInclusive(100, 999, true);
                             break;
                         case 2:
                         default:
-                            n = generateRandomInclusive(100, 999) * 100;
-                            m = generateRandomInclusive(100, 999);
+                            n = randomInclusive(100, 999, true) * 100;
+                            m = randomInclusive(100, 999, true);
                             break;
                     }
                 break;
             case 3:
                 if (rnd.nextBoolean()) {
-                    n = generateRandomInclusive(10, 99) * 10;
-                    m = generateRandomInclusive(100, 999);
+                    n = randomInclusive(10, 99, true) * 10;
+                    m = randomInclusive(100, 999, true);
                 } else {
-                    n = generateRandomInclusive(100, 999) * 10;
-                    m = generateRandomInclusive(100, 999);
+                    n = randomInclusive(100, 999, true) * 10;
+                    m = randomInclusive(100, 999, true);
                 }
                 break;
             default:
@@ -321,7 +326,7 @@ public class Task {
             m = k;
         }
 
-        int pow = generateRandomInclusive(1, 3);
+        int pow = randomInclusive(1, 3, false);
         double div = Math.pow(10, pow);
         double nn = n / div, mm = m / div;
 

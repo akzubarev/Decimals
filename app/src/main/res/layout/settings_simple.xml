@@ -73,7 +73,7 @@
             <Button android:id="@+id/buttonAdd"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center"
-                android:text=">"
+                android:text="@string/Arrow"
                 android:textSize="30sp"
                 android:textColor="@android:color/darker_gray"
                 android:background="@android:color/transparent"
@@ -124,7 +124,7 @@
             <Button android:id="@+id/buttonSub"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center"
-                android:text=">"
+                android:text="@string/Arrow"
                 android:textSize="30sp"
                 android:textColor="@android:color/darker_gray"
                 android:background="@android:color/transparent"
@@ -175,7 +175,7 @@
             <Button android:id="@+id/buttonMul"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center"
-                android:text=">"
+                android:text="@string/Arrow"
                 android:textSize="30sp"
                 android:textColor="@android:color/darker_gray"
                 android:background="@android:color/transparent"
@@ -226,7 +226,7 @@
             <Button android:id="@+id/buttonDiv"
                 android:layout_gravity="center_vertical|end"
                 android:gravity="center"
-                android:text=">"
+                android:text="@string/Arrow"
                 android:textSize="30sp"
                 android:textColor="@android:color/darker_gray"
                 android:background="@android:color/transparent"
@@ -376,6 +376,22 @@
                 android:textSize="20sp"
                 />
         </TableRow>
+        <TableRow>
 
+        <TextView
+            android:layout_gravity="center_vertical|start"
+            android:gravity="center_vertical|start"
+            android:text="Таймер"
+            android:textSize="20sp"
+            android:textColor="@android:color/darker_gray"
+            />
+
+        <CheckBox android:id="@+id/checkBoxTimer"
+            android:gravity="center_vertical|start"
+            android:layout_gravity="center"
+            android:tag="1"
+            android:onClick="onCheckBoxTimerClick"
+            />
+        </TableRow>
     </TableLayout>
 </LinearLayout>

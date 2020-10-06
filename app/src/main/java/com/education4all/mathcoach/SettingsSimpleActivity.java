@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import androidx.appcompat.app.ActionBar;
+
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
@@ -23,6 +25,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
 
     public static final String COMPLEXITY_SETTINGS = "ComplexitySettings";
     public static final String NODISAPEARCHAR = "∞"; //DecimalFormatSymbols.getInstance().getInfinity()
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,36 +36,39 @@ public class SettingsSimpleActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         EditText field = (EditText) findViewById(R.id.editText);
-        field.setText(Long.toString((long)DataReader.GetRoundTime(this)));
-        EditText field2 = (EditText)findViewById(R.id.editText2);
+        field.setText(Long.toString((long) DataReader.GetRoundTime(this)));
+        EditText field2 = (EditText) findViewById(R.id.editText2);
         if (DataReader.GetDisapRoundTime(this) > 0) {
-            field2.setText(Long.toString((long)DataReader.GetDisapRoundTime(this)));
+            field2.setText(Long.toString((long) DataReader.GetDisapRoundTime(this)));
         } else {
             field2.setText(NODISAPEARCHAR);
         }
-        Button button = (Button)findViewById(R.id.firstMinus);
-        final View v =  new View(this);
+        CheckBox timervisible = (CheckBox) findViewById(R.id.checkBoxTimer);
+        timervisible.setChecked(DataReader.GetTimerVisible(this));
+
+        Button button = (Button) findViewById(R.id.firstMinus);
+        final View v = new View(this);
         button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 firstMinus(v);
             }
         }));
-        button = (Button)findViewById(R.id.secondMinus);
+        button = (Button) findViewById(R.id.secondMinus);
         button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 secondMinus(v);
             }
         }));
-        button = (Button)findViewById(R.id.firstPlus);
+        button = (Button) findViewById(R.id.firstPlus);
         button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 firstPlus(v);
             }
         }));
-        button = (Button)findViewById(R.id.secondPlus);
+        button = (Button) findViewById(R.id.secondPlus);
         button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,51 +78,51 @@ public class SettingsSimpleActivity extends AppCompatActivity {
 
         final CheckBox newDivisionCHeckbox = (CheckBox) findViewById(R.id.checkBoxDiv2);
         newDivisionCHeckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newDivisionCHeckbox.setChecked(!newDivisionCHeckbox.isChecked());
-                //Creating the instance of PopupMenu
-                final PopupMenu popup = new PopupMenu(SettingsSimpleActivity.this, newDivisionCHeckbox);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater()
-                        .inflate(R.menu.divdropdown, popup.getMenu());
+                                                   @Override
+                                                   public void onClick(View v) {
+                                                       newDivisionCHeckbox.setChecked(!newDivisionCHeckbox.isChecked());
+                                                       //Creating the instance of PopupMenu
+                                                       final PopupMenu popup = new PopupMenu(SettingsSimpleActivity.this, newDivisionCHeckbox);
+                                                       //Inflating the Popup using xml file
+                                                       popup.getMenuInflater()
+                                                               .inflate(R.menu.divdropdown, popup.getMenu());
 
-                    //registering popup with OnMenuItemClickListener
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem item) {
-                            item.setChecked(!item.isChecked());
-                            boolean one = false;
-                            boolean two = false;
-                            if (popup.getMenu().getItem(0).isChecked()) {
-                                one = true;
-                            }
-                            if (popup.getMenu().getItem(1).isChecked()) {
-                                two = true;
-                            }
-                            addComplexityFromPopup(one,two);
-                            if (one || two) {
-                                newDivisionCHeckbox.setChecked(true);
-                            } else {
-                                newDivisionCHeckbox.setChecked(false);
-                            }
-                            return true;
-                        }
-                    });
+                                                       //registering popup with OnMenuItemClickListener
+                                                       popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                                                           public boolean onMenuItemClick(MenuItem item) {
+                                                               item.setChecked(!item.isChecked());
+                                                               boolean one = false;
+                                                               boolean two = false;
+                                                               if (popup.getMenu().getItem(0).isChecked()) {
+                                                                   one = true;
+                                                               }
+                                                               if (popup.getMenu().getItem(1).isChecked()) {
+                                                                   two = true;
+                                                               }
+                                                               addComplexityFromPopup(one, two);
+                                                               if (one || two) {
+                                                                   newDivisionCHeckbox.setChecked(true);
+                                                               } else {
+                                                                   newDivisionCHeckbox.setChecked(false);
+                                                               }
+                                                               return true;
+                                                           }
+                                                       });
 
-                    popup.show(); //showing popup menu
-                MenuItem item1 = (MenuItem) findViewById(R.id.one);
-                if (DataReader.checkComplexity(3, 1, SettingsSimpleActivity.this)) {
-                    popup.getMenu().getItem(0).setChecked(true);
-                }
-                if (DataReader.checkComplexity(3, 4, SettingsSimpleActivity.this)) {
-                    popup.getMenu().getItem(1).setChecked(true);
-                }
-             }
-            }
+                                                       popup.show(); //showing popup menu
+                                                       MenuItem item1 = (MenuItem) findViewById(R.id.one);
+                                                       if (DataReader.checkComplexity(3, 1, SettingsSimpleActivity.this)) {
+                                                           popup.getMenu().getItem(0).setChecked(true);
+                                                       }
+                                                       if (DataReader.checkComplexity(3, 4, SettingsSimpleActivity.this)) {
+                                                           popup.getMenu().getItem(1).setChecked(true);
+                                                       }
+                                                   }
+                                               }
 
-            ); //closing the setOnClickListener method
+        ); //closing the setOnClickListener method
 
-        }
+    }
 
     void addComplexityFromPopup(boolean one, boolean two) {
         StringBuilder currentComplexity = new StringBuilder();
@@ -125,7 +131,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         action = "Div";
         String name = "checkBox" + action + "1";
         int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-        CheckBox chk = (CheckBox)findViewById(resID);
+        CheckBox chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("0").append(",");
         }
@@ -134,13 +140,13 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         }
         name = "checkBox" + action + "3";
         resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-        chk = (CheckBox)findViewById(resID);
+        chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("2").append(",");
         }
         name = "checkBox" + action + "4";
         resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-        chk = (CheckBox)findViewById(resID);
+        chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("3").append(",");
         }
@@ -154,12 +160,12 @@ public class SettingsSimpleActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-            super.onResume();
+        super.onResume();
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxAdd" + Integer.toString(i);
             int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-            CheckBox cb = (CheckBox)findViewById(resID);
-            if (DataReader.checkComplexity(0,i - 1,this)) {
+            CheckBox cb = (CheckBox) findViewById(resID);
+            if (DataReader.checkComplexity(0, i - 1, this)) {
                 cb.setChecked(true);
             } else {
                 cb.setChecked(false);
@@ -168,8 +174,8 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxSub" + Integer.toString(i);
             int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-            CheckBox cb = (CheckBox)findViewById(resID);
-            if (DataReader.checkComplexity(1,i - 1,this)) {
+            CheckBox cb = (CheckBox) findViewById(resID);
+            if (DataReader.checkComplexity(1, i - 1, this)) {
                 cb.setChecked(true);
             } else {
                 cb.setChecked(false);
@@ -178,8 +184,8 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxMul" + Integer.toString(i);
             int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-            CheckBox cb = (CheckBox)findViewById(resID);
-            if (DataReader.checkComplexity(2,i - 1,this)) {
+            CheckBox cb = (CheckBox) findViewById(resID);
+            if (DataReader.checkComplexity(2, i - 1, this)) {
                 cb.setChecked(true);
             } else {
                 cb.setChecked(false);
@@ -206,11 +212,11 @@ public class SettingsSimpleActivity extends AppCompatActivity {
                 }
             }
         }
-        CheckBox cb = (CheckBox)findViewById(R.id.checkBoxAdd1);
+        CheckBox cb = (CheckBox) findViewById(R.id.checkBoxAdd1);
         DisplayMetrics metrics = new DisplayMetrics();
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-            wm.getDefaultDisplay().getMetrics(metrics);
-        final float width = metrics.widthPixels/2 - 20;
+        wm.getDefaultDisplay().getMetrics(metrics);
+        final float width = metrics.widthPixels / 2 - 20;
         final float height = metrics.heightPixels / 8;
 //        LinearLayout.LayoutParams layoutParamsWidth50 = new LinearLayout.LayoutParams(
 //                (int) (width) , (int) (height) );
@@ -225,14 +231,14 @@ public class SettingsSimpleActivity extends AppCompatActivity {
     }
 
     public void startCompl(View view) {
-        Intent intent = new Intent(this,  ComplexityActivity.class);
+        Intent intent = new Intent(this, ComplexityActivity.class);
         int p = Integer.parseInt((String) view.getTag());
         intent.putExtra("Type", p);
         startActivity(intent);
     }
 
     public void goToNumber(View p_v) {
-        EditText field = (EditText)findViewById(R.id.editText);
+        EditText field = (EditText) findViewById(R.id.editText);
         field.requestFocus();
     }
 
@@ -274,8 +280,13 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         DataReader.SaveRoundTime(value, this);
     }
 
+    public void onCheckBoxTimerClick(View p_v) {
+        CheckBox chk = (CheckBox) findViewById(R.id.checkBoxTimer);
+        DataReader.SaveTimerVisible(chk.isChecked(), this);
+    }
+
     public void secondPlus(View p_v) {
-        EditText field = (EditText)findViewById(R.id.editText2);
+        EditText field = (EditText) findViewById(R.id.editText2);
         String str = field.getText().toString();
         float value;
         String newFieldText;
@@ -284,21 +295,21 @@ public class SettingsSimpleActivity extends AppCompatActivity {
             value = Float.parseFloat(str);
             if (value < 60) {
                 ++value;
-                newFieldText = Long.toString((long)value);
+                newFieldText = Long.toString((long) value);
             } else {
                 value = -1;
                 newFieldText = NODISAPEARCHAR;
             }
         } else {
             value = 1;
-            newFieldText = Long.toString((long)value);
+            newFieldText = Long.toString((long) value);
         }
         field.setText(newFieldText);
         DataReader.SaveDisapRoundTime(value, this);
     }
 
     public void secondMinus(View p_v) {
-        EditText field = (EditText)findViewById(R.id.editText2);
+        EditText field = (EditText) findViewById(R.id.editText2);
         String str = field.getText().toString();
         float value;
         String newFieldText;
@@ -307,14 +318,14 @@ public class SettingsSimpleActivity extends AppCompatActivity {
             value = Float.parseFloat(str);
             if (value > 1) {
                 --value;
-                newFieldText = Long.toString((long)value);
+                newFieldText = Long.toString((long) value);
             } else {
                 value = -1;
                 newFieldText = NODISAPEARCHAR;
             }
         } else {
             value = 60;
-            newFieldText = Long.toString((long)value);
+            newFieldText = Long.toString((long) value);
         }
         field.setText(newFieldText);
         DataReader.SaveDisapRoundTime(value, this);
@@ -329,8 +340,8 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         for (int i = 0; i < text.length(); ++i) {
             isInt = false;
             for (int j = 0; j <= 9; ++j) {
-                String a = text.substring(i, i+1);
-                String n = Long.toString((long)j);
+                String a = text.substring(i, i + 1);
+                String n = Long.toString((long) j);
                 if (a.equals(n)) {
                     isInt = true;
                 }
@@ -363,28 +374,28 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         }
         String name = "checkBox" + action + "1";
         int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-        CheckBox chk = (CheckBox)findViewById(resID);
+        CheckBox chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("0").append(",");
         }
 
         name = "checkBox" + action + "2";
         resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-        chk = (CheckBox)findViewById(resID);
+        chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("1").append(",");
         }
 
         name = "checkBox" + action + "3";
         resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-        chk = (CheckBox)findViewById(resID);
+        chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("2").append(",");
         }
 
         name = "checkBox" + action + "4";
         resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-        chk = (CheckBox)findViewById(resID);
+        chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("3").append(",");
         }

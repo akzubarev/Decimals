@@ -79,7 +79,8 @@ public class StatiscticsActivity extends AppCompatActivity {
             arrow.setTag(tourNumber);
             arrow.setOnClickListener(tourClick);
 //            arrow.setText("\u232A");
-            arrow.setText(">");
+             arrow.setText("›");
+            //arrow.setText("@string/Arrow");
             arrow.setTextSize(30);
             arrow.setTextColor(Color.GRAY);
             arrow.setBackgroundColor(Color.TRANSPARENT);

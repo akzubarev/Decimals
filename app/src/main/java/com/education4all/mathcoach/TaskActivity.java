@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -98,6 +99,7 @@ public class TaskActivity extends AppCompatActivity {
             answer = new String();
 
             G_progressBar = (ProgressBar) findViewById(R.id.taskProgress);
+            G_progressBar.setVisibility(DataReader.GetTimerVisible(this) ? View.VISIBLE : View.INVISIBLE);
             RoundTime = DataReader.GetRoundTime(this);
             millis = (long) (RoundTime * 1000 * 60);
             final Context l_context = this;
@@ -124,15 +126,16 @@ public class TaskActivity extends AppCompatActivity {
             showTaskSetTrueAndRestartDisappearTimer();
             newTask.generate(allowedTasks);
             textViewUpdate();
+
+            findViewById(R.id.But_del).setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    answer = "";
+                    textViewUpdate();
+                    return true;
+                }
+            });
         }
-        findViewById(R.id.But_del).setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                answer="";
-                textViewUpdate();
-                return true;
-            }
-        }); ;
     }
 
     //делаем все кнопки одинакового размера внутри GridLayout

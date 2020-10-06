@@ -26,4 +26,5 @@
         <item>Показать ответ</item>>
     </string-array>
     <string name="title_activity_authors">О приложении</string>
+    <string name="Arrow"><![CDATA[›]]></string>
 </resources>

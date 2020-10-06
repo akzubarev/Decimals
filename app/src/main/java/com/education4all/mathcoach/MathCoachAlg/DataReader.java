@@ -101,4 +101,16 @@ public class DataReader {
             SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
             return prefs.getFloat("Disaptime", -1);
         }
+
+
+    static public void SaveTimerVisible(boolean visible, Context p_context) {
+        SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
+        editor.putBoolean("TimerVisible", visible);
+        editor.commit();
+    }
+
+    static public boolean GetTimerVisible(Context p_context) {
+        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
+        return prefs.getBoolean("TimerVisible", true);
+    }
 }
