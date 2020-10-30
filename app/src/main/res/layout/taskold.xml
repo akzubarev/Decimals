@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     style = "@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-    tools:context="com.education4all.mathcoach.TaskActivity">
+    tools:context="com.education4all.decimals.TaskActivity">
 
     <RelativeLayout
         android:layout_width="fill_parent"

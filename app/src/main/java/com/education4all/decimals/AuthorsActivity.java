@@ -1,4 +1,4 @@
-package com.education4all.mathcoach;
+package com.education4all.decimals;
 
 import android.os.Bundle;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.education4all.mathcoach">
+    package="com.education4all.decimals">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:theme="@style/Theme.AppCompat">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.education4all.decimals.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/short_app_name"
             android:screenOrientation="portrait"
@@ -21,7 +21,7 @@
         </activity>
 
         <activity
-            android:name=".TaskActivity"
+            android:name="com.education4all.decimals.TaskActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_task"
             android:screenOrientation="portrait"
@@ -36,45 +36,45 @@
         <!--</activity>-->
 
         <activity
-            android:name=".SettingsSimpleActivity"
+            android:name="com.education4all.decimals.SettingsSimpleActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_settings_simple"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.education4all.mathcoach.MainActivity" />
+                android:value="com.education4all.decimals.MainActivity" />
         </activity>
 
         <activity
-            android:name=".ComplexityActivity"
+            android:name="com.education4all.decimals.ComplexityActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_complexity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.education4all.mathcoach.SettingsSimpleActivity" />
+                android:value="com.education4all.decimals.SettingsSimpleActivity" />
         </activity>
 
         <activity
-            android:name=".StatiscticsActivity"
+            android:name="com.education4all.decimals.StatiscticsActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar.OldMenu"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_statisctics"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.education4all.mathcoach.MainActivity" />
+                android:value="com.education4all.decimals.MainActivity" />
         </activity>
 
         <activity
-            android:name=".StatTourActivity"
+            android:name="com.education4all.decimals.StatTourActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar.OldMenu"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_stat_tour"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.education4all.mathcoach.StatiscticsActivity" />
+                android:value="com.education4all.decimals.StatiscticsActivity" />
         </activity>
 
         <!--<activity-->
@@ -83,12 +83,12 @@
         <!--</activity>-->
 
         <activity
-            android:name=".AuthorsActivity"
+            android:name="com.education4all.decimals.AuthorsActivity"
             android:label="@string/title_activity_authors"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.education4all.decimals.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.education4all.mathcoach.MainActivity" />
+                android:value="com.education4all.decimals.MainActivity" />
         </activity>
     </application>
 </manifest>
