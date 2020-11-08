@@ -5,10 +5,10 @@
     <item android:id="@android:id/background">
         <shape>
             <gradient
-                android:startColor="#444444"
-                android:centerColor="#444444"
+                android:startColor="#ffff"
+                android:centerColor="#ffff"
                 android:centerY="1.0"
-                android:endColor="#444444"
+                android:endColor="#ffff"
                 android:angle="270"
                 />
         </shape>
@@ -22,7 +22,7 @@
                     android:startColor="#BF9514"
                     android:centerColor="#BF9514"
                     android:centerY="1.0"
-                    android:endColor="#06101d"
+                    android:endColor="#BF9514"
                     android:angle="270"
                     />
             </shape>

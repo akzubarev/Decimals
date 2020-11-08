@@ -15,16 +15,6 @@
         android:layout_height="fill_parent">
 
         <TextView
-            android:id = "@+id/pressToShowTaskTV"
-            android:background="@android:color/transparent"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center|bottom"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="\Нажмите, чтобы показать задание"
-            />
-
-        <TextView
             android:id = "@+id/expTextView"
             android:background="#5c5c5c"
             android:layout_width="fill_parent"
@@ -37,7 +27,17 @@
             android:textColor="@android:color/white"
             />
 
-
+        <TextView
+            android:id = "@+id/pressToShowTaskTV"
+            android:background="@android:color/transparent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center|bottom"
+            android:onClick="showTask"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="\Нажмите, чтобы показать задание"
+            android:textColor="@android:color/white"
+            />
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
@@ -49,8 +49,7 @@
             android:textSize="30sp"
             android:textColor="@android:color/white"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
             android:onClick="crossClick" />
     </RelativeLayout>
 
@@ -89,7 +88,7 @@
                 android:id = "@+id/checktext"
                 android:background="@android:color/transparent"
                 app:layout_gravity="center|bottom"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10sp"
                 android:gravity="center|bottom"
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -131,10 +130,10 @@
                 android:background="@android:color/transparent"
                 app:layout_gravity="center|bottom"
                 android:gravity="center|bottom"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10sp"
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Пропустить"
+                android:text="Пропуск"
                 android:textSize="15sp"
                 app:layout_column="3"
                 app:layout_row="1"
@@ -282,7 +281,7 @@
                 android:background="@android:color/transparent"
                 app:layout_gravity="center|bottom"
                 android:gravity="center|bottom"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10sp"
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Подсказка"
@@ -311,7 +310,7 @@
                 android:background="@android:color/transparent"
                 app:layout_gravity="center|bottom"
                 android:gravity="center|bottom"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="10sp"
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Удалить"

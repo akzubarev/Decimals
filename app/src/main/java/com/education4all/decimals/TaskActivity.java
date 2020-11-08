@@ -342,7 +342,9 @@ public class TaskActivity extends AppCompatActivity {
         if (answer.equals("0") && !symbol.equals(",")) {
             answer = "";
             textViewUpdate();
-        }
+        } else if ((answer.isEmpty() && symbol.equals(",")) ||
+                (answer.contains(",") && symbol.equals(",")))
+            return;
         answer = answer + symbol;
         textViewUpdate();
     }

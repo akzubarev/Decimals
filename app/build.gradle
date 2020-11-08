@@ -4,7 +4,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion '24.0.3'
     defaultConfig {
-        applicationId "com.education4all.mathcoach"
+        applicationId "com.education4all.decimals"
         minSdkVersion 15
         targetSdkVersion 29
         versionName '1.0.2'
@@ -22,6 +22,7 @@ android {
 
 dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'androidx.appcompat:appcompat:1.0.0'
     compile 'androidx.gridlayout:gridlayout:1.0.0'

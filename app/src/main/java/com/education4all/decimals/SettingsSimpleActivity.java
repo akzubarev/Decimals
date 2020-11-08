@@ -12,14 +12,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.SeekBar;
 
 import com.education4all.decimals.MathCoachAlg.DataReader;
+import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
 
 public class SettingsSimpleActivity extends AppCompatActivity {
 
@@ -35,46 +40,49 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         myActionBar.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        EditText field = (EditText) findViewById(R.id.editText);
-        field.setText(Long.toString((long) DataReader.GetRoundTime(this)));
-        EditText field2 = (EditText) findViewById(R.id.editText2);
-        if (DataReader.GetDisapRoundTime(this) > 0) {
-            field2.setText(Long.toString((long) DataReader.GetDisapRoundTime(this)));
-        } else {
-            field2.setText(NODISAPEARCHAR);
-        }
+
+//        EditText field = (EditText) findViewById(R.id.editText);
+//        field.setText(Long.toString((long) DataReader.GetRoundTime(this)));
+//        EditText field2 = (EditText) findViewById(R.id.editText2);
+//        if (DataReader.GetDisapRoundTime(this) > 0) {
+//            field2.setText(Long.toString((long) DataReader.GetDisapRoundTime(this)));
+//        } else {
+//            field2.setText(NODISAPEARCHAR);
+//        }
+
+
         CheckBox timervisible = (CheckBox) findViewById(R.id.checkBoxTimer);
         timervisible.setChecked(DataReader.GetTimerVisible(this));
 
-        Button button = (Button) findViewById(R.id.firstMinus);
-        final View v = new View(this);
-        button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firstMinus(v);
-            }
-        }));
-        button = (Button) findViewById(R.id.secondMinus);
-        button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                secondMinus(v);
-            }
-        }));
-        button = (Button) findViewById(R.id.firstPlus);
-        button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                firstPlus(v);
-            }
-        }));
-        button = (Button) findViewById(R.id.secondPlus);
-        button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                secondPlus(v);
-            }
-        }));
+//        Button button = (Button) findViewById(R.id.firstMinus);
+//        final View v = new View(this);
+//        button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                firstMinus(v);
+//            }
+//        }));
+//        button = (Button) findViewById(R.id.secondMinus);
+//        button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                secondMinus(v);
+//            }
+//        }));
+//        button = (Button) findViewById(R.id.firstPlus);
+//        button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                firstPlus(v);
+//            }
+//        }));
+//        button = (Button) findViewById(R.id.secondPlus);
+//        button.setOnTouchListener(new RepeatListener(400, 200, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                secondPlus(v);
+//            }
+//        }));
 
         final CheckBox newDivisionCHeckbox = (CheckBox) findViewById(R.id.checkBoxDiv2);
         newDivisionCHeckbox.setOnClickListener(new View.OnClickListener() {
@@ -122,6 +130,132 @@ public class SettingsSimpleActivity extends AppCompatActivity {
 
         ); //closing the setOnClickListener method
 
+        IndicatorSeekBar seekBar = findViewById(R.id.round_length_slider);
+        seekBar.customTickTexts(new String [] {"1", "2","3","5","10","15","20","30","45","60"});
+        switch ((int) DataReader.GetRoundTime(getApplicationContext()))
+        {
+            case 1:
+                seekBar.setProgress(0);
+                break;
+            case 2:
+                seekBar.setProgress(11);
+                break;
+            case 3:
+                seekBar.setProgress(22);
+                break;
+            case 5:
+                seekBar.setProgress(33);
+                break;
+            case 10:
+                seekBar.setProgress(44);
+                break;
+            case 15:
+                seekBar.setProgress(55);
+                break;
+            case 20:
+                seekBar.setProgress(66);
+                break;
+            case 30:
+                seekBar.setProgress(77);
+                break;
+            case 45:
+                seekBar.setProgress(88);
+                break;
+            case 60:
+                seekBar.setProgress(100);
+                break;
+        }
+        seekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
+            @Override
+            public void onSeeking(SeekParams seekParams) {
+//                Log.i(TAG, seekParams.seekBar);
+//                Log.i(TAG, seekParams.progress);
+//                Log.i(TAG, seekParams.progressFloat);
+//                Log.i(TAG, seekParams.fromUser);
+//                //when tick count > 0
+//                Log.i(TAG, seekParams.thumbPosition);
+//                Log.i(TAG, seekParams.tickText);
+                String value = seekParams.tickText;
+                float fvalue = 0;
+                if (value.equals(NODISAPEARCHAR))
+                    fvalue = -1;
+                else
+                    fvalue = Float.parseFloat(value);
+                DataReader.SaveRoundTime(fvalue, getApplicationContext());
+            }
+
+            @Override
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+            }
+        });
+
+
+        seekBar = findViewById(R.id.disappear_time_slider);
+        seekBar.customTickTexts(new String [] {"1","2","3","5","10","15","20","30","45","∞"});
+        switch ((int) DataReader.GetRoundTime(getApplicationContext()))
+        {
+            case 1:
+                seekBar.setProgress(0);
+                break;
+            case 2:
+                seekBar.setProgress(11);
+                break;
+            case 3:
+                seekBar.setProgress(22);
+                break;
+            case 5:
+                seekBar.setProgress(33);
+                break;
+            case 10:
+                seekBar.setProgress(44);
+                break;
+            case 15:
+                seekBar.setProgress(55);
+                break;
+            case 20:
+                seekBar.setProgress(66);
+                break;
+            case 30:
+                seekBar.setProgress(77);
+                break;
+            case 45:
+                seekBar.setProgress(88);
+                break;
+            case -1:
+                seekBar.setProgress(100);
+                break;
+        }
+        seekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
+            @Override
+            public void onSeeking(SeekParams seekParams) {
+//                Log.i(TAG, seekParams.seekBar);
+//                Log.i(TAG, seekParams.progress);
+//                Log.i(TAG, seekParams.progressFloat);
+//                Log.i(TAG, seekParams.fromUser);
+//                //when tick count > 0
+//                Log.i(TAG, seekParams.thumbPosition);
+//                Log.i(TAG, seekParams.tickText);
+                String value = seekParams.tickText;
+                float fvalue = 0;
+                if (value.equals(NODISAPEARCHAR))
+                    fvalue = -1;
+                else
+                    fvalue = Float.parseFloat(value);
+                DataReader.SaveDisapRoundTime(fvalue, getApplicationContext());
+            }
+
+            @Override
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+            }
+        });
     }
 
     void addComplexityFromPopup(boolean one, boolean two) {
@@ -163,7 +297,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         super.onResume();
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxAdd" + Integer.toString(i);
-            int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
+            int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) findViewById(resID);
             if (DataReader.checkComplexity(0, i - 1, this)) {
                 cb.setChecked(true);
@@ -173,7 +307,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         }
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxSub" + Integer.toString(i);
-            int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
+            int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) findViewById(resID);
             if (DataReader.checkComplexity(1, i - 1, this)) {
                 cb.setChecked(true);
@@ -183,7 +317,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         }
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxMul" + Integer.toString(i);
-            int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
+            int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) findViewById(resID);
             if (DataReader.checkComplexity(2, i - 1, this)) {
                 cb.setChecked(true);
@@ -194,7 +328,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
         for (int i = 1; i <= 4; ++i) {
             if (i != 2) {
                 String name = "checkBoxDiv" + Integer.toString(i);
-                int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
+                int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
                 CheckBox cb = (CheckBox) findViewById(resID);
                 if (DataReader.checkComplexity(3, i - 1, this)) {
                     cb.setChecked(true);
@@ -203,7 +337,7 @@ public class SettingsSimpleActivity extends AppCompatActivity {
                 }
             } else {
                 String name = "checkBoxDiv" + Integer.toString(i);
-                int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
+                int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
                 CheckBox cb = (CheckBox) findViewById(resID);
                 if (DataReader.checkComplexity(3, 1, this) || DataReader.checkComplexity(3, 4, this)) {
                     cb.setChecked(true);
@@ -373,28 +507,28 @@ public class SettingsSimpleActivity extends AppCompatActivity {
                 break;
         }
         String name = "checkBox" + action + "1";
-        int resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
+        int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
         CheckBox chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("0").append(",");
         }
 
         name = "checkBox" + action + "2";
-        resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
+        resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
         chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("1").append(",");
         }
 
         name = "checkBox" + action + "3";
-        resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
+        resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
         chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("2").append(",");
         }
 
         name = "checkBox" + action + "4";
-        resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
+        resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
         chk = (CheckBox) findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("3").append(",");
