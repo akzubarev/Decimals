@@ -103,14 +103,35 @@ public class DataReader {
         }
 
 
-    static public void SaveTimerVisible(boolean visible, Context p_context) {
+    static public void SaveTimerState(int state, Context p_context) {
         SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
-        editor.putBoolean("TimerVisible", visible);
+        editor.putInt("TimerState", state);
         editor.commit();
     }
 
-    static public boolean GetTimerVisible(Context p_context) {
+    static public int GetTimerState(Context p_context) {
         SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
-        return prefs.getBoolean("TimerVisible", true);
+        return prefs.getInt("TimerState", 1);
+    }
+
+    public static void SaveButtonsPlace(int state, Context p_context) {
+        SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
+        editor.putInt("ButtonsPlace", state);
+        editor.commit();
+    }
+    static public int GetButtonsPlace(Context p_context) {
+        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
+        return prefs.getInt("ButtonsPlace", 0);
+    }
+
+    public static void SaveLayoutState(int state, Context p_context) {
+        SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
+        editor.putInt("LayoutState", state);
+        editor.commit();
+    }
+
+    static public int GetLayoutState(Context p_context) {
+        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
+        return prefs.getInt("LayoutState", 0);
     }
 }

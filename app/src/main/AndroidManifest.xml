@@ -6,14 +6,14 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat">
+        android:theme="@style/AppTheme">
 
         <activity
             android:name="com.education4all.decimals.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/short_app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar.OldMenu">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -36,6 +36,17 @@
         <!--</activity>-->
 
         <activity
+            android:name="com.education4all.decimals.SettingsMainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_settings_simple"
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.education4all.decimals.MainActivity" />
+        </activity>
+
+        <activity
             android:name="com.education4all.decimals.SettingsSimpleActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_settings_simple"
@@ -49,6 +60,7 @@
             android:name="com.education4all.decimals.ComplexityActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_complexity"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -57,7 +69,7 @@
 
         <activity
             android:name="com.education4all.decimals.StatiscticsActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar.OldMenu"
+            android:theme="@style/AppTheme"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_statisctics"
             android:screenOrientation="portrait">
@@ -68,7 +80,7 @@
 
         <activity
             android:name="com.education4all.decimals.StatTourActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar.OldMenu"
+            android:theme="@style/AppTheme"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_stat_tour"
             android:screenOrientation="portrait">
@@ -85,6 +97,7 @@
         <activity
             android:name="com.education4all.decimals.AuthorsActivity"
             android:label="@string/title_activity_authors"
+            android:theme="@style/AppTheme"
             android:parentActivityName="com.education4all.decimals.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

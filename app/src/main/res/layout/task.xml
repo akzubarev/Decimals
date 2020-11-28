@@ -7,7 +7,8 @@
     android:orientation="vertical"
     android:background="#444444"
     style = "@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-    tools:context="com.education4all.decimals.TaskActivity">
+    tools:context="com.education4all.decimals.TaskActivity"
+    >
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -16,15 +17,15 @@
 
         <TextView
             android:id = "@+id/expTextView"
-            android:background="#5c5c5c"
+            android:background="@color/color2"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:gravity="center"
             android:onClick="showTask"
             android:clickable="true"
-            android:textSize="40sp"
-            android:textColor="@android:color/white"
+            android:textSize="@dimen/dimen0"
+            android:textColor="@color/main"
             />
 
         <TextView
@@ -36,18 +37,19 @@
             android:onClick="showTask"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="\Нажмите, чтобы показать задание"
-            android:textColor="@android:color/white"
+            android:textSize="@dimen/dimen6"
+            android:textColor="@color/main"
             />
         <Button
+            android:id = "@+id/cross"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="\u2715"
             android:background="@android:color/transparent"
-            android:id="@+id/button"
             android:includeFontPadding="false"
             android:textSize="30sp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/additional"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:onClick="crossClick" />
@@ -58,7 +60,8 @@
         style="@android:style/Widget.ProgressBar.Horizontal"
         android:progressDrawable = "@drawable/progress_bar"
         android:layout_height="10dp"
-        android:id="@+id/taskProgress"/>
+        android:id="@+id/taskProgress"
+        android:progress="50"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,17 +73,27 @@
         <androidx.gridlayout.widget.GridLayout
             android:id="@+id/buttonsLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/color3">
 
-            <Button
-                android:layout_margin="-8dp"
-                android:onClick="okButtonClick"
+            <ImageButton
+                android:id="@+id/But_Check"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
                 android:background="@android:color/transparent"
-                android:text="OK"
+                android:onClick="okButtonClick"
+                android:padding="30dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/check"
+                android:tint="@color/additional"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1"
                 app:layout_column="3"
-                app:layout_gravity="center"
+                app:layout_gravity="fill"
                 app:layout_row="3"
                 app:layout_rowSpan="1" />
 
@@ -93,13 +106,16 @@
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Проверить"
-                android:textSize="15sp"
+                android:textSize= "@dimen/dimen6"
                 app:layout_column="3"
                 app:layout_row="3"
-                app:layout_rowSpan="1" />
+                app:layout_rowSpan="1"
+                android:layout_weight="1"/>
 
             <Button
                 android:id="@+id/But_5"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:includeFontPadding="false"
                 android:onClick="numberPress"
@@ -107,40 +123,52 @@
                 android:tag="5"
                 android:text="5"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="1"
-                app:layout_row="1" />
+                app:layout_row="1"
+                android:layout_weight="1" />
 
-            <Button
-                android:layout_margin="-8dp"
+            <ImageButton
+                android:id="@+id/But_Skip"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:onClick="skipTask"
+                android:tint="@color/additional"
                 android:text="\u2192"
+                android:src="@drawable/skip"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
                 android:textColor="@android:color/white"
                 android:background="@android:color/transparent"
                 android:textSize="60sp"
+                android:padding="30dp"
                 app:layout_column="3"
-                app:layout_gravity="center"
+                app:layout_gravity="fill"
                 app:layout_row="1"
-                app:layout_rowSpan="1" />
+                app:layout_rowSpan="1"
+                android:layout_weight="1" />
 
             <TextView
                 android:id = "@+id/skiptext"
                 android:background="@android:color/transparent"
                 app:layout_gravity="center|bottom"
                 android:gravity="center|bottom"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Пропуск"
-                android:textSize="15sp"
+                android:textSize= "@dimen/dimen6"
                 app:layout_column="3"
                 app:layout_row="1"
-                app:layout_rowSpan="1" />
+                app:layout_rowSpan="1"
+                android:layout_weight="1"/>
 
             <Button
                 android:id="@+id/But_7"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:includeFontPadding="false"
                 android:onClick="numberPress"
@@ -148,12 +176,15 @@
                 android:tag="7"
                 android:text="7"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="0"
-                app:layout_row="0" />
+                app:layout_row="0"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/But_8"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:includeFontPadding="false"
                 android:onClick="numberPress"
@@ -161,12 +192,15 @@
                 android:tag="8"
                 android:text="8"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="1"
-                app:layout_row="0" />
+                app:layout_row="0"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/But_9"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:includeFontPadding="false"
                 android:background="@android:color/transparent"
@@ -174,27 +208,31 @@
                 android:tag="9"
                 android:text="9"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="2"
-                app:layout_row="0" />
+                app:layout_row="0"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/But_1"
                 android:layout_margin="-8dp"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:includeFontPadding="false"
                 android:onClick="numberPress"
                 android:background="@android:color/transparent"
                 android:tag="1"
                 android:text="1"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="0"
-                app:layout_row="2" />
+                app:layout_row="2"
+                android:layout_weight="1"/>
 
             <Button
-                android:id="@+id/but_0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/But_0"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:background="@android:color/transparent"
                 android:includeFontPadding="false"
@@ -202,14 +240,15 @@
                 android:tag="0"
                 android:text="0"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="1"
                 app:layout_row="3"
+                android:layout_weight="1"
                 />
             <Button
-                android:id="@+id/but_."
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/But_comma"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:background="@android:color/transparent"
                 android:includeFontPadding="false"
@@ -217,27 +256,31 @@
                 android:tag=","
                 android:text=","
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="2"
                 app:layout_row="3"
+                android:layout_weight="1"
                 />
 
             <Button
-                android:id="@+id/but_empty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/But_empty"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:background="@android:color/transparent"
                 android:layout_margin="-8dp"
                 android:includeFontPadding="false"
                 android:tag=""
                 android:text=""
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="0"
                 app:layout_row="3"
+                android:layout_weight="1"
                 />
             <Button
                 android:id="@+id/But_3"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:gravity="center"
                 android:includeFontPadding="false"
@@ -246,12 +289,15 @@
                 android:tag="3"
                 android:text="3"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="2"
-                app:layout_row="2" />
+                app:layout_row="2"
+                android:layout_weight="1"/>
 
             <Button
                 android:id="@+id/But_2"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:includeFontPadding="false"
                 android:onClick="numberPress"
@@ -259,68 +305,92 @@
                 android:tag="2"
                 android:text="2"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="1"
-                app:layout_row="2" />
+                app:layout_row="2"
+                android:layout_weight="1"/>
 
             <Button
+                android:id="@+id/But_Help"
                 android:layout_margin="-8dp"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_marginBottom="-8dp"
+                android:paddingBottom="5dp"
                 android:gravity="center"
                 android:onClick="showAnswer"
                 android:background="@android:color/transparent"
                 android:text="=?"
-                android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textColor="@color/additional"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="3"
                 app:layout_gravity="fill"
                 app:layout_row="2"
-                app:layout_rowSpan="1" />
+                app:layout_rowSpan="1"
+                android:layout_weight="1"
+                app:layout_columnWeight="1"
+                app:layout_rowWeight="1" />
 
             <TextView
                 android:id = "@+id/helptext"
                 android:background="@android:color/transparent"
                 app:layout_gravity="center|bottom"
                 android:gravity="center|bottom"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Подсказка"
-                android:textSize="15sp"
+                android:textSize= "@dimen/dimen6"
                 app:layout_column="3"
                 app:layout_row="2"
-                app:layout_rowSpan="1" />
+                app:layout_rowSpan="1"
+                android:layout_weight="1"/>
 
-            <Button
-                android:id="@+id/But_del"
-                android:layout_margin="-8dp"
-                android:includeFontPadding="false"
-                android:gravity="center"
-                android:onClick="charDelete"
-                android:text="DEL"
-                android:textColor="@android:color/white"
+            <ImageButton
+                android:id="@+id/But_Del"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:background="@android:color/transparent"
-                android:textSize="35sp"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:onClick="charDelete"
+                android:src="@drawable/delete"
+                android:tint="@color/additional"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:textColor="@android:color/white"
+                android:textSize= "@dimen/dimen0"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="32dp"
                 app:layout_column="3"
                 app:layout_gravity="fill"
                 app:layout_row="0"
-                app:layout_rowSpan="1" />
+                app:layout_rowSpan="1"
+                android:layout_weight="1" />
+
+
 
             <TextView
                 android:id = "@+id/deletetext"
                 android:background="@android:color/transparent"
                 app:layout_gravity="center|bottom"
                 android:gravity="center|bottom"
-                android:layout_marginBottom="10sp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@android:color/white"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Удалить"
-                android:textSize="15sp"
+                android:textSize= "@dimen/dimen6"
                 app:layout_column="3"
                 app:layout_row="0"
-                app:layout_rowSpan="1" />
+                app:layout_rowSpan="1"
+                android:layout_weight="1"/>
 
             <Button
                 android:id="@+id/But_6"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:includeFontPadding="false"
                 android:onClick="numberPress"
@@ -328,12 +398,15 @@
                 android:tag="6"
                 android:text="6"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="2"
-                app:layout_row="1" />
+                app:layout_row="1"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/But_4"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:includeFontPadding="false"
                 android:background="@android:color/transparent"
@@ -341,9 +414,10 @@
                 android:tag="4"
                 android:text="4"
                 android:textColor="@android:color/white"
-                android:textSize="35sp"
+                android:textSize= "@dimen/dimen0"
                 app:layout_column="0"
-                app:layout_row="1" />
+                app:layout_row="1"
+                android:layout_weight="1"/>
         </androidx.gridlayout.widget.GridLayout>
 
     </LinearLayout>

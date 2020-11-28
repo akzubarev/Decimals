@@ -5,7 +5,7 @@ android {
     buildToolsVersion '24.0.3'
     defaultConfig {
         applicationId "com.education4all.decimals"
-        minSdkVersion 15
+        minSdkVersion 23
         targetSdkVersion 29
         versionName '1.0.2'
         versionCode 4
@@ -18,12 +18,23 @@ android {
     }
     productFlavors {
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def newApkName = "Decimals.apk"
+            outputFileName = new File(newApkName)
+        }
+    }
 }
 
 dependencies {
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'androidx.appcompat:appcompat:1.0.0'
-    compile 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation 'com.google.android.material:material:1.2.1'
 }

@@ -1,9 +1,10 @@
 package com.education4all.decimals;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,16 +12,23 @@ import android.os.Handler;
 import java.lang.Runnable;
 import java.util.Calendar;
 
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.gridlayout.widget.GridLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.education4all.decimals.MathCoachAlg.DataReader;
@@ -77,18 +85,8 @@ public class TaskActivity extends AppCompatActivity {
         newTask = new Task();
         allowedTasks = DataReader.readAllowedTasks(this);
         if (!newTask.areTasks(allowedTasks)) {
-            new AlertDialog.Builder(TaskActivity.this)
-//                    .setTitle("Ошибка")
-                    .setMessage("Пожалуйста, сначала выберите виды заданий.")
-                    .setCancelable(false)
-                    .setPositiveButton("Настройки", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                            Intent intent = new Intent(context, SettingsSimpleActivity.class);
-                            startActivity(intent);
-                        }
-                    })
-                    .show();
+            startActivity(new Intent(context, SettingsMainActivity.class).putExtra("FromTask", true));
+
         } else {
             tourStartTime = Calendar.getInstance().getTimeInMillis();
             prevTaskTime = tourStartTime;
@@ -97,7 +95,8 @@ public class TaskActivity extends AppCompatActivity {
             answer = new String();
 
             G_progressBar = (ProgressBar) findViewById(R.id.taskProgress);
-            G_progressBar.setVisibility(DataReader.GetTimerVisible(this) ? View.VISIBLE : View.INVISIBLE);
+            final int timerstate = DataReader.GetTimerState(this);
+            G_progressBar.setVisibility(timerstate == 2 ? View.INVISIBLE : View.VISIBLE);
             RoundTime = DataReader.GetRoundTime(this);
             millis = (long) (RoundTime * 1000 * 60);
             final Context l_context = this;
@@ -105,11 +104,12 @@ public class TaskActivity extends AppCompatActivity {
                 public void run() {
                     while (progressStatus < 100) {
                         progressStatus += 1;
-                        progressBarHandler.post(new Runnable() {
-                            public void run() {
-                                G_progressBar.setProgress(progressStatus);
-                            }
-                        });
+                        if (timerstate == 0)
+                            progressBarHandler.post(new Runnable() {
+                                public void run() {
+                                    G_progressBar.setProgress(progressStatus);
+                                }
+                            });
                         try {
                             Thread.sleep((long) (RoundTime * 600));
                         } catch (InterruptedException e) {
@@ -125,13 +125,10 @@ public class TaskActivity extends AppCompatActivity {
             newTask.generate(allowedTasks);
             textViewUpdate();
 
-            findViewById(R.id.But_del).setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    answer = "";
-                    textViewUpdate();
-                    return true;
-                }
+            findViewById(R.id.But_Del).setOnLongClickListener(v -> {
+                answer = "";
+                textViewUpdate();
+                return true;
             });
         }
     }
@@ -146,52 +143,101 @@ public class TaskActivity extends AppCompatActivity {
             child = parent.getChildAt(i);
             GridLayout.LayoutParams params = (GridLayout.LayoutParams) child.getLayoutParams();
             int margin = -8;
-            if (child.getClass() == Button.class)
+            if (child.getClass() == AppCompatButton.class)//|| child.getClass() == ImageButton.class)
                 params.setMargins(margin, margin, margin, margin);
-
-//            if (child.getClass() == FrameLayout.class) {
-//                Button grandson = (Button) ((FrameLayout) child).getChildAt(0);
-//                FrameLayout.LayoutParams gsparams = (FrameLayout.LayoutParams) grandson.getLayoutParams();
-//                gsparams.width = (parent.getWidth() / parent.getColumnCount()) - params.rightMargin - params.leftMargin;
-//                gsparams.height = (parent.getHeight() / parent.getRowCount()) - params.bottomMargin - params.topMargin;
-//                grandson.setBackgroundColor(Color.DKGRAY);
-//                grandson.setLayoutParams(gsparams);
-//            } else {
             params.width = (parent.getWidth() / parent.getColumnCount()) - params.rightMargin - params.leftMargin;
             params.height = (parent.getHeight() / parent.getRowCount()) - params.bottomMargin - params.topMargin;
             //child.setBackgroundColor(Color.DKGRAY);
-            //}
+//            if (child.getClass() == AppCompatImageButton.class) {
+//                params.width *= 0.5 * 0.7;
+//                params.height *= 0.5 * 0.7;
+//            }
             child.setLayoutParams(params);
             //child.setBackgroundColor(parent.getDrawingCacheBackgroundColor());
         }
+
+        if (DataReader.GetButtonsPlace(this) == 1)
+            alterButtons(parent);
+        if (DataReader.GetLayoutState(this) == 0)
+            alterLayout(parent);
+    }
+
+    void alterLayout(GridLayout parent) {
+        Button b1 = findViewById(R.id.But_7);
+        Button b2 = findViewById(R.id.But_1);
+        switchPlaces(b1, b2);
+        b1 = findViewById(R.id.But_8);
+        b2 = findViewById(R.id.But_2);
+        switchPlaces(b1, b2);
+        b1 = findViewById(R.id.But_9);
+        b2 = findViewById(R.id.But_3);
+        switchPlaces(b1, b2);
+
+    }
+
+    void switchPlaces(View b1, View b2) {
+        ViewGroup.LayoutParams temp = b1.getLayoutParams();
+        b1.setLayoutParams(b2.getLayoutParams());
+        b2.setLayoutParams(temp);
+    }
+
+    void alterButtons(GridLayout parent) {
+        View b1 = findViewById(R.id.But_7);
+        View b2 = findViewById(R.id.But_8);
+        View b3 = findViewById(R.id.But_9);
+        View b4 = findViewById(R.id.But_Del);
+        switchPlaces(b1, b4);
+        switchPlaces(b2, b1);
+        switchPlaces(b3, b2);
+
+        b1 = findViewById(R.id.But_4);
+        b2 = findViewById(R.id.But_5);
+        b3 = findViewById(R.id.But_6);
+        b4 = findViewById(R.id.But_Skip);
+        switchPlaces(b1, b4);
+        switchPlaces(b2, b1);
+        switchPlaces(b3, b2);
+
+        b1 = findViewById(R.id.But_1);
+        b2 = findViewById(R.id.But_2);
+        b3 = findViewById(R.id.But_3);
+        b4 = findViewById(R.id.But_Help);
+        switchPlaces(b1, b4);
+        switchPlaces(b2, b1);
+        switchPlaces(b3, b2);
+
+        b1 = findViewById(R.id.But_empty);
+        b2 = findViewById(R.id.But_0);
+        b3 = findViewById(R.id.But_comma);
+        b4 = findViewById(R.id.But_Check);
+        switchPlaces(b1, b4);
+        switchPlaces(b2, b1);
+        switchPlaces(b3, b2);
+
+        TextView text = findViewById(R.id.deletetext);
+        GridLayout.LayoutParams params = (GridLayout.LayoutParams) text.getLayoutParams();
+        params.columnSpec = GridLayout.spec(0);
+        text.setLayoutParams(params);
+
+        text = findViewById(R.id.skiptext);
+        params = (GridLayout.LayoutParams) text.getLayoutParams();
+        params.columnSpec = GridLayout.spec(0);
+        text.setLayoutParams(params);
+
+        text = findViewById(R.id.helptext);
+        params = (GridLayout.LayoutParams) text.getLayoutParams();
+        params.columnSpec = GridLayout.spec(0);
+        text.setLayoutParams(params);
+
+        text = findViewById(R.id.checktext);
+        params = (GridLayout.LayoutParams) text.getLayoutParams();
+        params.columnSpec = GridLayout.spec(0);
+        text.setLayoutParams(params);
     }
 
     @Override
     public void onBackPressed() {
-        if (currentTour.totalTasks == 0 && !answerShown) {
-            finish();
-        } else {
-            new AlertDialog.Builder(TaskActivity.this)
-                    .setTitle("Досрочное завершение раунда")
-                    .setMessage("Сохранить результаты?")
-                    .setNeutralButton("Отмена", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    })
-                    .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-//                        saveTaskStatistic(); //Текущее задание не записываем!
-//                            StatisticMaker.saveTour(currentTour, context); // Результаты тура тут сохранять не нужно, они сохранятся при завершении раунда.
-                            endRound();
-                        }
-                    })
-                    .show();
-        }
+       crossClick(findViewById(R.id.cross));
     }
 
     //сохраняем информацию о данной попытке и обновляем информацию раунда
@@ -245,6 +291,7 @@ public class TaskActivity extends AppCompatActivity {
         answerShown = false;
         newTask.generate(allowedTasks);
         answer = "";
+        G_progressBar.setProgress(progressStatus);
         if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis) {
             endRound();
         } else {
@@ -294,26 +341,29 @@ public class TaskActivity extends AppCompatActivity {
         if (currentTour.totalTasks == 0 && !answerShown) {
             finish();
         } else {
-            new AlertDialog.Builder(TaskActivity.this)
-                    .setTitle("Досрочное завершение раунда")
-                    .setMessage("Сохранить результаты?")
-                    .setNeutralButton("Отмена", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    })
-                    .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
+            AlertDialog dialog =
+                    new AlertDialog.Builder(TaskActivity.this)
+                            .setTitle("Досрочное завершение раунда")
+                            .setMessage("Сохранить результаты?")
+                            .setNeutralButton("Отмена", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            })
+                            .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
 //                        saveTaskStatistic(); //Текущее задание не записываем!
 //                            StatisticMaker.saveTour(currentTour, context); // Результаты тура тут сохранять не нужно, они сохранятся при завершении раунда.
-                            endRound();
-                        }
-                    })
-                    .show();
+                                    endRound();
+                                }
+                            }).show();
+//            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+//            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+//            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.BLACK);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.education4all.decimals;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.gridlayout.widget.GridLayout;
 
 import android.view.Gravity;
@@ -64,52 +66,79 @@ public class StatiscticsActivity extends AppCompatActivity {
         for (int tourNumber = tourCount - 1; tourNumber >= 0; --tourNumber) {
             RelativeLayout row = new RelativeLayout(this);
 
-            TextView newTour = new TextView(this);
-            newTour.setId(tourNumber);
-            String tourInfo = StatisticMaker.getTourInfo(this, tourNumber);
-            String txt = Tour.DepictTour(tourInfo);
+            String tourInfoStr = StatisticMaker.getTourInfo(this, tourNumber);
+            String txt = Tour.DepictTour(tourInfoStr);
+
             boolean isAllTasksRight = (txt.substring(0, 1).equals("="));
-            newTour.setText(txt.substring(1));
-            newTour.setTag(tourNumber);
-            newTour.setTextSize(20);
-            newTour.setOnClickListener(tourClick);
+            int divider = txt.indexOf("Решено");
+            String datetime = txt.substring(1, divider - 1);
+            String info = txt.substring(divider);
+
+            TextView tourdatetime = new TextView(this);
+            tourdatetime.setId(tourNumber);
+            tourdatetime.setText(datetime);
+            tourdatetime.setTag(tourNumber);
+            tourdatetime.setTextSize(getResources().getDimension(R.dimen.dimen5)/ getResources().getDisplayMetrics().density);
+            tourdatetime.setOnClickListener(tourClick);
+            tourdatetime.setGravity(Gravity.TOP | Gravity.START);
+
+            TextView tourinfo = new TextView(this);
+            // tourinfo.setId(tourNumber);
+            tourinfo.setText(info);
+            tourinfo.setTextSize(getResources().getDimension(R.dimen.dimen4)/ getResources().getDisplayMetrics().density);
+            tourinfo.setOnClickListener(tourClick);
+            tourinfo.setGravity(Gravity.BOTTOM | Gravity.START);
 
             Button arrow = new Button((this));
             arrow.setTag(tourNumber);
             arrow.setOnClickListener(tourClick);
 //            arrow.setText("\u232A");
-            arrow.setText("›");
             //arrow.setText("@strings/Arrow");
+            arrow.setText("›");
+            //  arrow.setPadding(0, 0, 0, 10);
             arrow.setTextSize(30);
-            arrow.setTextColor(Color.GRAY);
             arrow.setBackgroundColor(Color.TRANSPARENT);
             arrow.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
-//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-//                    RelativeLayout.LayoutParams.MATCH_PARENT);
-//            params.setMargins(0,0,0,10);
-//
-//            arrow.setLayoutParams(params);
+            arrow.setTextColor(ContextCompat.getColor(this, R.color.additional));
+
             row.setGravity(Gravity.CENTER_VERTICAL);
             if (isAllTasksRight) {
-                newTour.setTextColor(Color.GREEN);
-                arrow.setTextColor(Color.GREEN);
+                tourdatetime.setTextColor(ContextCompat.getColor(this, R.color.shadowed));
+                tourinfo.setTextColor(ContextCompat.getColor(this, R.color.shadowed));
+             //   arrow.setTextColor(ContextCompat.getColor(this, R.color.shadowed));
+            } else {
+                tourdatetime.setTextColor(ContextCompat.getColor(this, R.color.main));
+                tourinfo.setTextColor(ContextCompat.getColor(this, R.color.main));
+            //    arrow.setTextColor(ContextCompat.getColor(this, R.color.additional));
             }
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.addRule(RelativeLayout.ALIGN_TOP, newTour.getId());
-            layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, newTour.getId());
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             arrow.setLayoutParams(layoutParams);
 
-            row.addView(newTour);
+
+            layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.MATCH_PARENT);
+            layoutParams.addRule(RelativeLayout.BELOW, tourdatetime.getId());
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            tourinfo.setLayoutParams(layoutParams);
+
+            row.addView(tourdatetime);
+            row.addView(tourinfo);
             row.addView(arrow);
             justALayout.addView(row);
 
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 20, 0, 20);
+            row.setLayoutParams(params);
+
             bar = new View(this);
             bar.setVisibility(View.VISIBLE);
-            bar.setMinimumHeight(1);
+            bar.setMinimumHeight(5);
             bar.setPadding(50, 0, 50, 0);
-            bar.setBackgroundColor(Color.DKGRAY);
+            bar.setBackgroundColor(getResources().getColor(R.color.additional));
             justALayout.addView(bar);
         }
     }

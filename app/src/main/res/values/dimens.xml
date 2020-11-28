@@ -3,5 +3,11 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="main_window_text_size">30dp</dimen>
+    <dimen name="dimen0">40sp</dimen>
+    <dimen name="dimen1">30sp</dimen>
+    <dimen name="dimen2">28sp</dimen>
+    <dimen name="dimen3">26sp</dimen>
+    <dimen name="dimen4">24sp</dimen>
+    <dimen name="dimen5">17sp</dimen>
+    <dimen name="dimen6">15sp</dimen>
 </resources>

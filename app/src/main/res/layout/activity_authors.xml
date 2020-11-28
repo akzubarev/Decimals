@@ -6,37 +6,97 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/color2"
     tools:context="com.education4all.decimals.AuthorsActivity"
     android:weightSum="1">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            app:popupTheme="@style/CustomPopup"
+            app:titleTextAppearance="@style/ActionBarText"
+            android:background="@color/color1"
+            />
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color2"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:weightSum="1">
         <TextView
             android:textAppearance="?android:attr/textAppearanceLarge"
-
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-
-            android:text="@string/about_text"
-            android:textSize="20sp"
-            android:textColor="@android:color/tertiary_text_dark"
+            android:text="Десятичные дроби"
+            android:textSize="@dimen/dimen4"
+            android:textColor="@color/main"
+            />
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="(тренажёр устного счёта)"
+            android:textSize="@dimen/dimen4"
+            android:textColor="@color/shadowed"
+            />
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Идея:"
+            android:textSize="@dimen/dimen4"
+            android:textColor="@color/main"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            />
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Артём Казанович"
+            android:textSize="@dimen/dimen4"
+            android:textColor="@color/shadowed"
             />
 
         <TextView
             android:textAppearance="?android:attr/textAppearanceLarge"
-
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:text="Программирование:"
+            android:textSize="@dimen/dimen4"
+            android:textColor="@color/main"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            />
 
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Александр Умнов\nАлексей Зубарев\nАртём Казанович"
+            android:textSize="@dimen/dimen4"
+            android:textColor="@color/shadowed"
+            />
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
             android:text="@string/email"
             android:textSize="20sp"
-            android:textColor="@android:color/tertiary_text_dark"
-
+            android:textColorLink="@color/additional"
             android:autoLink="email"
             />
-
+        </LinearLayout>
 </LinearLayout>

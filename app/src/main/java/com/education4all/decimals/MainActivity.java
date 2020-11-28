@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,8 +20,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_overflow));
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("");
+
 //        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 //        getSupportActionBar().setCustomView(R.layout.abs_layout);
     }
@@ -55,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startSettings(View view) {
-        Intent intent = new Intent(this, SettingsSimpleActivity.class);
+        //Intent intent = new Intent(this, SettingsSimpleActivity.class);
+        Intent intent = new Intent(this, SettingsMainActivity.class);
         startActivity(intent);
     }
 

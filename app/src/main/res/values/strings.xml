@@ -11,10 +11,10 @@
     <string name="action_delete_tour">Удалить раунд</string>
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="title_activity_settings_simple">Настройки</string>
-    <string name="title_activity_complexity">Настройки сложности</string>
+    <string name="title_activity_complexity">Сложность</string>
     <string name="back_space_button">DEL</string>
     <string name="title_activity_statisctics">Результаты</string>
-    <string name="title_activity_stat_tour">Результаты раунда</string>
+    <string name="title_activity_stat_tour">Раунд</string>
     <string name="title_activity_wheel_picker">wheel_picker</string>>
     <string name="about_text">Десятичные дроби\n(тренажёр устного счёта)\n\nИдея:\nАртём Казанович\n\nПрограммирование:\nАлександр Умнов\nАлексей Зубарев\nАртём Казанович\n</string>>
     <string name="email">mathcoach.support@yandex.ru</string>>

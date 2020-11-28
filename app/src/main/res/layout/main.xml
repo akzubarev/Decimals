@@ -12,18 +12,20 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:background="@color/color1"
+        app:popupTheme="@style/CustomPopup"
         >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
-            android:textSize="@dimen/main_window_text_size"
+            android:textSize="@dimen/dimen1"
             android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/main"
+
             />
     </androidx.appcompat.widget.Toolbar>
 
@@ -35,18 +37,20 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/color2">
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:text="@string/stats_button"
-
             android:textAllCaps="false"
             android:id="@+id/stat_button"
             android:layout_weight="0.33"
-            android:textSize="@dimen/main_window_text_size"
-            android:onClick="startStatistic"/>
+            android:textSize="@dimen/dimen2"
+            android:onClick="startStatistic"
+            android:layout_marginBottom="10dp"
+            android:background="@color/color3"/>
 
         <Button
             android:layout_width="fill_parent"
@@ -54,10 +58,11 @@
             android:text="@string/settings_button"
             android:id="@+id/settings_button"
             android:layout_gravity="bottom"
-            android:textSize="@dimen/main_window_text_size"
+            android:textSize="@dimen/dimen2"
             android:layout_weight="0.33"
             android:textAllCaps="false"
-            android:onClick="startSettings"/>
+            android:onClick="startSettings"
+            android:background="@color/color3"/>
 
         <Button
             android:layout_width="fill_parent"
@@ -65,9 +70,11 @@
             android:text="@string/start_button"
             android:id="@+id/start_button"
             android:textAllCaps="false"
-            android:textSize="@dimen/main_window_text_size"
+            android:textSize="@dimen/dimen2"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.33"
-            android:onClick="startTasks"/>
+            android:onClick="startTasks"
+            android:background="@drawable/buttonmain"
+           android:layout_marginTop="10dp"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>

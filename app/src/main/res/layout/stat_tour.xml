@@ -5,16 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.education4all.decimals.StatTourActivity">
+    tools:context="com.education4all.decimals.StatTourActivity"
+    android:background="@color/color2">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/color1"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/CustomPopup"
+        app:titleTextAppearance="@style/ActionBarText" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:paddingLeft="@dimen/activity_horizontal_margin"

@@ -1,5 +1,7 @@
 package com.education4all.decimals.MathCoachAlg;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -219,23 +221,32 @@ public class Task {
     String withPrecision(double value) {
         int precision = 0;
         double temp = value;
-        while (temp - (int) temp > 0.00001) {
-            temp *= 10;
-            precision++;
 
-            if (precision > 5 || temp - (int) temp >= 1) {
-                int temp1 = (int) temp + 1;
-                while (temp1 % 10 == 0) {
-                    temp1 /= 10;
-                    precision--;
+        if (value - (int) value > 0.00001)
+            while (temp - (int) temp > 0.00001) {
+                temp *= 10;
+                precision++;
 
-                }
+                if (precision >= 5 || temp - (int) temp >= 1) {
+                    int temp1 = (int) temp;
+                    if (temp1 % 10 == 9)
+                        temp1++;
+                    while (temp1 % 10 == 0 && temp1 > value - 0.00001) {
+                        temp1 /= 10;
+                        precision--;
+
+                    }
+
+//                    Log.d("EndlessLoop", String.format("%d", temp1));
+//                    Log.d("EndlessLoop", String.format("%f", value));
+//                    Log.d("EndlessLoop", String.format("%f", value - (int) value));
 //                Log.v("EndlessLoop", String.format("%d", temp1 % 10));
-                break;
+                    break;
+                }
             }
-        }
+
         if (precision == 0)
-            return String.format("%d", (int) value);
+            return String.format("%d", Math.round(value));
         else
             return String.format("%." + precision + "f", value);
 
@@ -292,7 +303,7 @@ public class Task {
                             break;
                     }
                 else
-                    switch (randomInclusive(0, 2, false)) {
+                    switch (randomInclusive(0, 1, false)) {
                         case 0:
                             n = rndtype(1) * 100;
                             m = rndtype(3);
@@ -301,11 +312,11 @@ public class Task {
                             n = rndtype(2) * 100;
                             m = rndtype(3);
                             break;
-                        case 2:
-                        default:
-                            n = rndtype(3) * 100;
-                            m = rndtype(3);
-                            break;
+//                        case 2:
+//                        default:
+//                            n = rndtype(3) * 100;
+//                            m = rndtype(3);
+//                            break;
                     }
                 break;
             case 3:
@@ -412,7 +423,7 @@ public class Task {
                 }
                 break;
             case 3:
-                switch (randomInclusive(0, 4, false)) {
+                switch (randomInclusive(0, 3, false)) {
                     case 0:
                         switch (randomInclusive(0, 3, false)) {
                             case 0:
@@ -430,10 +441,17 @@ public class Task {
                         }
                         break;
                     case 1:
-                        if (rnd.nextBoolean())
-                            n = rndtype(1) * 100;
-                        else
-                            n = rndtype(2) * 100;
+                        switch (randomInclusive(0, 3, false)) {
+                            case 0:
+                                n = rndtype(1) * 100;
+                                break;
+                            case 1:
+                                n = rndtype(2) * 100;
+                                break;
+                            case 2:
+                                n = rndtype(3) * 100;
+                                break;
+                        }
                         m = rndtype(2);
                         break;
                     case 2:
@@ -447,11 +465,7 @@ public class Task {
                         n = rndtype(3);
                         m = rndtype(2) * 10;
                         break;
-                    case 4:
-                    default:
-                        n = rndtype(3);
-                        m = rndtype(1) * 100;
-                        break;
+
                 }
                 break;
             default:
@@ -476,95 +490,127 @@ public class Task {
         int n = 0;
         int m = 0;
         complexity = complexityRandomizer(allowedTasks);
-        ;
-        switch (complexity) {
-            case 0:
-                n = rnd.nextInt(8) + 2;
-                m = rnd.nextInt(8) + 2;
-                break;
-            case 1:
-                n = rnd.nextInt(8) + 2;
-                m = rnd.nextInt(90) + 10;
-                if (rnd.nextInt(2) == 1) {
-                    int k = n;
-                    n = m;
-                    m = k;
-                }
-                break;
-            case 2:
-                n = rnd.nextInt(8) + 2;
-                m = rnd.nextInt(900) + 100;
-                if (rnd.nextInt(2) == 1) {
-                    int k = n;
-                    n = m;
-                    m = k;
-                }
-                break;
-            case 3:
-                n = rnd.nextInt(90) + 10;
-                m = rnd.nextInt(90) + 10;
-                break;
-            default:
-                //DatasaveErrorLog("No valid complexity for multiplication, yet called");
-                break;
+        int pown = 0, powm = 0;
+        double nn, mm, divn, divm;
+
+        do {
+            switch (complexity) {
+                case 0:
+                    int temp = randomInclusive(1, 3, false);
+                    n = rndtype(temp);
+                    m = 1;
+
+                    pown = randomInclusive(-(3 - temp), 3, false);
+                    powm = randomInclusive(1, Math.min(4 - pown, 3), false);
+                    break;
+                case 1:
+                    n = randomInclusive(2, 9, true);
+                    m = randomInclusive(2, 9, true);
+                    do {
+                        pown = randomInclusive(-2, 3, false);
+                        powm = randomInclusive(-2, Math.min(4 - pown, 3), false);
+                    } while (pown < 1 && powm < 1);
+                    break;
+                case 2:
+                    n = rndtype(2);
+                    m = randomInclusive(2, 9, true);
+                    do {
+                        pown = randomInclusive(-1, 3, false);
+                        powm = randomInclusive(-2, Math.min(4 - pown, 3), false);
+                    } while (pown < 1 && powm < 1);
+                    break;
+                case 3:
+                    n = rndtype(3);
+                    m = randomInclusive(2, 9, true);
+                    do {
+                        pown = randomInclusive(0, 3, false);
+                        powm = randomInclusive(-2, Math.min(4 - pown, 3), false);
+                    } while (pown < 1 && powm < 1);
+                    break;
+                default:
+                    //DatasaveErrorLog("No valid complexity for multiplication, yet called");
+                    break;
+            }
+
+            divn = Math.pow(10, pown);
+            divm = Math.pow(10, powm);
+            nn = n / divn;
+            mm = m / divm;
         }
-        expression = Integer.toString(n) + operations[2] + Integer.toString(m);
-        answer = Integer.toString(n * m);
+        while (nn == 1 || mm == 1 || ((int) nn == nn && (int) mm == mm));
+
+        if (rnd.nextBoolean()) {
+            double k = nn;
+            nn = mm;
+            mm = k;
+        }
+        expression = withPrecision(nn) + operations[2] + withPrecision(mm);
+        answer = withPrecision(nn * mm);
     }
 
     // :
     private void division(final int[][] allowedTasks) {
-        int m = 0;
-        int n = 0;
-        int k = 0;
-        int l = 0;
+        int n = 0, m = 0, k = 0;
         complexity = complexityRandomizer(allowedTasks);
-        ;
+        int pown = 0, powm = 0, powk = 0;
+        double nn = 0, mm = 0, kk = 0, divn = 0, divm = 0, divk = 0;
+
         switch (complexity) {
             case 0:
-                n = rnd.nextInt(9 - 1 + 1) + 1;
-                m = rnd.nextInt(9 + 1);
-                k = n;
-                l = m;
+                int temp = randomInclusive(1, 3, false);
+                n = rndtype(temp);
+                m = 1;
+                do {
+                    pown = randomInclusive(temp - 3, 3, false);
+                    powm = randomInclusive(-3, 3, true);
+                    divn = Math.pow(10, pown);
+                    divm = Math.pow(10, powm);
+                    nn = n / divn;
+                    mm = m / divm;
+                    kk = nn / mm;
+                } while ((int) nn == nn && (int) mm == mm && (int) kk == kk);
                 break;
             case 1:
-                n = rnd.nextInt(10 - 1 + 1) + 1;
-                m = rnd.nextInt(99 - 10 + 1) + 10;
-//	                if (rnd.nextInt(2) == 1) {
-//	                    int p = n;
-//	                    n = m;
-//	                    m = p;
-//	                }
-                k = n;
-                l = m;
-                break;
-            case 4:
-                //На самом деле расширение второго уровня
-                n = rnd.nextInt(10 - 1 + 1) + 1;
-                m = rnd.nextInt(99 - 10 + 1) + 10;
-                k = m;
-                l = n;
+                k = rndtype(1);
+                m = randomInclusive(2, 9, false);
+                do {
+                    powk = randomInclusive(-3, 3, false);
+                    powm = randomInclusive(Math.max(-3, -2 - powk), Math.min(3, 3 - powk), false);
+                    divk = Math.pow(10, powk);
+                    divm = Math.pow(10, powm);
+                    kk = k / divk;
+                    mm = m / divm;
+                    nn = kk * mm;
+                } while ((int) nn == nn && (int) mm == mm && (int) kk == kk);
                 break;
             case 2:
-                n = rnd.nextInt(10 - 1 + 1) + 1;
-                m = rnd.nextInt(999 - 100 + 1) + 100;
-                k = n;
-                l = m;
+                k = rndtype(2);
+                m = randomInclusive(2, 9, false);
+                do {
+                    powk = randomInclusive(-3, 3, false);
+                    powm = randomInclusive(Math.max(-3, -1 - powk), Math.min(3, 3 - powk), false);
+                    divk = Math.pow(10, powk);
+                    divm = Math.pow(10, powm);
+                    kk = k / divk;
+                    mm = m / divm;
+                    nn = kk * mm;
+                } while ((int) nn == nn && (int) mm == mm && (int) kk == kk);
                 break;
             case 3:
-                n = rnd.nextInt(99 - 10 + 1) + 10;
-                m = rnd.nextInt(99 - 10 + 1) + 10;
-                k = n;
-                l = m;
-                break;
-
-            default:
-                //DatasaveErrorLog("No valid complexity for division, yet called");
-                k = 1;
-                l = 1;
+                k = rndtype(3);
+                m = randomInclusive(2, 9, false);
+                do {
+                    powk = randomInclusive(-3, 3, false);
+                    powm = randomInclusive(Math.max(-3, -powk), Math.min(3, 3 - powk), false);
+                    divk = Math.pow(10, powk);
+                    divm = Math.pow(10, powm);
+                    kk = k / divk;
+                    mm = m / divm;
+                    nn = kk * mm;
+                } while ((int) nn == nn && (int) mm == mm && (int) kk == kk);
                 break;
         }
-        expression = Integer.toString(k * l) + operations[3] + Integer.toString(k);
-        answer = Integer.toString(l);
+        expression = withPrecision(nn) + operations[3] + withPrecision(mm);
+        answer = withPrecision(kk);
     }
 }

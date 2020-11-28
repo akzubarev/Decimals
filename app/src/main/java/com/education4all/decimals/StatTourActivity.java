@@ -1,12 +1,14 @@
 package com.education4all.decimals;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -65,10 +67,11 @@ public class StatTourActivity extends AppCompatActivity {
 //                    taskAndUserAnswer += testPart; // Вывод данных в тестовом режиме, TODO закомментировать перед релизом
 
                     newTask.setText(taskAndUserAnswer);
-                    newTask.setTextSize(20);
+                    newTask.setTextSize(getResources().getDimension(R.dimen.dimen4)/ getResources().getDisplayMetrics().density);
                     userTimeTV.setText(userTime);
                     userTimeTV.setGravity(Gravity.END);
-                    userTimeTV.setTextSize(20);
+                    userTimeTV.setTextSize(getResources().getDimension(R.dimen.dimen4)/ getResources().getDisplayMetrics().density);
+                    userTimeTV.setTextColor(ContextCompat.getColor(this, R.color.additional));
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                             RelativeLayout.LayoutParams.MATCH_PARENT);
                     userTimeTV.setLayoutParams(layoutParams);
@@ -76,13 +79,13 @@ public class StatTourActivity extends AppCompatActivity {
                     boolean userAnswerIsCorrect = answers.get(j).equals(currentTask.answer);
                     if (userAnswerIsCorrect) {
 //                        int clr = Color.parseColor("#1B5E20");
-                        int clr = Color.GREEN;
+                        int clr = ContextCompat.getColor(this, R.color.shadowed);
                         newTask.setTextColor(clr);
-                        userTimeTV.setTextColor(clr);
+                       // userTimeTV.setTextColor(clr);
                     }
                     else {
-                        newTask.setTextColor(Color.LTGRAY);
-                        userTimeTV.setTextColor(Color.LTGRAY);
+                        newTask.setTextColor(ContextCompat.getColor(this, R.color.main));
+                       // userTimeTV.setTextColor(Color.LTGRAY);
                     }
 
                     // костыль
