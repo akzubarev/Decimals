@@ -85,8 +85,8 @@ public class TaskActivity extends AppCompatActivity {
         newTask = new Task();
         allowedTasks = DataReader.readAllowedTasks(this);
         if (!newTask.areTasks(allowedTasks)) {
+            finish();
             startActivity(new Intent(context, SettingsMainActivity.class).putExtra("FromTask", true));
-
         } else {
             tourStartTime = Calendar.getInstance().getTimeInMillis();
             prevTaskTime = tourStartTime;

@@ -1,16 +1,21 @@
 package com.education4all.decimals;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.gridlayout.widget.GridLayout;
 
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,11 +27,24 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_overflow));
         setSupportActionBar(myToolbar);
-        getSupportActionBar().setTitle("");
+//        getSupportActionBar().setTitle("");
 
 //        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 //        getSupportActionBar().setCustomView(R.layout.abs_layout);
+
+
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+//            this.finishAndRemoveTask();
+//        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+//            this.finishAffinity();
+//       else
+//           System.exit(0);
+//    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

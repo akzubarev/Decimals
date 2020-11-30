@@ -2,10 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '24.0.3'
     defaultConfig {
         applicationId "com.education4all.decimals"
-        minSdkVersion 23
+        minSdkVersion 15
         targetSdkVersion 29
         versionName '1.0.2'
         versionCode 4

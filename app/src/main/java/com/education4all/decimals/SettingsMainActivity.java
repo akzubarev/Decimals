@@ -69,7 +69,8 @@ public class SettingsMainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(this, MainActivity.class));
+        // startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();
     }
 
     @Override

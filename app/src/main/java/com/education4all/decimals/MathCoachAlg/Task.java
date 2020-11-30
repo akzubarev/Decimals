@@ -352,131 +352,131 @@ public class Task {
         int m = 0;
         int n = 0;
         complexity = complexityRandomizer(allowedTasks);
-
-        switch (complexity) {
-            case 0:
-                switch (randomInclusive(0, 2, false)) {
-                    case 0:
-                        n = rndtype(1);
-                        break;
-                    case 1:
-                        n = rndtype(2);
-                        break;
-                    case 2:
-                    default:
-                        n = rndtype(3);
-                        break;
-                }
-                m = rndtype(1);
-                break;
-            case 1:
-                if (rnd.nextBoolean())
-                    n = rndtype(2);
-                else
-                    n = rndtype(3);
-
-                m = rndtype(2);
-                break;
-            case 2:
-                switch (randomInclusive(0, 4, false)) {
-                    case 0:
-                        switch (randomInclusive(0, 3, false)) {
-                            case 0:
-                                n = rndtype(1) * 10;
-                                m = rndtype(1);
-                                break;
-                            case 1:
-                                n = rndtype(2) * 10;
-                                m = rndtype(1);
-                                break;
-                            case 2:
-                                n = rndtype(3) * 10;
-                                m = rndtype(1);
-                                break;
-                        }
-                        break;
-                    case 1:
-                        if (rnd.nextBoolean())
-                            n = rndtype(1) * 100;
-                        else
-                            n = rndtype(2) * 100;
-                        m = rndtype(1);
-                        break;
-                    case 2:
-                        if (rnd.nextBoolean())
-                            n = rndtype(1) * 1000;
-                        else
-                            n = rndtype(2) * 1000;
-                        m = rndtype(1);
-                        break;
-                    case 3:
-                        if (rnd.nextBoolean())
+        do
+            switch (complexity) {
+                case 0:
+                    switch (randomInclusive(0, 2, false)) {
+                        case 0:
+                            n = rndtype(1);
+                            break;
+                        case 1:
                             n = rndtype(2);
-                        else
+                            break;
+                        case 2:
+                        default:
                             n = rndtype(3);
-                        m = rndtype(1) * 10;
-                    case 4:
-                    default:
+                            break;
+                    }
+                    m = rndtype(1);
+                    break;
+                case 1:
+                    if (rnd.nextBoolean())
+                        n = rndtype(2);
+                    else
                         n = rndtype(3);
-                        m = rndtype(1) * 100;
-                        break;
-                }
-                break;
-            case 3:
-                switch (randomInclusive(0, 3, false)) {
-                    case 0:
-                        switch (randomInclusive(0, 3, false)) {
-                            case 0:
-                                n = rndtype(1) * 10;
-                                m = rndtype(2);
-                                break;
-                            case 1:
-                                n = rndtype(2) * 10;
-                                m = rndtype(2);
-                                break;
-                            case 2:
-                                n = rndtype(3) * 10;
-                                m = rndtype(2);
-                                break;
-                        }
-                        break;
-                    case 1:
-                        switch (randomInclusive(0, 3, false)) {
-                            case 0:
-                                n = rndtype(1) * 100;
-                                break;
-                            case 1:
-                                n = rndtype(2) * 100;
-                                break;
-                            case 2:
-                                n = rndtype(3) * 100;
-                                break;
-                        }
-                        m = rndtype(2);
-                        break;
-                    case 2:
-                        if (rnd.nextBoolean())
-                            n = rndtype(1) * 1000;
-                        else
-                            n = rndtype(2) * 1000;
-                        m = rndtype(2);
-                        break;
-                    case 3:
-                        n = rndtype(3);
-                        m = rndtype(2) * 10;
-                        break;
 
-                }
-                break;
-            default:
-                ////DatasaveErrorLog("No valid complexity for substraction, yet called");
-                break;
-        }
-        if (n < m) {
-            int k = n;
-            n = m;
-            m = k;
-        }
+                    m = rndtype(2);
+                    break;
+                case 2:
+                    switch (randomInclusive(0, 4, false)) {
+                        case 0:
+                            switch (randomInclusive(0, 2, false)) {
+                                case 0:
+                                    n = rndtype(1) * 10;
+                                    m = rndtype(1);
+                                    break;
+                                case 1:
+                                    n = rndtype(2) * 10;
+                                    m = rndtype(1);
+                                    break;
+                                case 2:
+                                default:
+                                    n = rndtype(3) * 10;
+                                    m = rndtype(1);
+                                    break;
+                            }
+                            break;
+                        case 1:
+                            if (rnd.nextBoolean())
+                                n = rndtype(1) * 100;
+                            else
+                                n = rndtype(2) * 100;
+                            m = rndtype(1);
+                            break;
+                        case 2:
+                            if (rnd.nextBoolean())
+                                n = rndtype(1) * 1000;
+                            else
+                                n = rndtype(2) * 1000;
+                            m = rndtype(1);
+                            break;
+                        case 3:
+                            if (rnd.nextBoolean())
+                                n = rndtype(2);
+                            else
+                                n = rndtype(3);
+                            m = rndtype(1) * 10;
+                            break;
+                        case 4:
+                        default:
+                            n = rndtype(3);
+                            m = rndtype(1) * 100;
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch (randomInclusive(0, 3, false)) {
+                        case 0:
+                            switch (randomInclusive(0, 2, false)) {
+                                case 0:
+                                    n = rndtype(1) * 10;
+                                    m = rndtype(2);
+                                    break;
+                                case 1:
+                                    n = rndtype(2) * 10;
+                                    m = rndtype(2);
+                                    break;
+                                case 2:
+                                default:
+                                    n = rndtype(3) * 10;
+                                    m = rndtype(2);
+                                    break;
+                            }
+                            break;
+                        case 1:
+                            switch (randomInclusive(0, 2, false)) {
+                                case 0:
+                                    n = rndtype(1) * 100;
+                                    break;
+                                case 1:
+                                    n = rndtype(2) * 100;
+                                    break;
+                                case 2:
+                                    n = rndtype(3) * 100;
+                                    break;
+                            }
+                            m = rndtype(2);
+                            break;
+                        case 2:
+                            if (rnd.nextBoolean())
+                                n = rndtype(1) * 1000;
+                            else
+                                n = rndtype(2) * 1000;
+                            m = rndtype(2);
+                            break;
+                        case 3:
+                        default:
+                            n = rndtype(3);
+                            m = rndtype(2) * 10;
+                            break;
+                    }
+                    break;
+                default:
+                    ////DatasaveErrorLog("No valid complexity for substraction, yet called");
+                    break;
+            }
+        while (n <= m);
+
         int pow = randomInclusive(1, 3, false);
         double div = Math.pow(10, pow);
         double nn = n / div, mm = m / div;
