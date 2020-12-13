@@ -164,37 +164,32 @@ public class SettingsTaskTab extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        boolean checked = false;
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxAdd" + Integer.toString(i);
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) view.findViewById(resID);
-            if (DataReader.checkComplexity(0, i - 1, getActivity().getApplicationContext())) {
-                cb.setChecked(true);
-            } else {
-                cb.setChecked(false);
-            }
+            checked = DataReader.checkComplexity(0, i - 1, getActivity().getApplicationContext());
+            if (cb.isChecked() != checked)
+                cb.setChecked(checked);
             cb.setOnClickListener(this::onCheckBoxClick);
         }
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxSub" + Integer.toString(i);
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) view.findViewById(resID);
-            if (DataReader.checkComplexity(1, i - 1, getActivity().getApplicationContext())) {
-                cb.setChecked(true);
-            } else {
-                cb.setChecked(false);
-            }
+            checked = DataReader.checkComplexity(1, i - 1, getActivity().getApplicationContext());
+            if (cb.isChecked() != checked)
+                cb.setChecked(checked);
             cb.setOnClickListener(this::onCheckBoxClick);
         }
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxMul" + Integer.toString(i);
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) view.findViewById(resID);
-            if (DataReader.checkComplexity(2, i - 1, getActivity().getApplicationContext())) {
-                cb.setChecked(true);
-            } else {
-                cb.setChecked(false);
-            }
+            checked = DataReader.checkComplexity(2, i - 1, getActivity().getApplicationContext());
+            if (cb.isChecked() != checked)
+                cb.setChecked(checked);
             cb.setOnClickListener(this::onCheckBoxClick);
         }
         for (int i = 1; i <= 4; ++i) {
@@ -202,11 +197,9 @@ public class SettingsTaskTab extends Fragment {
             String name = "checkBoxDiv" + Integer.toString(i);
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) view.findViewById(resID);
-            if (DataReader.checkComplexity(3, i - 1, getActivity().getApplicationContext())) {
-                cb.setChecked(true);
-            } else {
-                cb.setChecked(false);
-            }
+            checked = DataReader.checkComplexity(3, i - 1, getActivity().getApplicationContext());
+            if (cb.isChecked() != checked)
+                cb.setChecked(checked);
             cb.setOnClickListener(this::onCheckBoxClick);
 //            } else {
 //                String name = "checkBoxDiv" + Integer.toString(i);

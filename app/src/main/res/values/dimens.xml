@@ -6,8 +6,20 @@
     <dimen name="dimen0">40sp</dimen>
     <dimen name="dimen1">30sp</dimen>
     <dimen name="dimen2">28sp</dimen>
-    <dimen name="dimen3">26sp</dimen>
-    <dimen name="dimen4">24sp</dimen>
+    <dimen name="dimen3">22sp</dimen>
+    <dimen name="dimen4">20sp</dimen>
     <dimen name="dimen5">17sp</dimen>
     <dimen name="dimen6">15sp</dimen>
+
+    <dimen name="bptop">30dp</dimen>
+    <dimen name="bpbottom">30dp</dimen>
+    <dimen name="bpleft">30dp</dimen>
+    <dimen name="bpright">30dp</dimen>
+
+    <dimen name="tmargin">10dp</dimen>
+    <dimen name="linemargin">15dp</dimen>
+
+    <dimen name="actionbaricon">60dp</dimen>
+
+
 </resources>

@@ -1,11 +1,14 @@
 package com.education4all.decimals;
 
 import androidx.appcompat.app.AlertDialog;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -20,6 +23,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -95,26 +100,21 @@ public class TaskActivity extends AppCompatActivity {
             answer = new String();
 
             G_progressBar = (ProgressBar) findViewById(R.id.taskProgress);
+            G_progressBar.setProgress(0);
             final int timerstate = DataReader.GetTimerState(this);
             G_progressBar.setVisibility(timerstate == 2 ? View.INVISIBLE : View.VISIBLE);
             RoundTime = DataReader.GetRoundTime(this);
             millis = (long) (RoundTime * 1000 * 60);
             final Context l_context = this;
-            new Thread(new Runnable() {
-                public void run() {
-                    while (progressStatus < 100) {
-                        progressStatus += 1;
-                        if (timerstate == 0)
-                            progressBarHandler.post(new Runnable() {
-                                public void run() {
-                                    G_progressBar.setProgress(progressStatus);
-                                }
-                            });
-                        try {
-                            Thread.sleep((long) (RoundTime * 600));
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+            new Thread(() -> {
+                while (progressStatus < 100) {
+                    progressStatus += 1;
+                    if (timerstate == 0)
+                        progressBarHandler.post(() -> G_progressBar.setProgress(progressStatus));
+                    try {
+                        Thread.sleep((long) (RoundTime * 600));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }).start();
@@ -130,6 +130,42 @@ public class TaskActivity extends AppCompatActivity {
                 textViewUpdate();
                 return true;
             });
+
+            GridLayout parent = findViewById(R.id.buttonsLayout);
+            for (int i = 0; i < parent.getChildCount(); i++) {
+                View child = parent.getChildAt(i);
+                if (child.getClass() == AppCompatButton.class) {
+                    final String childtag = child.getTag().toString();
+                    child.setOnLongClickListener(v -> {
+//                        int resID = getResources().getIdentifier(!childtag.equals(",") ? "line" + childtag : "linecomma",
+//                                "id", "com.education4all.decimals");
+//                        View line = findViewById(resID);
+//                        line.setBackgroundColor(getResources().getColor(R.color.main));
+                        numberPress(child);
+                        return true;
+                    });
+
+                    child.setOnTouchListener((v, event) -> {
+                        int resID = getResources().getIdentifier(!childtag.equals(",") ? "line" + childtag : "linecomma",
+                                "id", "com.education4all.decimals");
+                        View line = findViewById(resID);
+                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_DOWN:
+                                line.setBackgroundColor(getResources().getColor(R.color.main));
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                line.setBackgroundColor(getResources().getColor(R.color.shadowed));
+                                v.performClick();
+                                break;
+                            default:
+                                break;
+
+                        }
+
+                        return true;
+                    });
+                }
+            }
         }
     }
 
@@ -137,23 +173,26 @@ public class TaskActivity extends AppCompatActivity {
     public void fillView(GridLayout parent) {
         //Button child;
         View child;
-        parent.setBackgroundColor(Color.DKGRAY);
+        //parent.setBackgroundColor(Color.DKGRAY);
         for (int i = 0; i < parent.getChildCount(); i++) {
             // child = (Button)parent.getChildAt(i);
             child = parent.getChildAt(i);
-            GridLayout.LayoutParams params = (GridLayout.LayoutParams) child.getLayoutParams();
-            int margin = -8;
-            if (child.getClass() == AppCompatButton.class)//|| child.getClass() == ImageButton.class)
-                params.setMargins(margin, margin, margin, margin);
-            params.width = (parent.getWidth() / parent.getColumnCount()) - params.rightMargin - params.leftMargin;
-            params.height = (parent.getHeight() / parent.getRowCount()) - params.bottomMargin - params.topMargin;
-            //child.setBackgroundColor(Color.DKGRAY);
+            if (child.getClass() != View.class) {
+                GridLayout.LayoutParams params = (GridLayout.LayoutParams) child.getLayoutParams();
+                int margin = -8;
+                if (child.getClass() == AppCompatButton.class)//|| child.getClass() == ImageButton.class)
+                    params.setMargins(margin, margin, margin, margin);
+
+                params.width = (parent.getWidth() / parent.getColumnCount()) - params.rightMargin - params.leftMargin;
+                params.height = (parent.getHeight() / parent.getRowCount()) - params.bottomMargin - params.topMargin;
+                //child.setBackgroundColor(Color.DKGRAY);
 //            if (child.getClass() == AppCompatImageButton.class) {
 //                params.width *= 0.5 * 0.7;
 //                params.height *= 0.5 * 0.7;
 //            }
-            child.setLayoutParams(params);
-            //child.setBackgroundColor(parent.getDrawingCacheBackgroundColor());
+                child.setLayoutParams(params);
+                //child.setBackgroundColor(parent.getDrawingCacheBackgroundColor());
+            }
         }
 
         if (DataReader.GetButtonsPlace(this) == 1)
@@ -172,6 +211,19 @@ public class TaskActivity extends AppCompatActivity {
         b1 = findViewById(R.id.But_9);
         b2 = findViewById(R.id.But_3);
         switchPlaces(b1, b2);
+
+
+        View v1 = findViewById(R.id.line7);
+        View v2 = findViewById(R.id.line1);
+        switchPlaces(v1, v2);
+
+        v1 = findViewById(R.id.line8);
+        v2 = findViewById(R.id.line2);
+        switchPlaces(v1, v2);
+
+        v1 = findViewById(R.id.line9);
+        v2 = findViewById(R.id.line3);
+        switchPlaces(v1, v2);
 
     }
 
@@ -233,11 +285,44 @@ public class TaskActivity extends AppCompatActivity {
         params = (GridLayout.LayoutParams) text.getLayoutParams();
         params.columnSpec = GridLayout.spec(0);
         text.setLayoutParams(params);
+
+        b1 = findViewById(R.id.line7);
+        b2 = findViewById(R.id.line8);
+        b3 = findViewById(R.id.line9);
+        b4 = findViewById(R.id.linedel);
+        switchPlaces(b1, b4);
+        switchPlaces(b2, b1);
+        switchPlaces(b3, b2);
+
+        b1 = findViewById(R.id.line4);
+        b2 = findViewById(R.id.line5);
+        b3 = findViewById(R.id.line6);
+        b4 = findViewById(R.id.lineskip);
+        switchPlaces(b1, b4);
+        switchPlaces(b2, b1);
+        switchPlaces(b3, b2);
+
+        b1 = findViewById(R.id.line1);
+        b2 = findViewById(R.id.line2);
+        b3 = findViewById(R.id.line3);
+        b4 = findViewById(R.id.linehelp);
+        switchPlaces(b1, b4);
+        switchPlaces(b2, b1);
+        switchPlaces(b3, b2);
+
+        b1 = findViewById(R.id.lineempty);
+        b2 = findViewById(R.id.line0);
+        b3 = findViewById(R.id.linecomma);
+        b4 = findViewById(R.id.linecheck);
+        switchPlaces(b1, b4);
+        switchPlaces(b2, b1);
+        switchPlaces(b3, b2);
+
     }
 
     @Override
     public void onBackPressed() {
-       crossClick(findViewById(R.id.cross));
+        crossClick(findViewById(R.id.cross));
     }
 
     //сохраняем информацию о данной попытке и обновляем информацию раунда
@@ -308,7 +393,7 @@ public class TaskActivity extends AppCompatActivity {
         }
         StatisticMaker.saveTour(currentTour, context);
 
-        new AlertDialog.Builder(TaskActivity.this)
+        AlertDialog dialog = new AlertDialog.Builder(TaskActivity.this, R.style.AlertDialogTheme)
                 .setTitle("Раунд завершён")
                 .setMessage("Решено заданий: " + Integer.toString(currentTour.rightTasks) + " из " + Integer.toString(currentTour.totalTasks))
                 .setCancelable(false)
@@ -334,6 +419,7 @@ public class TaskActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+        CommonOperations.FixDialog(dialog, context);
     }
 
     //досрочное завершение раунда по нажатию выхода
@@ -342,7 +428,7 @@ public class TaskActivity extends AppCompatActivity {
             finish();
         } else {
             AlertDialog dialog =
-                    new AlertDialog.Builder(TaskActivity.this)
+                    new AlertDialog.Builder(TaskActivity.this, R.style.AlertDialogTheme)
                             .setTitle("Досрочное завершение раунда")
                             .setMessage("Сохранить результаты?")
                             .setNeutralButton("Отмена", new DialogInterface.OnClickListener() {
@@ -361,9 +447,7 @@ public class TaskActivity extends AppCompatActivity {
                                     endRound();
                                 }
                             }).show();
-//            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-//            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-//            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.BLACK);
+            CommonOperations.FixDialog(dialog, context);
         }
     }
 
@@ -389,6 +473,14 @@ public class TaskActivity extends AppCompatActivity {
             return;
         }
         String symbol = view.getTag().toString();
+
+//        int resID = getResources().getIdentifier(!symbol.equals(",") ? "line" + symbol : "linecomma", "id", "com.education4all.decimals");
+//        View line = findViewById(resID);
+//        line.setBackgroundColor(getResources().getColor(R.color.main));
+//        final Handler handler = new Handler();
+//        handler.postDelayed(() -> line.setBackgroundColor(getResources().getColor(R.color.shadowed)), 100);
+
+
         if (answer.equals("0") && !symbol.equals(",")) {
             answer = "";
             textViewUpdate();

@@ -10,7 +10,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/actionbaricon"
         android:elevation="4dp"
         app:popupTheme="@style/CustomPopup"
         app:titleTextAppearance="@style/ActionBarText"
@@ -23,9 +24,10 @@
         android:layout_height="wrap_content"
         app:tabSelectedTextColor="@color/main"
         app:tabTextAppearance="@style/TabText"
-        app:tabTextColor="@color/additional"
+        app:tabTextColor="@color/shadowed"
+        app:tabMaxWidth="0dp"
         android:background="@color/color2"
-        app:tabIndicatorColor="@color/shadowed"
+        app:tabIndicatorColor="@color/additional"
         />
 
     <androidx.viewpager2.widget.ViewPager2

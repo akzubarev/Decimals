@@ -7,11 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.gridlayout.widget.GridLayout;
 
 import android.view.Gravity;
@@ -47,8 +49,10 @@ public class StatiscticsActivity extends AppCompatActivity {
         setContentView(R.layout.statisctics);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        // myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_trash));
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         int tourCount = StatisticMaker.getTourCount(this);
         ScrollView Tours = (ScrollView) findViewById(R.id.scrollView);
@@ -57,9 +61,9 @@ public class StatiscticsActivity extends AppCompatActivity {
 
         View bar = new View(this);
         bar.setVisibility(View.VISIBLE);
-        bar.setMinimumHeight(1);
+        bar.setMinimumHeight(5);
+        bar.setBackgroundColor(getResources().getColor(R.color.shadowed));
         bar.setPadding(50, 0, 50, 0);
-        bar.setBackgroundColor(Color.DKGRAY);
         justALayout.addView(bar);
         Tours.addView(justALayout);
 
@@ -68,26 +72,35 @@ public class StatiscticsActivity extends AppCompatActivity {
 
             String tourInfoStr = StatisticMaker.getTourInfo(this, tourNumber);
             String txt = Tour.DepictTour(tourInfoStr);
+            Typeface font = Typeface.create("sans-serif-light", Typeface.NORMAL);
 
             boolean isAllTasksRight = (txt.substring(0, 1).equals("="));
             int divider = txt.indexOf("Решено");
             String datetime = txt.substring(1, divider - 1);
-            String info = txt.substring(divider);
+            String info;
+            if (!isAllTasksRight)
+                info = txt.substring(divider);
+            else
+                info = "★ " + txt.substring(divider);
 
             TextView tourdatetime = new TextView(this);
-            tourdatetime.setId(tourNumber);
+            tourdatetime.setId(tourNumber + 1);
             tourdatetime.setText(datetime);
             tourdatetime.setTag(tourNumber);
-            tourdatetime.setTextSize(getResources().getDimension(R.dimen.dimen5)/ getResources().getDisplayMetrics().density);
+            tourdatetime.setTextSize(getResources().getDimension(R.dimen.dimen5) / getResources().getDisplayMetrics().density);
             tourdatetime.setOnClickListener(tourClick);
             tourdatetime.setGravity(Gravity.TOP | Gravity.START);
+            tourdatetime.setTypeface(font);
 
             TextView tourinfo = new TextView(this);
             // tourinfo.setId(tourNumber);
             tourinfo.setText(info);
-            tourinfo.setTextSize(getResources().getDimension(R.dimen.dimen4)/ getResources().getDisplayMetrics().density);
+            tourinfo.setTextSize(getResources().getDimension(R.dimen.dimen4) / getResources().getDisplayMetrics().density);
             tourinfo.setOnClickListener(tourClick);
+            tourinfo.setTag(tourNumber);
             tourinfo.setGravity(Gravity.BOTTOM | Gravity.START);
+            tourinfo.setTypeface(font);
+
 
             Button arrow = new Button((this));
             arrow.setTag(tourNumber);
@@ -96,21 +109,19 @@ public class StatiscticsActivity extends AppCompatActivity {
             //arrow.setText("@strings/Arrow");
             arrow.setText("›");
             //  arrow.setPadding(0, 0, 0, 10);
-            arrow.setTextSize(30);
+            arrow.setTextSize(getResources().getDimension(R.dimen.dimen1) / getResources().getDisplayMetrics().density);
             arrow.setBackgroundColor(Color.TRANSPARENT);
             arrow.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
             arrow.setTextColor(ContextCompat.getColor(this, R.color.additional));
 
             row.setGravity(Gravity.CENTER_VERTICAL);
-            if (isAllTasksRight) {
-                tourdatetime.setTextColor(ContextCompat.getColor(this, R.color.shadowed));
-                tourinfo.setTextColor(ContextCompat.getColor(this, R.color.shadowed));
-             //   arrow.setTextColor(ContextCompat.getColor(this, R.color.shadowed));
-            } else {
-                tourdatetime.setTextColor(ContextCompat.getColor(this, R.color.main));
-                tourinfo.setTextColor(ContextCompat.getColor(this, R.color.main));
-            //    arrow.setTextColor(ContextCompat.getColor(this, R.color.additional));
-            }
+
+            tourdatetime.setTextColor(ContextCompat.getColor(this, R.color.main));
+            tourinfo.setTextColor(ContextCompat.getColor(this, R.color.main));
+
+//            if (isAllTasksRight)
+//                tourinfo.setTypeface(tourinfo.getTypeface(), Typeface.ITALIC);
+
 
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
                     RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -122,6 +133,8 @@ public class StatiscticsActivity extends AppCompatActivity {
                     RelativeLayout.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.BELOW, tourdatetime.getId());
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            if (!isAllTasksRight)
+                layoutParams.leftMargin = 50;
             tourinfo.setLayoutParams(layoutParams);
 
             row.addView(tourdatetime);
@@ -138,7 +151,7 @@ public class StatiscticsActivity extends AppCompatActivity {
             bar.setVisibility(View.VISIBLE);
             bar.setMinimumHeight(5);
             bar.setPadding(50, 0, 50, 0);
-            bar.setBackgroundColor(getResources().getColor(R.color.additional));
+            bar.setBackgroundColor(getResources().getColor(R.color.shadowed));
             justALayout.addView(bar);
         }
     }
@@ -157,8 +170,7 @@ public class StatiscticsActivity extends AppCompatActivity {
 
 
     public void DeleteStatistics() {
-
-        //finish();
+        finish();
         StatisticMaker.removeStatistics(this);
         Intent intent = getIntent();
         startActivity(intent);
@@ -168,22 +180,25 @@ public class StatiscticsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete_stats:
-                new AlertDialog.Builder(StatiscticsActivity.this)
-                        .setTitle("Удаление результатов")
-                        .setMessage("Вы уверены? Это действие нельзя будет отменить.")
+                if (StatisticMaker.getTourCount(this) > 0) {
+                    AlertDialog dialog = new AlertDialog.Builder(StatiscticsActivity.this)
+                            .setTitle("Удаление результатов")
+                            .setMessage("Вы уверены? Это действие нельзя будет отменить.")
 
-                        .setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //finish();
-                            }
-                        })
-                        .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                DeleteStatistics();
-                            }
-                        })
-                        .show();
+                            .setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //finish();
+                                }
+                            })
+                            .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DeleteStatistics();
+                                }
+                            })
+                            .show();
 
+                    CommonOperations.FixDialog(dialog, getApplicationContext());
+                }
                 return true;
 
             default:

@@ -11,26 +11,30 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/actionbaricon"
         android:background="@color/color1"
         android:elevation="4dp"
         app:popupTheme="@style/CustomPopup"
-        app:titleTextAppearance="@style/ActionBarText"
-        app:title="Десятичные дроби"
-        android:paddingLeft="50dp">
+        app:titleTextAppearance="@style/ActionBarText">
+      <!--  app:title="Десятичные дроби"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"-->
 
-        <!--
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/app_name"
             android:textAlignment="center"
             android:textColor="@color/main"
+            android:textAppearance="@style/ActionBarText"
             android:textSize="@dimen/dimen1"
 
             />
-            -->
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.LinearLayoutCompat

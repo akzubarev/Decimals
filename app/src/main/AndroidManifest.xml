@@ -25,7 +25,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_task"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+            android:theme="@style/AppTheme">
         </activity>
 
         <!--<activity-->
@@ -98,6 +98,7 @@
             android:name="com.education4all.decimals.AuthorsActivity"
             android:label="@string/title_activity_authors"
             android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"
             android:parentActivityName="com.education4all.decimals.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

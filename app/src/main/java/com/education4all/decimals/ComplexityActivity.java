@@ -40,27 +40,29 @@ public class ComplexityActivity extends AppCompatActivity {
 //            TextView tw1 = (TextView) findViewById(R.id.textView7);
 //            ((ViewManager) tw1.getParent()).removeView(tw1);
 //        }
-        boolean check = false;
+        boolean checked = false;
         CheckBox chk = (CheckBox) findViewById(R.id.checkBox1);
-        if (DataReader.checkComplexity(actionType - 1, 0, this)) {
-            chk.setChecked(true);
-        }
+        checked = DataReader.checkComplexity(actionType - 1, 0, this);
+        if (chk.isChecked() != checked)
+            chk.setChecked(checked);
+
         chk = (CheckBox) findViewById(R.id.checkBox2);
-        if (DataReader.checkComplexity(actionType - 1, 1, this)) {
-            chk.setChecked(true);
-        }
+        checked = DataReader.checkComplexity(actionType - 1, 1, this);
+        if (chk.isChecked() != checked)
+            chk.setChecked(checked);
 //        chk = (CheckBox) findViewById(R.id.checkBox5);
 //        if (actionType == 4 && DataReader.checkComplexity(actionType - 1, 4, this)) {
-//            check = true;
+//            check_old = true;
 //        }
         chk = (CheckBox) findViewById(R.id.checkBox3);
-        if (DataReader.checkComplexity(actionType - 1, 2, this)) {
-            chk.setChecked(true);
-        }
+        checked = DataReader.checkComplexity(actionType - 1, 2, this);
+        if (chk.isChecked() != checked)
+            chk.setChecked(checked);
+
         chk = (CheckBox) findViewById(R.id.checkBox4);
-        if (DataReader.checkComplexity(actionType - 1, 3, this)) {
-            chk.setChecked(true);
-        }
+        checked = DataReader.checkComplexity(actionType - 1, 3, this);
+        if (chk.isChecked() != checked)
+            chk.setChecked(checked);
 
         TextView complType = (TextView) findViewById(R.id.complTextView);
         switch (actionType) {
@@ -78,7 +80,7 @@ public class ComplexityActivity extends AppCompatActivity {
 //                CheckBox chknew = (CheckBox) findViewById(R.id.checkBox5);
 //                TextView twnew = (TextView) findViewById(R.id.textView7);
 //                if (DataReader.checkComplexity(actionType - 1, 4, this)) {
-//                    chknew.setChecked(check);
+//                    chknew.setChecked(check_old);
 //                }
 //                chknew.setText("275 : 55");
 //                chknew.setId(R.id.checkBox5);
@@ -96,28 +98,27 @@ public class ComplexityActivity extends AppCompatActivity {
         TextView txv;
         switch (actionType) {
             case 1:
-                
                 txv = (TextView) findViewById(R.id.textView11);
                 txv.setText("Сложение в одном разряде, дроби одного порядка");
                 txv = (TextView) findViewById(R.id.textView12);
                 txv.setText("0,5" + ADD + "0,7\n" + "0,55" + ADD + "0,07\n" + "0,555" + ADD + "0,007");
-                
-              
+
+
                 txv = (TextView) findViewById(R.id.textView21);
                 txv.setText("Сложение в двух разрядах, дроби одного порядка");
                 txv = (TextView) findViewById(R.id.textView22);
                 txv.setText("5,5" + ADD + "7,7\n" + "5,55" + ADD + "0,77\n" + "0,555" + ADD + "0,077");
-                
+
                 txv = (TextView) findViewById(R.id.textView31);
                 txv.setText("Сложение в одном разряде, дроби разных порядков");
                 txv = (TextView) findViewById(R.id.textView32);
                 txv.setText("5" + ADD + "7,7\n" + "5,5" + ADD + "0,77\n" + "0,5" + ADD + "0,777");
-              
+
                 txv = (TextView) findViewById(R.id.textView41);
                 txv.setText("Сложение в двух разрядах, дроби разных порядков");
                 txv = (TextView) findViewById(R.id.textView42);
                 txv.setText("55" + ADD + "77,7\n" + "55,5" + ADD + "7,77\n" + "0,55" + ADD + "0,777");
-                
+
                 break;
             case 2:
                 txv = (TextView) findViewById(R.id.textView11);

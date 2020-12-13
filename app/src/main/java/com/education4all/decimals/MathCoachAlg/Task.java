@@ -256,6 +256,7 @@ public class Task {
     private void addition(final int[][] allowedTasks) {
         int n = 0;
         int m = 0;
+        int minpow = 1;
         complexity = complexityRandomizer(allowedTasks);
 
         switch (complexity) {
@@ -306,27 +307,25 @@ public class Task {
                     switch (randomInclusive(0, 1, false)) {
                         case 0:
                             n = rndtype(1) * 100;
-                            m = rndtype(3);
                             break;
                         case 1:
                             n = rndtype(2) * 100;
-                            m = rndtype(3);
                             break;
-//                        case 2:
-//                        default:
-//                            n = rndtype(3) * 100;
-//                            m = rndtype(3);
-//                            break;
+                        case 2:
+                        default:
+                            n = rndtype(3) * 100;
+                            minpow = 2;
+                            break;
                     }
+                m = rndtype(3);
                 break;
             case 3:
                 if (rnd.nextBoolean()) {
                     n = rndtype(2) * 10;
-                    m = rndtype(3);
                 } else {
                     n = rndtype(3) * 10;
-                    m = rndtype(3);
                 }
+                m = rndtype(3);
                 break;
             default:
                 ////DatasaveErrorLog("No valid complexity for addition, yet called");
@@ -339,7 +338,7 @@ public class Task {
             m = k;
         }
 
-        int pow = randomInclusive(1, 3, false);
+        int pow = randomInclusive(minpow, 3, false);
         double div = Math.pow(10, pow);
         double nn = n / div, mm = m / div;
 
@@ -351,6 +350,7 @@ public class Task {
     private void substraction(final int[][] allowedTasks) {
         int m = 0;
         int n = 0;
+        int minpow = 1;
         complexity = complexityRandomizer(allowedTasks);
         do
             switch (complexity) {
@@ -393,6 +393,7 @@ public class Task {
                                 default:
                                     n = rndtype(3) * 10;
                                     m = rndtype(1);
+                                    minpow = 2;
                                     break;
                             }
                             break;
@@ -402,13 +403,12 @@ public class Task {
                             else
                                 n = rndtype(2) * 100;
                             m = rndtype(1);
+                            minpow = 2;
                             break;
                         case 2:
-                            if (rnd.nextBoolean())
-                                n = rndtype(1) * 1000;
-                            else
-                                n = rndtype(2) * 1000;
+                            n = rndtype(1) * 1000;
                             m = rndtype(1);
+                            minpow = 2;
                             break;
                         case 3:
                             if (rnd.nextBoolean())
@@ -440,6 +440,7 @@ public class Task {
                                 default:
                                     n = rndtype(3) * 10;
                                     m = rndtype(2);
+                                    minpow = 2;
                                     break;
                             }
                             break;
@@ -447,12 +448,15 @@ public class Task {
                             switch (randomInclusive(0, 2, false)) {
                                 case 0:
                                     n = rndtype(1) * 100;
+                                    minpow = 2;
                                     break;
                                 case 1:
                                     n = rndtype(2) * 100;
+                                    minpow = 2;
                                     break;
                                 case 2:
                                     n = rndtype(3) * 100;
+                                    minpow = 3;
                                     break;
                             }
                             m = rndtype(2);
@@ -463,6 +467,7 @@ public class Task {
                             else
                                 n = rndtype(2) * 1000;
                             m = rndtype(2);
+                            minpow = 2;
                             break;
                         case 3:
                         default:
@@ -477,7 +482,7 @@ public class Task {
             }
         while (n <= m);
 
-        int pow = randomInclusive(1, 3, false);
+        int pow = randomInclusive(minpow, 3, false);
         double div = Math.pow(10, pow);
         double nn = n / div, mm = m / div;
 

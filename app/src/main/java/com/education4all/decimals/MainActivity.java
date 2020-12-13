@@ -25,16 +25,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_overflow));
+       // myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_overflow));
         setSupportActionBar(myToolbar);
-//        getSupportActionBar().setTitle("");
-
-//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-//        getSupportActionBar().setCustomView(R.layout.abs_layout);
-
-
-    }
-
+        getSupportActionBar().setTitle("");
 //    @Override
 //    public void onBackPressed() {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -44,6 +37,12 @@ public class MainActivity extends AppCompatActivity {
 //       else
 //           System.exit(0);
 //    }
+
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//        getSupportActionBar().setCustomView(R.layout.abs_layout);
+
+
+    }
 
 
     @Override

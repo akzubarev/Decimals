@@ -1,18 +1,24 @@
 package com.education4all.decimals;
 
-import android.app.AlertDialog;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
@@ -24,6 +30,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
+
+import org.w3c.dom.Text;
 
 public class SettingsMainActivity extends AppCompatActivity {
 
@@ -38,6 +46,43 @@ public class SettingsMainActivity extends AppCompatActivity {
         new TabLayoutMediator(tabs, viewPager,
                 (tab, position) -> tab.setText(position == 0 ? "Задания" : "Интерфейс")
         ).attach();
+
+//        ViewGroup vg = (ViewGroup) tabs.getChildAt(0);
+//        int tabsCount = vg.getChildCount();
+//        for (int j = 0; j < tabsCount; j++) {
+//            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+//            int tabChildsCount = vgTab.getChildCount();
+//            for (int i = 0; i < tabChildsCount; i++) {
+//                View tabViewChild = vgTab.getChildAt(i);
+//                if (tabViewChild instanceof AppCompatTextView) {
+//                    ((AppCompatTextView) tabViewChild).setTextSize(getResources().getDimension(R.dimen.dimen2) / getResources().getDisplayMetrics().density);
+//                    //  ((AppCompatTextView) tabViewChild).setTextAppearance(R.style.TabText);
+//                    //     Log.d("fuuuuuuck", String.valueOf(((AppCompatTextView) tabViewChild).getTextSize()));
+//                }
+//            }
+//        }
+
+
+//        tabs.getTabAt(1).setCustomView(R.layout.tab);
+//        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                if (tab.getCustomView() instanceof TextView)
+//                    ((TextView) (tab.getCustomView())).setTextColor(getResources().getColor(R.color.main));
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//                if (tab.getCustomView() instanceof TextView)
+//                    ((TextView) (tab.getCustomView())).setTextColor(getResources().getColor(R.color.shadowed));
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
+
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -54,8 +99,10 @@ public class SettingsMainActivity extends AppCompatActivity {
                         // finish();
                     })
                     .show();
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.WHITE);
+            CommonOperations.FixDialog(dialog, getApplicationContext());
         }
+
+
     }
 
 
