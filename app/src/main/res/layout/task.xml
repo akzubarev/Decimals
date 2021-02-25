@@ -22,9 +22,57 @@
             android:clickable="true"
             android:gravity="center"
             android:onClick="showTask"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen0" />
+
+        <TextView
+            android:id="@+id/wrongAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:ellipsize="start"
+            android:gravity="top"
+            android:paddingTop="12dp"
+            android:paddingRight="40dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:singleLine="true"
+            android:textStyle=""
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <TextView
+            android:id="@+id/statistics"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:ellipsize="start"
+            android:gravity="bottom|start"
+            android:paddingBottom="25dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:singleLine="true"
+            android:textStyle=""
+            android:text=""
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <TextView
+            android:id="@+id/timertext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:ellipsize="start"
+            android:gravity="bottom|end"
+            android:paddingBottom="25dp"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:singleLine="true"
+            android:textStyle=""
+            android:text="00:48/5:00"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
 
         <TextView
             android:id="@+id/pressToShowTaskTV"
@@ -34,9 +82,20 @@
             android:gravity="center|bottom"
             android:onClick="showTask"
             android:text="\Нажмите, чтобы показать задание"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen6" />
+
+        <TextView
+            android:id="@+id/progressIcons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:ellipsize="start"
+            android:gravity="left|bottom"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
 
         <ImageButton
             android:id="@+id/cross"
@@ -155,8 +214,8 @@
                 android:layout_width="40dp"
                 android:layout_height="2dp"
                 android:layout_marginBottom="@dimen/linemargin"
-                app:layout_column="0"
                 android:background="@android:color/transparent"
+                app:layout_column="0"
                 app:layout_gravity="center|bottom"
                 app:layout_row="3" />
 
@@ -232,7 +291,7 @@
                 app:layout_column="1"
                 app:layout_gravity="center|bottom"
                 app:layout_row="3" />
-            
+
             <View
                 android:id="@+id/linecomma"
                 android:layout_width="40dp"
@@ -485,20 +544,20 @@
                 android:layout_height="120dp"
                 android:layout_margin="-8dp"
                 android:layout_weight="1"
+                android:adjustViewBounds="true"
                 android:background="@android:color/transparent"
                 android:gravity="center"
                 android:onClick="showAnswer"
-                android:paddingTop="@dimen/bptop"
-                android:paddingBottom="@dimen/bpbottom"
                 android:paddingLeft="@dimen/bpleft"
+                android:paddingTop="@dimen/bptop"
                 android:paddingRight="@dimen/bpright"
-                android:src="@drawable/help"
+                android:paddingBottom="@dimen/bpbottom"
                 android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:tint="@color/additional"
+                android:src="@drawable/help"
                 android:text="=?"
                 android:textColor="@color/additional"
                 android:textSize="@dimen/dimen0"
+                android:tint="@color/additional"
                 app:layout_column="3"
                 app:layout_columnWeight="0"
                 app:layout_gravity="fill"

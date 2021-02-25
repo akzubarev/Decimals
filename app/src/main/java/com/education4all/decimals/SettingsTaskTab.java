@@ -1,14 +1,10 @@
 package com.education4all.decimals;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -166,7 +162,7 @@ public class SettingsTaskTab extends Fragment {
         super.onResume();
         boolean checked = false;
         for (int i = 1; i <= 4; ++i) {
-            String name = "checkBoxAdd" + Integer.toString(i);
+            String name = "checkBoxAdd" + i;
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) view.findViewById(resID);
             checked = DataReader.checkComplexity(0, i - 1, getActivity().getApplicationContext());
@@ -175,7 +171,7 @@ public class SettingsTaskTab extends Fragment {
             cb.setOnClickListener(this::onCheckBoxClick);
         }
         for (int i = 1; i <= 4; ++i) {
-            String name = "checkBoxSub" + Integer.toString(i);
+            String name = "checkBoxSub" + i;
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) view.findViewById(resID);
             checked = DataReader.checkComplexity(1, i - 1, getActivity().getApplicationContext());
@@ -184,7 +180,7 @@ public class SettingsTaskTab extends Fragment {
             cb.setOnClickListener(this::onCheckBoxClick);
         }
         for (int i = 1; i <= 4; ++i) {
-            String name = "checkBoxMul" + Integer.toString(i);
+            String name = "checkBoxMul" + i;
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) view.findViewById(resID);
             checked = DataReader.checkComplexity(2, i - 1, getActivity().getApplicationContext());
@@ -194,24 +190,13 @@ public class SettingsTaskTab extends Fragment {
         }
         for (int i = 1; i <= 4; ++i) {
             //if (i != 2) {
-            String name = "checkBoxDiv" + Integer.toString(i);
+            String name = "checkBoxDiv" + i;
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
             CheckBox cb = (CheckBox) view.findViewById(resID);
             checked = DataReader.checkComplexity(3, i - 1, getActivity().getApplicationContext());
             if (cb.isChecked() != checked)
                 cb.setChecked(checked);
             cb.setOnClickListener(this::onCheckBoxClick);
-//            } else {
-//                String name = "checkBoxDiv" + Integer.toString(i);
-//                int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
-//                CheckBox cb = (CheckBox) view.findViewById(resID);
-//                if (DataReader.checkComplexity(3, 1, getActivity().getApplicationContext())
-//                        || DataReader.checkComplexity(3, 4, getActivity().getApplicationContext())) {
-//                    cb.setChecked(true);
-//                } else {
-//                    cb.setChecked(false);
-//                }
-//            }
         }
     }
 
@@ -262,14 +247,6 @@ public class SettingsTaskTab extends Fragment {
         if (chk.isChecked()) {
             currentComplexity.append("3").append(",");
         }
-//        if (action.equals("Div")) {
-//            name = "checkBox" + action + "5";
-//            resID = getResources().getIdentifier(name, "id", "com.education4all.mathcoach");
-//            chk = (CheckBox)findViewById(resID);
-//            if (chk.isChecked()) {
-//                currentComplexity.append("4").append(",");
-//            }
-//        }
 
         editor.putString(action, currentComplexity.toString());
         editor.apply();

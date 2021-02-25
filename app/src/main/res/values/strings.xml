@@ -19,6 +19,10 @@
     <string name="about_text">Десятичные дроби\n(тренажёр устного счёта)\n\nИдея:\nАртём Казанович\n\nПрограммирование:\nАлександр Умнов\nАлексей Зубарев\nАртём Казанович\n</string>>
     <string name="email">mathcoach.support@yandex.ru</string>>
 
+    <string name="arrow">›</string>
+    <string name="dot">⋅</string>
+    <string name="star">★</string>
+
     <string-array name="screen_array">
         <item>Прервать тренировку</item>
         <item>Закончить тренировку</item>

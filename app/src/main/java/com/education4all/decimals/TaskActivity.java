@@ -8,12 +8,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 
 import java.lang.Runnable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.AppCompatButton;
@@ -22,6 +27,8 @@ import androidx.gridlayout.widget.GridLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.Html;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -65,12 +72,21 @@ public class TaskActivity extends AppCompatActivity {
     long prevTaskTime;
     long tourStartTime; //время начала раунда
     long millis; //время раунда в миллисекундах
+    int seconds; //время раунда в секундах
+    int count; //текущее время раунда
+    int solved = 0; //сколько заданий решено
+    int shown = 1; //сколько заданий показано
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task);
+
+        //делаем текст зачеркнутым
+//        TextView wrongAnswers = findViewById(R.id.wrongAnswers);
+//        wrongAnswers.setPaintFlags(wrongAnswers.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
 
         //заполняем GridLayout
         GridLayout gl = (GridLayout) findViewById(R.id.buttonsLayout);
@@ -101,7 +117,7 @@ public class TaskActivity extends AppCompatActivity {
 
             G_progressBar = (ProgressBar) findViewById(R.id.taskProgress);
             G_progressBar.setProgress(0);
-            final int timerstate = DataReader.GetTimerState(this);
+            final int timerstate = DataReader.GetTimerState(this);//0 - continous 1 - discrete 2 - invisible
             G_progressBar.setVisibility(timerstate == 2 ? View.INVISIBLE : View.VISIBLE);
             RoundTime = DataReader.GetRoundTime(this);
             millis = (long) (RoundTime * 1000 * 60);
@@ -113,6 +129,26 @@ public class TaskActivity extends AppCompatActivity {
                         progressBarHandler.post(() -> G_progressBar.setProgress(progressStatus));
                     try {
                         Thread.sleep((long) (RoundTime * 600));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+
+
+            TextView timerText = findViewById(R.id.timertext);
+            timerText.setVisibility(timerstate == 2 ? View.INVISIBLE : View.VISIBLE);
+            seconds = (int) RoundTime * 60;
+
+            timerText.setText(timeString(count, seconds));
+
+            new Thread(() -> {
+                while (count < seconds) {
+                    count += 1;
+                    if (timerstate == 0)
+                        timerText.setText(timeString(count, seconds));
+                    try {
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -167,6 +203,10 @@ public class TaskActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private String timeString(int count, int seconds) {
+      return String.format("%s/%s", DateUtils.formatElapsedTime(count), DateUtils.formatElapsedTime(seconds));
     }
 
     //делаем все кнопки одинакового размера внутри GridLayout
@@ -351,11 +391,30 @@ public class TaskActivity extends AppCompatActivity {
         saveTaskStatistic();
 
         if (answer.equals(newTask.answer)) {
+            updateProgressIcons(getString(R.string.star));
+            solved++;
             startNewTask();
         } else {
+            if (!answer.equals("?")) {
+                updateWrongAnswers(answer);
+                updateProgressIcons(getString(R.string.dot));
+            }
             answer = "";
             textViewUpdate();
         }
+    }
+
+    private void updateWrongAnswers(String answer) {
+        TextView wrongAnswers = findViewById(R.id.wrongAnswers);
+        String text = "";
+        String line = wrongAnswers.getText().toString();
+        if (!line.isEmpty()) {
+            String[] answers = line.split(", ");
+            for (String s : answers)
+                text += String.format("<strike>%s</strike>, ", s);
+        }
+        text += String.format("<strike>%s</strike>", answer);
+        wrongAnswers.setText(Html.fromHtml(text));
     }
 
     //пропуск задания
@@ -367,6 +426,7 @@ public class TaskActivity extends AppCompatActivity {
             answer = "\u2026";
         }
         saveTaskStatistic();
+        updateProgressIcons(getString(R.string.arrow));
         startNewTask();
     }
 
@@ -376,12 +436,36 @@ public class TaskActivity extends AppCompatActivity {
         answerShown = false;
         newTask.generate(allowedTasks);
         answer = "";
+
+        TextView wrongAnswers = findViewById(R.id.wrongAnswers);
+        wrongAnswers.setText("");
+
+        ((TextView) findViewById(R.id.timertext)).setText(timeString(count, seconds));
+
         G_progressBar.setProgress(progressStatus);
+
+
+        shown++;
+        TextView statistics = findViewById(R.id.statistics);
+        statistics.setText(String.format("Решено %d из %d (%d%%)", solved, shown - 1, solved * 100 / (shown - 1)));
+
+
         if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis) {
             endRound();
         } else {
             textViewUpdate();
         }
+
+    }
+
+    //добавляем иконку в зависимости от статуса задания
+    private void updateProgressIcons(String icon) {
+        TextView pi = (TextView) findViewById(R.id.progressIcons);
+        String text = pi.getText().toString();
+        // if (text.length() > 20)
+        //     text = text.substring(1);
+        text += icon;
+        pi.setText(text);
     }
 
     //завершение раунда
@@ -505,6 +589,7 @@ public class TaskActivity extends AppCompatActivity {
     public void showAnswer(View view) {
         answer = newTask.answer;
         answerShown = true;
+        updateProgressIcons("?");
         textViewUpdate();
     }
 
@@ -514,7 +599,10 @@ public class TaskActivity extends AppCompatActivity {
             showTask = false;
             textViewUpdate();
             TextView pressToShowTaskTV = (TextView) findViewById(R.id.pressToShowTaskTV);
-            pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
+            //pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
+            pressToShowTaskTV.setVisibility(View.VISIBLE);
+            TextView pi = (TextView) findViewById(R.id.progressIcons);
+            pi.setVisibility(View.INVISIBLE);
         }
     };
 
@@ -525,7 +613,11 @@ public class TaskActivity extends AppCompatActivity {
     private void showTaskSetTrueAndRestartDisappearTimer() {
         showTask = true;
         TextView pressToShowTaskTV = (TextView) findViewById(R.id.pressToShowTaskTV);
-        pressToShowTaskTV.setText("");
+        //pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
+        pressToShowTaskTV.setVisibility(View.INVISIBLE);
+        TextView pi = (TextView) findViewById(R.id.progressIcons);
+        pi.setVisibility(View.VISIBLE);
+
         taskDisapHandler.removeCallbacks(disapTask);
         if (disapTime > -1) {
             taskDisapHandler.postDelayed(disapTask, (long) (disapTime * 1000));
@@ -536,7 +628,8 @@ public class TaskActivity extends AppCompatActivity {
     public void showTask(View view) {
         showTaskSetTrueAndRestartDisappearTimer();
         TextView pressToShowTaskTV = (TextView) findViewById(R.id.pressToShowTaskTV);
-        pressToShowTaskTV.setText("");
+        //pressToShowTaskTV.setText("");
+        pressToShowTaskTV.setVisibility(View.INVISIBLE);
         textViewUpdate();
     }
 

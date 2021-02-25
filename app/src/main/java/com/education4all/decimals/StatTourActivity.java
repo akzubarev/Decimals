@@ -57,8 +57,9 @@ public class StatTourActivity extends AppCompatActivity {
 //            String txt = Tour.DepictTour(tourInfoStr);
 //            String datetime = txt.substring(1, 6);
 
-            String line = String.format("★ %d из %d (%d%%)",
-                    tourinfo.rightTasks, tourinfo.tourTasks.size(), (int) (tourinfo.rightTasks * 100.0 / tourinfo.tourTasks.size()));
+            String line = String.format("%s %d из %d (%d%%)",
+                    getString(R.string.star),  tourinfo.rightTasks, tourinfo.tourTasks.size(),
+                    (int) (tourinfo.rightTasks * 100.0 / tourinfo.tourTasks.size()));
             getSupportActionBar().setTitle(line);
 
 // КОСТЫЛЬ (на самом деле сейчас в TaskActivity сохраняются лишние дубликаты строк, а здесь из них приходится отбирать нужные) TODO когда-нибудь поправить это

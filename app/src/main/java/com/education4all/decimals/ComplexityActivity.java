@@ -34,12 +34,7 @@ public class ComplexityActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         actionType = extras.getInt("Type");
-//        if (actionType != 4) {
-//            CheckBox chk1 = (CheckBox) findViewById(R.id.checkBox5);
-//            ((ViewManager) chk1.getParent()).removeView(chk1);
-//            TextView tw1 = (TextView) findViewById(R.id.textView7);
-//            ((ViewManager) tw1.getParent()).removeView(tw1);
-//        }
+
         boolean checked = false;
         CheckBox chk = (CheckBox) findViewById(R.id.checkBox1);
         checked = DataReader.checkComplexity(actionType - 1, 0, this);
@@ -50,10 +45,7 @@ public class ComplexityActivity extends AppCompatActivity {
         checked = DataReader.checkComplexity(actionType - 1, 1, this);
         if (chk.isChecked() != checked)
             chk.setChecked(checked);
-//        chk = (CheckBox) findViewById(R.id.checkBox5);
-//        if (actionType == 4 && DataReader.checkComplexity(actionType - 1, 4, this)) {
-//            check_old = true;
-//        }
+
         chk = (CheckBox) findViewById(R.id.checkBox3);
         checked = DataReader.checkComplexity(actionType - 1, 2, this);
         if (chk.isChecked() != checked)
@@ -77,16 +69,6 @@ public class ComplexityActivity extends AppCompatActivity {
                 break;
             case 4:
                 complType.setText("Деление");
-//                CheckBox chknew = (CheckBox) findViewById(R.id.checkBox5);
-//                TextView twnew = (TextView) findViewById(R.id.textView7);
-//                if (DataReader.checkComplexity(actionType - 1, 4, this)) {
-//                    chknew.setChecked(check_old);
-//                }
-//                chknew.setText("275 : 55");
-//                chknew.setId(R.id.checkBox5);
-//                twnew.setText("Деление трёхзначного числа на двузначное");
-//                LinearLayout layout = (LinearLayout) findViewById(R.id.mainLayout);
-                break;
             default:
                 finish();
                 break;

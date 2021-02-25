@@ -81,7 +81,8 @@ public class StatiscticsActivity extends AppCompatActivity {
             if (!isAllTasksRight)
                 info = txt.substring(divider);
             else
-                info = "★ " + txt.substring(divider);
+                info = getString(R.string.star) + " " + txt.substring(divider);
+            // info = "★ " + txt.substring(divider);
 
             TextView tourdatetime = new TextView(this);
             tourdatetime.setId(tourNumber + 1);
@@ -107,7 +108,8 @@ public class StatiscticsActivity extends AppCompatActivity {
             arrow.setOnClickListener(tourClick);
 //            arrow.setText("\u232A");
             //arrow.setText("@strings/Arrow");
-            arrow.setText("›");
+            //arrow.setText("›");
+            arrow.setText(getString(R.string.arrow));
             //  arrow.setPadding(0, 0, 0, 10);
             arrow.setTextSize(getResources().getDimension(R.dimen.dimen1) / getResources().getDisplayMetrics().density);
             arrow.setBackgroundColor(Color.TRANSPARENT);

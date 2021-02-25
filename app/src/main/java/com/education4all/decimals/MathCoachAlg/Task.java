@@ -3,6 +3,7 @@ package com.education4all.decimals.MathCoachAlg;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
 
@@ -246,9 +247,9 @@ public class Task {
             }
 
         if (precision == 0)
-            return String.format("%d", Math.round(value));
+            return String.format(new Locale("ru","RU"), "%d", Math.round(value));
         else
-            return String.format("%." + precision + "f", value);
+            return String.format(new Locale("ru","RU"), "%." + precision + "f", value);
 
     }
 
@@ -303,7 +304,7 @@ public class Task {
                             m = rndtype(2);
                             break;
                     }
-                else
+                else {
                     switch (randomInclusive(0, 1, false)) {
                         case 0:
                             n = rndtype(1) * 100;
@@ -317,7 +318,8 @@ public class Task {
                             minpow = 2;
                             break;
                     }
-                m = rndtype(3);
+                    m = rndtype(3);
+                }
                 break;
             case 3:
                 if (rnd.nextBoolean()) {

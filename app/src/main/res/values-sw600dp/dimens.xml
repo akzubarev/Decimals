@@ -21,4 +21,5 @@
     <dimen name="linemargin">30dp</dimen>
 
     <dimen name="actionbaricon">120dp</dimen>
+    <dimen name="arrowsidepadding">60dp</dimen>
 </resources>
