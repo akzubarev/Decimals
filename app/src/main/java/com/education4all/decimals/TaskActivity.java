@@ -76,17 +76,12 @@ public class TaskActivity extends AppCompatActivity {
     int count; //текущее время раунда
     int solved = 0; //сколько заданий решено
     int shown = 1; //сколько заданий показано
-
+    boolean answerWasShown = false; //был ли уже показан ответ
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task);
-
-        //делаем текст зачеркнутым
-//        TextView wrongAnswers = findViewById(R.id.wrongAnswers);
-//        wrongAnswers.setPaintFlags(wrongAnswers.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
 
         //заполняем GridLayout
         GridLayout gl = (GridLayout) findViewById(R.id.buttonsLayout);
@@ -206,16 +201,14 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private String timeString(int count, int seconds) {
-      return String.format("%s/%s", DateUtils.formatElapsedTime(count), DateUtils.formatElapsedTime(seconds));
+        return String.format("%s/%s", DateUtils.formatElapsedTime(count), DateUtils.formatElapsedTime(seconds));
     }
 
     //делаем все кнопки одинакового размера внутри GridLayout
     public void fillView(GridLayout parent) {
         //Button child;
         View child;
-        //parent.setBackgroundColor(Color.DKGRAY);
         for (int i = 0; i < parent.getChildCount(); i++) {
-            // child = (Button)parent.getChildAt(i);
             child = parent.getChildAt(i);
             if (child.getClass() != View.class) {
                 GridLayout.LayoutParams params = (GridLayout.LayoutParams) child.getLayoutParams();
@@ -225,13 +218,8 @@ public class TaskActivity extends AppCompatActivity {
 
                 params.width = (parent.getWidth() / parent.getColumnCount()) - params.rightMargin - params.leftMargin;
                 params.height = (parent.getHeight() / parent.getRowCount()) - params.bottomMargin - params.topMargin;
-                //child.setBackgroundColor(Color.DKGRAY);
-//            if (child.getClass() == AppCompatImageButton.class) {
-//                params.width *= 0.5 * 0.7;
-//                params.height *= 0.5 * 0.7;
-//            }
+
                 child.setLayoutParams(params);
-                //child.setBackgroundColor(parent.getDrawingCacheBackgroundColor());
             }
         }
 
@@ -381,8 +369,8 @@ public class TaskActivity extends AppCompatActivity {
 
     //нажатие на кнопку "ОК", проверяем правильность ответа и заносим в статистику
     public void okButtonClick(View view) {
-        showTaskSetTrueAndRestartDisappearTimer();
         if (answer.equals("")) return;
+        showTaskSetTrueAndRestartDisappearTimer();
         if (answerShown) {
             answer = "?";
             answerShown = false;
@@ -392,7 +380,6 @@ public class TaskActivity extends AppCompatActivity {
 
         if (answer.equals(newTask.answer)) {
             updateProgressIcons(getString(R.string.star));
-            solved++;
             startNewTask();
         } else {
             if (!answer.equals("?")) {
@@ -424,9 +411,9 @@ public class TaskActivity extends AppCompatActivity {
             answer = "?";
         } else {
             answer = "\u2026";
+            updateProgressIcons(getString(R.string.arrow));
         }
         saveTaskStatistic();
-        updateProgressIcons(getString(R.string.arrow));
         startNewTask();
     }
 
@@ -434,6 +421,7 @@ public class TaskActivity extends AppCompatActivity {
     private void startNewTask() {
         newTask = new Task();
         answerShown = false;
+        answerWasShown = false;
         newTask.generate(allowedTasks);
         answer = "";
 
@@ -443,12 +431,6 @@ public class TaskActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.timertext)).setText(timeString(count, seconds));
 
         G_progressBar.setProgress(progressStatus);
-
-
-        shown++;
-        TextView statistics = findViewById(R.id.statistics);
-        statistics.setText(String.format("Решено %d из %d (%d%%)", solved, shown - 1, solved * 100 / (shown - 1)));
-
 
         if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis) {
             endRound();
@@ -460,12 +442,17 @@ public class TaskActivity extends AppCompatActivity {
 
     //добавляем иконку в зависимости от статуса задания
     private void updateProgressIcons(String icon) {
-        TextView pi = (TextView) findViewById(R.id.progressIcons);
+        TextView pi = findViewById(R.id.progressIcons);
         String text = pi.getText().toString();
-        // if (text.length() > 20)
-        //     text = text.substring(1);
         text += icon;
         pi.setText(text);
+
+        shown++;
+        if (icon.equals(getString(R.string.star)))
+            solved++;
+
+        TextView statistics = findViewById(R.id.statistics);
+        statistics.setText(String.format("Решено %d из %d (%d%%)", solved, shown - 1, solved * 100 / (shown - 1)));
     }
 
     //завершение раунда
@@ -541,7 +528,7 @@ public class TaskActivity extends AppCompatActivity {
         if (showTask) {
             expressionTV.setText(newTask.expression + " = " + answer);
         } else {
-            expressionTV.setText("\u2026 = " + answer);
+            expressionTV.setText(getString(R.string.threedots) + " = " + answer);
 //            pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
 //            int x = expressionTV.getLeft();
 //            int y = expressionTV.getBottom() - expressionTV.getHeight() /3;
@@ -589,7 +576,9 @@ public class TaskActivity extends AppCompatActivity {
     public void showAnswer(View view) {
         answer = newTask.answer;
         answerShown = true;
-        updateProgressIcons("?");
+        if (!answerWasShown)
+            updateProgressIcons("?");
+        answerWasShown = true;
         textViewUpdate();
     }
 

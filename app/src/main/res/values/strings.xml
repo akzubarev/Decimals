@@ -18,16 +18,20 @@
     <string name="title_activity_wheel_picker">wheel_picker</string>>
     <string name="about_text">Десятичные дроби\n(тренажёр устного счёта)\n\nИдея:\nАртём Казанович\n\nПрограммирование:\nАлександр Умнов\nАлексей Зубарев\nАртём Казанович\n</string>>
     <string name="email">mathcoach.support@yandex.ru</string>>
-
+    <string name="donate"><a href="http://math-trainer.ru">Поддержать проект</a></string>
+    <string name="donatelink">http://www.math-trainer.ru</string>
+    <string name="donatetext">Поддержать проект</string>
     <string name="arrow">›</string>
     <string name="dot">⋅</string>
     <string name="star">★</string>
+    <string name="threedots">\u2026</string>
 
     <string-array name="screen_array">
         <item>Прервать тренировку</item>
         <item>Закончить тренировку</item>
         <item>Пропустить задание</item>
         <item>Показать ответ</item>>
+
     </string-array>
     <string name="title_activity_authors">О приложении</string>
     <string name="Arrow"><![CDATA[›]]></string>

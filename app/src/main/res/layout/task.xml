@@ -55,9 +55,9 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:singleLine="true"
             android:textStyle=""
-            android:text=""
+            android:text="Решено 0"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/dimen6" />
 
         <TextView
             android:id="@+id/timertext"
@@ -72,7 +72,7 @@
             android:textStyle=""
             android:text="00:48/5:00"
             android:textColor="@color/main"
-            android:textSize="@dimen/dimen4" />
+            android:textSize="@dimen/dimen6" />
 
         <TextView
             android:id="@+id/pressToShowTaskTV"

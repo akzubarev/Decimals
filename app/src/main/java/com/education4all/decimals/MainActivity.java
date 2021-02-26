@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-       // myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_overflow));
+        // myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_overflow));
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("");
 //    @Override
@@ -84,4 +84,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StatiscticsActivity.class);
         startActivity(intent);
     }
+
 }
