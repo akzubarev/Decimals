@@ -3,6 +3,7 @@ package com.education4all.decimals;
 import androidx.appcompat.app.AlertDialog;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,9 +29,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.format.DateUtils;
+import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +65,7 @@ public class TaskActivity extends AppCompatActivity {
     private Task newTask; // текущее задание
     private String answer; // текущий ответ
     private float RoundTime; // время раунда
+    private TextView timerText; //текстовый таймер
     private ProgressBar G_progressBar; // прогресс бар
     private int progressStatus = 0; //позиция прогресс бара
     private Context context = this; // переменная контекста, нужна чтобы передавть её в другие классы
@@ -84,12 +91,12 @@ public class TaskActivity extends AppCompatActivity {
         setContentView(R.layout.task);
 
         //заполняем GridLayout
-        GridLayout gl = (GridLayout) findViewById(R.id.buttonsLayout);
+        GridLayout gl = findViewById(R.id.buttonsLayout);
         ViewTreeObserver vto = gl.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                GridLayout gl = (GridLayout) findViewById(R.id.buttonsLayout);
+                GridLayout gl = findViewById(R.id.buttonsLayout);
                 fillView(gl);
                 ViewTreeObserver obs = gl.getViewTreeObserver();
                 obs.removeGlobalOnLayoutListener(this);
@@ -108,13 +115,13 @@ public class TaskActivity extends AppCompatActivity {
             prevTaskTime = tourStartTime;
             currentTour.totalTasks = 0;
             currentTour.rightTasks = 0;
-            answer = new String();
+            answer = "";
 
-            G_progressBar = (ProgressBar) findViewById(R.id.taskProgress);
+            G_progressBar = findViewById(R.id.taskProgress);
             G_progressBar.setProgress(0);
-            final int timerstate = DataReader.GetTimerState(this);//0 - continous 1 - discrete 2 - invisible
+            final int timerstate = DataReader.GetValue("TimerState", this);//0 - continous 1 - discrete 2 - invisible
             G_progressBar.setVisibility(timerstate == 2 ? View.INVISIBLE : View.VISIBLE);
-            RoundTime = DataReader.GetRoundTime(this);
+            RoundTime = DataReader.GetValue("RoundTime", this);
             millis = (long) (RoundTime * 1000 * 60);
             final Context l_context = this;
             new Thread(() -> {
@@ -131,7 +138,7 @@ public class TaskActivity extends AppCompatActivity {
             }).start();
 
 
-            TextView timerText = findViewById(R.id.timertext);
+            timerText = findViewById(R.id.timertext);
             timerText.setVisibility(timerstate == 2 ? View.INVISIBLE : View.VISIBLE);
             seconds = (int) RoundTime * 60;
 
@@ -150,7 +157,7 @@ public class TaskActivity extends AppCompatActivity {
                 }
             }).start();
 
-            disapTime = DataReader.GetDisapRoundTime(this);
+            disapTime = DataReader.GetValue("DisapRoundTime", this);
             //roundTimeHandler.postDelayed(endRound, millis);
             showTaskSetTrueAndRestartDisappearTimer();
             newTask.generate(allowedTasks);
@@ -204,6 +211,11 @@ public class TaskActivity extends AppCompatActivity {
         return String.format("%s/%s", DateUtils.formatElapsedTime(count), DateUtils.formatElapsedTime(seconds));
     }
 
+    void updateTimers() {
+        G_progressBar.setProgress(progressStatus);
+        timerText.setText(timeString(count, seconds));
+    }
+
     //делаем все кнопки одинакового размера внутри GridLayout
     public void fillView(GridLayout parent) {
         //Button child;
@@ -223,13 +235,14 @@ public class TaskActivity extends AppCompatActivity {
             }
         }
 
-        if (DataReader.GetButtonsPlace(this) == 1)
-            alterButtons(parent);
-        if (DataReader.GetLayoutState(this) == 0)
-            alterLayout(parent);
+        if (DataReader.GetValue("ButtonsPlace", this) == 1)
+            alterButtons();
+        if (DataReader.GetValue("LayoutState", this) == 0)
+            alterLayout();
     }
 
-    void alterLayout(GridLayout parent) {
+
+    void alterLayout() {
         Button b1 = findViewById(R.id.But_7);
         Button b2 = findViewById(R.id.But_1);
         switchPlaces(b1, b2);
@@ -261,7 +274,7 @@ public class TaskActivity extends AppCompatActivity {
         b2.setLayoutParams(temp);
     }
 
-    void alterButtons(GridLayout parent) {
+    void alterButtons() {
         View b1 = findViewById(R.id.But_7);
         View b2 = findViewById(R.id.But_8);
         View b3 = findViewById(R.id.But_9);
@@ -350,7 +363,8 @@ public class TaskActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        crossClick(findViewById(R.id.cross));
+
+            crossClick(findViewById(R.id.cross));
     }
 
     //сохраняем информацию о данной попытке и обновляем информацию раунда
@@ -371,6 +385,8 @@ public class TaskActivity extends AppCompatActivity {
     public void okButtonClick(View view) {
         if (answer.equals("")) return;
         showTaskSetTrueAndRestartDisappearTimer();
+        updateTimers();
+
         if (answerShown) {
             answer = "?";
             answerShown = false;
@@ -385,6 +401,7 @@ public class TaskActivity extends AppCompatActivity {
             if (!answer.equals("?")) {
                 updateWrongAnswers(answer);
                 updateProgressIcons(getString(R.string.dot));
+                answerWasShown = false;
             }
             answer = "";
             textViewUpdate();
@@ -428,9 +445,7 @@ public class TaskActivity extends AppCompatActivity {
         TextView wrongAnswers = findViewById(R.id.wrongAnswers);
         wrongAnswers.setText("");
 
-        ((TextView) findViewById(R.id.timertext)).setText(timeString(count, seconds));
-
-        G_progressBar.setProgress(progressStatus);
+        updateTimers();
 
         if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis) {
             endRound();
@@ -452,7 +467,7 @@ public class TaskActivity extends AppCompatActivity {
             solved++;
 
         TextView statistics = findViewById(R.id.statistics);
-        statistics.setText(String.format("Решено %d из %d (%d%%)", solved, shown - 1, solved * 100 / (shown - 1)));
+        statistics.setText(String.format("Решено %d/%d (%d%%)", solved, shown - 1, solved * 100 / (shown - 1)));
     }
 
     //завершение раунда
@@ -464,33 +479,79 @@ public class TaskActivity extends AppCompatActivity {
         }
         StatisticMaker.saveTour(currentTour, context);
 
-        AlertDialog dialog = new AlertDialog.Builder(TaskActivity.this, R.style.AlertDialogTheme)
+        AlertDialog.Builder builder = new AlertDialog.Builder(TaskActivity.this, R.style.AlertDialogTheme)
                 .setTitle("Раунд завершён")
-                .setMessage("Решено заданий: " + Integer.toString(currentTour.rightTasks) + " из " + Integer.toString(currentTour.totalTasks))
-                .setCancelable(false)
-                .setNeutralButton("Ещё раунд", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        startActivity(getIntent());
-                    }
+                .setMessage("Решено заданий: " + currentTour.rightTasks + "/" + currentTour.totalTasks);
+             //   .setCancelable(false);
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+//                .setTitle("Раунд завершён")
+//                .setMessage("Решено заданий: " + Integer.toString(currentTour.rightTasks) + "/" + Integer.toString(currentTour.totalTasks))
+//                .setCancelable(false);
+//
+//        String[] options = {"Ещё раунд", "Подробнее", "В начало", "Поддержать"};
+//        builder.setItems(options, (dialog, which) -> {
+//            switch (which) {
+//                case 0: //Еще раунд
+//                    finish();
+//                    startActivity(getIntent());
+//                    break;
+//                case 1: // Подробнее
+//                    finish();
+//                    int tourCount = StatisticMaker.getTourCount(context);
+//                    Intent i = new Intent(context, StatTourActivity.class);
+//                    i.putExtra("Tour", (Integer) (tourCount - 1));
+//                    startActivity(i);
+//                    break;
+//                case 2: // В начало
+//                    finish();
+//                case 3: // Поддержать
+//                    finish();
+//                    Intent intent = new Intent(this, WebActivity.class);
+//                    startActivity(intent);
+//                    break;
+//
+//            }
+//        });
+        LayoutInflater inflater = getLayoutInflater();
+        // Pass null as the parent view because its going in the dialog layout
+        View view = inflater.inflate(R.layout.dialog_endround, null);
+
+        TextView donate = view.findViewById(R.id.donate);
+        SpannableString ss = new SpannableString(getString(R.string.donatetext));
+        ss.setSpan(new URLSpan(getString(R.string.donatelink)), 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        donate.setText(ss);
+
+        builder.setView(view)
+                .setNeutralButton("Ещё раунд", (dialog, which) -> {
+                    finish();
+                    startActivity(getIntent());
                 })
-                .setNegativeButton("Подробнее", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        int tourCount = StatisticMaker.getTourCount(context);
-                        Intent i = new Intent(context, StatTourActivity.class);
-                        i.putExtra("Tour", (Integer) (tourCount - 1));
-                        startActivity(i);
-                    }
+                .setNegativeButton("Подробнее", (dialog, which) -> {
+                    finish();
+                    int tourCount = StatisticMaker.getTourCount(context);
+                    Intent i = new Intent(context, StatTourActivity.class);
+                    i.putExtra("Tour", (Integer) (tourCount - 1));
+                    startActivity(i);
                 })
-                .setPositiveButton("В начало", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .show();
+                .setPositiveButton("В начало", (dialog, which) -> finish());
+
+        AlertDialog dialog = builder.create();
+        dialog.setOnKeyListener((arg0, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                dialog.dismiss();
+                finish();
+            }
+            return true;
+        });
+        dialog.show();
         CommonOperations.FixDialog(dialog, context);
+    }
+
+    public void goToWeb(View view) {
+        Intent intent = new Intent(this, WebActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     //досрочное завершение раунда по нажатию выхода
@@ -524,7 +585,7 @@ public class TaskActivity extends AppCompatActivity {
 
     //обновляем поля вывода выражения
     private void textViewUpdate() {
-        TextView expressionTV = (TextView) findViewById(R.id.expTextView);
+        TextView expressionTV = findViewById(R.id.expTextView);
         if (showTask) {
             expressionTV.setText(newTask.expression + " = " + answer);
         } else {
@@ -587,10 +648,10 @@ public class TaskActivity extends AppCompatActivity {
         public void run() {
             showTask = false;
             textViewUpdate();
-            TextView pressToShowTaskTV = (TextView) findViewById(R.id.pressToShowTaskTV);
+            TextView pressToShowTaskTV = findViewById(R.id.pressToShowTaskTV);
             //pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
             pressToShowTaskTV.setVisibility(View.VISIBLE);
-            TextView pi = (TextView) findViewById(R.id.progressIcons);
+            TextView pi = findViewById(R.id.progressIcons);
             pi.setVisibility(View.INVISIBLE);
         }
     };
@@ -601,10 +662,10 @@ public class TaskActivity extends AppCompatActivity {
     //При перезапуске таймера необходимо показать задание. Это нужно делать перед textViewUpdate.
     private void showTaskSetTrueAndRestartDisappearTimer() {
         showTask = true;
-        TextView pressToShowTaskTV = (TextView) findViewById(R.id.pressToShowTaskTV);
+        TextView pressToShowTaskTV = findViewById(R.id.pressToShowTaskTV);
         //pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
         pressToShowTaskTV.setVisibility(View.INVISIBLE);
-        TextView pi = (TextView) findViewById(R.id.progressIcons);
+        TextView pi = findViewById(R.id.progressIcons);
         pi.setVisibility(View.VISIBLE);
 
         taskDisapHandler.removeCallbacks(disapTask);
@@ -616,7 +677,7 @@ public class TaskActivity extends AppCompatActivity {
     //просмотр задания, если оно исчезло
     public void showTask(View view) {
         showTaskSetTrueAndRestartDisappearTimer();
-        TextView pressToShowTaskTV = (TextView) findViewById(R.id.pressToShowTaskTV);
+        TextView pressToShowTaskTV = findViewById(R.id.pressToShowTaskTV);
         //pressToShowTaskTV.setText("");
         pressToShowTaskTV.setVisibility(View.INVISIBLE);
         textViewUpdate();

@@ -20,12 +20,14 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
+        style="@style/MyCustomTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabSelectedTextColor="@color/main"
         app:tabTextAppearance="@style/TabText"
         app:tabTextColor="@color/shadowed"
         app:tabMaxWidth="0dp"
+        android:textSize = "@dimen/dimen2"
         android:background="@color/color2"
         app:tabIndicatorColor="@color/additional"
         />
@@ -35,5 +37,4 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
-
 </LinearLayout>

@@ -118,5 +118,77 @@
                 android:textColor="@color/additional"
                 android:textSize="@dimen/dimen4" />
         </LinearLayout>
+
+        <LinearLayout
+            style="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text="Цель на день"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <TextView
+                android:id="@+id/goal"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:onClick="goalDropdown"
+                android:tag="1"
+                android:text="5 мин"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/additional"
+                android:textSize="@dimen/dimen4" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:text="Тема"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <TextView
+                android:id="@+id/theme"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:onClick="goalDropdown"
+                android:tag="1"
+                android:text="Темная"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/additional"
+                android:textSize="@dimen/dimen4" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

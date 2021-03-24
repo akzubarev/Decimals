@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
         <item name="popupMenuStyle">@style/CustomPopup</item>

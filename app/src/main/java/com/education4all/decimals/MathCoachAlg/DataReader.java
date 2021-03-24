@@ -4,15 +4,25 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-/**
- * Created by Александр on 23.04.2015.
- */
+
 public class DataReader {
     public static final String COMPLEXITY_SETTINGS = "ComplexitySettings";
     public static final String ROUND_TIME_SETTINGS ="RoundTimeSettings";
-
+    private static  HashMap<String, Integer> defaultValues= new HashMap<>();
+    static {
+        defaultValues.put("RoundTime",1);
+        defaultValues.put("DisapRoundTime", -1);
+        defaultValues.put("TimerState", 1);
+        defaultValues.put("ButtonsPlace", 0);
+        defaultValues.put("LayoutState", 0);
+        defaultValues.put("Goal", 5);
+        defaultValues.put("Theme", -1);
+    }
     public static int[] convertIntegers(ArrayList<Integer> integers)
     {
         int[] ret = new int[integers.size()];
@@ -80,58 +90,15 @@ public class DataReader {
            return false;
        }
 
-        static public void SaveRoundTime(float p_time, Context p_context) {
-            SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
-            editor.putFloat("time", p_time);
-            editor.commit();
-        }
-
-        static public float GetRoundTime(Context p_context) {
-            SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
-            return prefs.getFloat("time", 1);
-        }
-
-        static public void SaveDisapRoundTime(float p_time, Context p_context) {
-            SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
-            editor.putFloat("Disaptime", p_time);
-            editor.commit();
-        }
-
-        static public float GetDisapRoundTime(Context p_context) {
-            SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
-            return prefs.getFloat("Disaptime", -1);
-        }
-
-
-    static public void SaveTimerState(int state, Context p_context) {
+    public static void SaveValue(int value, String name, Context p_context) {
         SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
-        editor.putInt("TimerState", state);
+        editor.putInt(name, value);
         editor.commit();
     }
 
-    static public int GetTimerState(Context p_context) {
+    static public int GetValue(String name, Context p_context) {
         SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
-        return prefs.getInt("TimerState", 1);
+        return prefs.getInt(name, defaultValues.get(name));
     }
 
-    public static void SaveButtonsPlace(int state, Context p_context) {
-        SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
-        editor.putInt("ButtonsPlace", state);
-        editor.commit();
-    }
-    static public int GetButtonsPlace(Context p_context) {
-        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
-        return prefs.getInt("ButtonsPlace", 0);
-    }
-
-    public static void SaveLayoutState(int state, Context p_context) {
-        SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
-        editor.putInt("LayoutState", state);
-        editor.commit();
-    }
-
-    static public int GetLayoutState(Context p_context) {
-        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
-        return prefs.getInt("LayoutState", 0);
-    }
 }

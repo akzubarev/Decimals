@@ -12,26 +12,28 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/actionbaricon"
         android:background="@color/color1"
         android:elevation="4dp"
+        android:minHeight="@dimen/actionbaricon"
         app:popupTheme="@style/CustomPopup"
         app:titleTextAppearance="@style/ActionBarText">
-      <!--  app:title="Десятичные дроби"
-        android:gravity="center"
-        android:paddingLeft="20dp"
-        android:paddingStart="20dp"-->
+        <!--  app:title="Десятичные дроби"
+          android:gravity="center"
+          android:paddingLeft="20dp"
+          android:paddingStart="20dp"-->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:maxLines="1"
             android:text="@string/app_name"
             android:textAlignment="center"
-            android:textColor="@color/main"
             android:textAppearance="@style/ActionBarText"
+            android:textColor="@color/main"
             android:textSize="@dimen/dimen1"
+            app:autoSizeTextType="uniform"
 
             />
 
@@ -46,54 +48,150 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin">
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:weightSum="3">
 
-        <Button
-            android:id="@+id/stat_button"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginLeft="2.5dp"
             android:layout_marginRight="2.5dp"
             android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:background="@color/color3"
-            android:onClick="startStatistic"
-            android:text="@string/stats_button"
-            android:textAllCaps="false"
-            android:textAppearance="@style/TabText"
-            android:textColor="@color/main"
-            android:textSize="@dimen/dimen2" />
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/settings_button"
+
+            <Button
+                android:id="@+id/stat_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color3"
+                android:gravity="center_horizontal|top"
+                android:onClick="startStatistic"
+                android:paddingTop="20dp"
+                android:text="@string/stats_button"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TabText"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen2" />
+
+            <TextView
+                android:id="@+id/statistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:elevation="10dp"
+                android:gravity="center"
+                android:text="Решено подряд:\nСейчас 0, в среднем 0\nДней подряд:\nСейчас 0, в среднем 0"
+                android:textAlignment="center"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen6" />
+
+
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_height="0dp"
             android:layout_marginLeft="2.5dp"
             android:layout_marginRight="2.5dp"
-            android:layout_weight="1"
-            android:background="@color/color3"
-            android:onClick="startSettings"
-            android:text="@string/settings_button"
-            android:textAllCaps="false"
-            android:textAppearance="@style/TabText"
-            android:textColor="@color/main"
-            android:textSize="@dimen/dimen2"
-            />
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/start_button"
+            <Button
+                android:id="@+id/settings_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color3"
+                android:gravity="center_horizontal|top"
+                android:onClick="startSettings"
+                android:paddingTop="20dp"
+                android:text="@string/settings_button"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TabText"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen2" />
+
+            <TextView
+                android:id="@+id/settings_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:elevation="10dp"
+                android:gravity="center"
+                android:text="+ 1, 3-4 - 2, 3 : 4\nДлина раунда N мин\nУсловие исчезает через K сек"
+                android:textAlignment="center"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen6" />
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_height="0dp"
+            android:layout_marginLeft="2.5dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/buttonmain"
-            android:onClick="startTasks"
-            android:text="@string/start_button"
-            android:textAllCaps="false"
-            android:textAppearance="@style/TabText"
-            android:textColor="@color/main"
-            android:textSize="@dimen/dimen2" />
+            android:layout_marginRight="2.5dp"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/start_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/buttonmain"
+                android:gravity="center_horizontal|top"
+                android:onClick="startTasks"
+                android:paddingTop="20dp"
+                android:text="@string/start_button"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TabText"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen2" />
+
+            <TextView
+                android:id="@+id/goal_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:elevation="10dp"
+                android:gravity="center"
+                android:text="Цель: 0:00/5:00"
+                android:textAlignment="center"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen6" />
+            <!--
+                       <LinearLayout
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_gravity="bottom|end"
+                           android:orientation="horizontal"
+                           android:elevation="10dp"
+                           android:layout_marginBottom="20dp"
+                           android:layout_marginRight = "20dp">
+
+                           <TextView
+                               android:id="@+id/integer"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_gravity="center"
+                               android:text="3"
+                               android:textAlignment="center"
+                               android:textColor="@color/main"
+                               android:textSize="@dimen/dimen6" />
+
+                           <TextView
+                               android:id="@+id/decimal2"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_gravity="center"
+                               android:elevation="10dp"
+                               android:gravity="center"
+                               android:text="1/2"
+                               android:textAlignment="center"
+                               android:textColor="@color/main"
+                               android:textSize="@dimen/dimen6" />
+                       </LinearLayout>
+                       -->
+        </FrameLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </LinearLayout>

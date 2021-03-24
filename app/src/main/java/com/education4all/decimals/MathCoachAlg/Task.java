@@ -16,12 +16,12 @@ public class Task {
     public long taskTime;
     public long timeTaken;
     public Random rnd;
-    public final String[] operations = {"\u2006+\u2006", "\u2006−\u2006", "\u2006\u22C5\u2006", "\u2006:\u2006"};
+    public static final String[] operations = {"\u2006+\u2006", "\u2006−\u2006", "\u2006\u22C5\u2006", "\u2006:\u2006"};
 
     public Task() {
         expression = "2 + 2";
         answer = "4";
-        userAnswer = new String();
+        userAnswer = "";
         rnd = new Random();
     }
 
@@ -68,7 +68,7 @@ public class Task {
                 res.add(firstPart + oneAnswer + "  (" + oneAnswerTime + " сек)");
                 answers.add(oneAnswer);
             }
-            partToBeParsed = partToBeParsed.substring(commaIndex + 1, partToBeParsed.length());
+            partToBeParsed = partToBeParsed.substring(commaIndex + 1);
         }
         return res;
     }
@@ -142,9 +142,9 @@ public class Task {
     }
 
     public String serialize() {
-        return expression + ";" + Integer.toString(operation) + ";" + Integer.toString(complexity) + ";" +
-                answer + ";" + userAnswer + ";" + Long.toString(taskTime) + ";" +
-                Long.toString(timeTaken) + ";";
+        return expression + ";" + operation + ";" + complexity + ";" +
+                answer + ";" + userAnswer + ";" + taskTime + ";" +
+                timeTaken + ";";
     }
 
     public void deSerialize(String line) {

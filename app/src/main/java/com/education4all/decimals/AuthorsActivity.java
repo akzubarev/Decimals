@@ -19,7 +19,7 @@ public class AuthorsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authors);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -35,5 +35,6 @@ public class AuthorsActivity extends AppCompatActivity {
     public void goToWeb(View view) {
         Intent intent = new Intent(this, WebActivity.class);
         startActivity(intent);
+        finish();
     }
 }

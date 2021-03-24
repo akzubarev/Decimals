@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tourblock"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_marginTop="@dimen/default_gap"
+    android:layout_marginBottom="@dimen/default_gap"
+    android:background="@color/color2"
+    android:onClick="tourClick"
+    tools:context=".StatiscticsActivity">
+
+    <TextView
+        android:id="@+id/tourdatetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="22.03.2021, 17:40. 1 мин."
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen5"
+        android:onClick="tourClick"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/tourinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tourdatetime"
+        android:text="Решено 0.4 (0%)"
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4"
+        android:onClick="tourClick"
+        android:layout_alignParentBottom="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent"
+        android:text="@string/arrow"
+        android:textColor="@color/additional"
+        android:onClick="tourClick"
+        android:textSize="@dimen/dimen1"
+        android:gravity="center_vertical|end"
+        android:id="@+id/arrow"/>
+</RelativeLayout>

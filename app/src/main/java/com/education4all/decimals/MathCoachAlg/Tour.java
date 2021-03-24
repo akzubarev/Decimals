@@ -35,12 +35,13 @@ public class Tour {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(l_tourDateTime);
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM',' HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy',' HH:mm");
 		String str = (l_rightTasks == l_totalTasks ? "=" : "_");
 		str += sdf.format(calendar.getTime()) + ". ";
 		str += ((l_tourTime / 60 == 0) ? "1" : Long.toString(l_tourTime / 60)) + " мин. " + "\n";
-		str += "Решено " + Integer.toString(l_rightTasks) + " из " + Integer.toString(l_totalTasks);
+		str += "Решено " + l_rightTasks + "/" + l_totalTasks;
 		str += " (" + l_rightTasks * 100 / l_totalTasks + "%)";
+		str += "сек" + l_tourTime;
 		return str;
     }
     
@@ -71,8 +72,8 @@ public class Tour {
 	public ArrayList<String> serialize() {
 	    String line;
 	    ArrayList<String> result = new ArrayList<String>();
-	    line = "tourStart;" + Long.toString(tourDateTime) + ';' + Integer.toString(totalTasks) + ';' +
-	    		Integer.toString(rightTasks) + ';' + Long.toString(tourTime) + ';';
+	    line = "tourStart;" + tourDateTime + ';' + totalTasks + ';' +
+				rightTasks + ';' + tourTime + ';';
 	    result.add(line);
 	    for (int i = 0; i < tourTasks.size(); ++i) {
 	        result.add(tourTasks.get(i).serialize());

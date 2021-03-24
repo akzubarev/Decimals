@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/color3"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/donate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="?dialogPreferredPadding"
+        android:paddingEnd="?dialogPreferredPadding"
+        android:paddingLeft="?dialogPreferredPadding"
+        android:paddingRight="?dialogPreferredPadding"
+        android:gravity="center"
+        android:onClick="goToWeb"
+        android:text="@string/donate"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColorLink="@color/additional"
+        android:textSize="@dimen/dimen4" />
+    <!--  android:autoLink="all" -->
+    <!--  that doesn't work somehow so we update the text from code -->
+</LinearLayout>

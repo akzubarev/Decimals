@@ -39,14 +39,14 @@ public class StatTourActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stat_tour);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         // myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_trash));
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TourNumber = getIntent().getIntExtra("Tour", -1);
         if (TourNumber >= 0) {
-            ScrollView Tasks = (ScrollView) findViewById(R.id.scrollView2);
+            ScrollView Tasks = findViewById(R.id.scrollView2);
             LinearLayout justALayout = new LinearLayout(this);
             justALayout.setOrientation(LinearLayout.VERTICAL);
             Tour tourinfo = StatisticMaker.loadTour(this, TourNumber);
@@ -57,7 +57,7 @@ public class StatTourActivity extends AppCompatActivity {
 //            String txt = Tour.DepictTour(tourInfoStr);
 //            String datetime = txt.substring(1, 6);
 
-            String line = String.format("%s %d из %d (%d%%)",
+            String line = String.format("%s %d/%d (%d%%)",
                     getString(R.string.star),  tourinfo.rightTasks, tourinfo.tourTasks.size(),
                     (int) (tourinfo.rightTasks * 100.0 / tourinfo.tourTasks.size()));
             getSupportActionBar().setTitle(line);
@@ -82,9 +82,9 @@ public class StatTourActivity extends AppCompatActivity {
                     int end = output.indexOf(')');
                     String userTime = output.substring(ind + 1, end) + ".";
 
-                    String testPart = ", i=" + Integer.toString(i) + " of " + Integer.toString(deTour.size())
-                            + ", j=" + Integer.toString(j) + " of " + Integer.toString(TaskDepiction.size());
-                    testPart += ", jump=" + jump;
+//                    String testPart = ", i=" + Integer.toString(i) + " of " + Integer.toString(deTour.size())
+//                            + ", j=" + Integer.toString(j) + " of " + Integer.toString(TaskDepiction.size());
+//                    testPart += ", jump=" + jump;
 //                    taskAndUserAnswer += testPart; // Вывод данных в тестовом режиме, TODO закомментировать перед релизом
 
                     newTask.setText(taskAndUserAnswer);
@@ -125,7 +125,7 @@ public class StatTourActivity extends AppCompatActivity {
                     row.addView(userTimeTV);
                     justALayout.addView(row);
                 }
-                ;//ИСХОДНЫЙ КОД
+                //ИСХОДНЫЙ КОД
 //                for (int j = 0; j < TaskDepiction.size(); ++j) {
 //                    String output = TaskDepiction.get(j);
 //                    String testPart = ", i=" + Integer.toString(i) + " of " + Integer.toString(deTour.size())

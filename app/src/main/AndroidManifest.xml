@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.education4all.decimals">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
+        android:name=".ThemedApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -27,14 +31,17 @@
             android:label="@string/title_activity_task"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.education4all.decimals.MainActivity" />
         </activity>
 
         <activity
             android:name="com.education4all.decimals.SettingsMainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_settings_simple"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.education4all.decimals.MainActivity" />
@@ -44,8 +51,8 @@
             android:name="com.education4all.decimals.ComplexityActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_complexity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.education4all.decimals.SettingsMainActivity" />
@@ -53,10 +60,10 @@
 
         <activity
             android:name="com.education4all.decimals.StatiscticsActivity"
-            android:theme="@style/AppTheme"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_statisctics"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.education4all.decimals.MainActivity" />
@@ -64,38 +71,39 @@
 
         <activity
             android:name="com.education4all.decimals.StatTourActivity"
-            android:theme="@style/AppTheme"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_stat_tour"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.education4all.decimals.StatiscticsActivity" />
         </activity>
 
         <!--<activity-->
-            <!--android:name=".wheel_picker"-->
-            <!--android:label="@string/title_activity_wheel_picker">-->
+        <!--android:name=".wheel_picker"-->
+        <!--android:label="@string/title_activity_wheel_picker">-->
         <!--</activity>-->
 
         <activity
             android:name="com.education4all.decimals.AuthorsActivity"
             android:label="@string/title_activity_authors"
-            android:theme="@style/AppTheme"
+            android:parentActivityName="com.education4all.decimals.MainActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName="com.education4all.decimals.MainActivity">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.education4all.decimals.MainActivity" />
         </activity>
 
 
-        <activity android:name="com.education4all.decimals.WebActivity"
+        <activity
+            android:name="com.education4all.decimals.WebActivity"
             android:label="Поддержать"
             android:theme="@style/AppTheme">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.education4all.decimals.AuthorsActivity" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.education4all.decimals.AuthorsActivity" />
         </activity>
     </application>
 </manifest>

@@ -21,7 +21,7 @@ public class StatisticMaker {
         l_editor.putString(TOURS + "_" + tourCountStr, Integer.toString(p_Tour.totalTasks));
         ArrayList<String> serializedTour = p_Tour.serialize();
         for (int taskNumber = 0; taskNumber < p_Tour.totalTasks + 2; ++taskNumber) {
-            l_editor.putString(TOURS + "_" + tourCountStr + "_" + Integer.toString(taskNumber),serializedTour.get(taskNumber));
+            l_editor.putString(TOURS + "_" + tourCountStr + "_" + taskNumber,serializedTour.get(taskNumber));
         }
         l_editor.putString(TOURS, Integer.toString(tourCount + 1));
         l_editor.apply();
@@ -104,7 +104,7 @@ public class StatisticMaker {
         l_editor.putString(TOURS + "_" + tourNumberString, Integer.toString(p_Tour.totalTasks));
         ArrayList<String> serializedTour = p_Tour.serialize();
         for (int taskNumber = 0; taskNumber < p_Tour.totalTasks + 2; ++taskNumber) {
-            l_editor.putString(TOURS + "_" + tourNumberString + "_" + Integer.toString(taskNumber),serializedTour.get(taskNumber));
+            l_editor.putString(TOURS + "_" + tourNumberString + "_" + taskNumber,serializedTour.get(taskNumber));
         }
         l_editor.apply();
     }

@@ -1,35 +1,87 @@
 package com.education4all.decimals;
 
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class WebActivity extends AppCompatActivity {
     private WebView webView;
+    private boolean connected = false;
+
+    private String message = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.web);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+
+        connected = CheckForConnection();
+        if (connected) {
+            setContentView(R.layout.web);
+            webView = findViewById(R.id.webView);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.setWebViewClient(new MyWebViewClient());
+            webView.loadUrl("http://math-trainer.ru");
+        } else {
+            setContentView(R.layout.no_internet);
+//            TextView messagetext = findViewById(R.id.message);
+//            messagetext.setText(message);
+        }
+
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        webView = findViewById(R.id.webView);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new MyWebViewClient());
-        webView.loadUrl("http://math-trainer.ru");
+    }
+
+    private boolean CheckForConnection() {
+
+        boolean internetConnection = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            message = "Build version > M";
+//            Network nw = connectivityManager.getActiveNetwork();
+//            if (nw == null) {
+//                internetConnection = false;
+//                message += ", nw==null";
+//            } else {
+//                NetworkCapabilities actNw = connectivityManager.getNetworkCapabilities(nw);
+//                internetConnection = actNw != null && (
+//                        actNw.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ||
+//                        actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+//                        actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+//                        actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)// ||
+//                    //    actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH)
+//                );
+//
+//                message += actNw == null ? ", actNw==null" : ", no transport";
+//            }
+        //      } else {
+        message = "Build version < M";
+        NetworkInfo nwInfo = connectivityManager.getActiveNetworkInfo();
+        internetConnection = nwInfo != null && nwInfo.isConnected();
+        message += nwInfo == null ? ", nwInfo==null" : ", nw is not connected";
+//        }
+        return internetConnection;
     }
 
     @Override
     public void onBackPressed() {
-        if(webView.canGoBack()) {
+        if (connected && webView.canGoBack()) {
             webView.goBack();
         } else {
             super.onBackPressed();

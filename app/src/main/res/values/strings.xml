@@ -35,4 +35,5 @@
     </string-array>
     <string name="title_activity_authors">О приложении</string>
     <string name="Arrow"><![CDATA[›]]></string>
+    <string name="no_internet">Кажется, ваше устройство сейчас не подключено к интернету.\n Нажмите еще раз на ссылку \"Поддержать проект,\" когда будете в сети, или заходите на сайт math-trainer.ru, там вы сможете сделать пожертвование на развитие проекта.</string>
 </resources>

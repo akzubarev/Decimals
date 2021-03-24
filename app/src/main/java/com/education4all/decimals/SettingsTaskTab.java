@@ -32,7 +32,7 @@ public class SettingsTaskTab extends Fragment {
         view = v;
         IndicatorSeekBar seekBar = view.findViewById(R.id.round_length_slider);
         seekBar.customTickTexts(new String[]{"1", "2", "3", "5", "10", "15", "20", "30", "45", "     60"});
-        switch ((int) DataReader.GetRoundTime(getActivity().getApplicationContext())) {
+        switch (DataReader.GetValue("RoundTime", getContext())) {
             case 1:
                 seekBar.setProgress(0);
                 break;
@@ -74,13 +74,8 @@ public class SettingsTaskTab extends Fragment {
 //                //when tick count > 0
 //                Log.i(TAG, seekParams.thumbPosition);
 //                Log.i(TAG, seekParams.tickText);
-                String value = seekParams.tickText;
-                float fvalue = 0;
-                if (value.equals(NODISAPEARCHAR))
-                    fvalue = -1;
-                else
-                    fvalue = Float.parseFloat(value);
-                DataReader.SaveRoundTime(fvalue, getActivity().getApplicationContext());
+                String value = seekParams.tickText.trim();
+                DataReader.SaveValue(Integer.parseInt(value),"RoundTime" ,getContext());
             }
 
             @Override
@@ -95,7 +90,7 @@ public class SettingsTaskTab extends Fragment {
 
         seekBar = view.findViewById(R.id.disappear_time_slider);
         seekBar.customTickTexts(new String[]{"1", "2", "3", "5", "10", "15", "20", "30", "45", "    ∞"});
-        switch ((int) DataReader.GetDisapRoundTime(getActivity().getApplicationContext())) {
+        switch (DataReader.GetValue("DisapRoundTime",getContext())) {
             case 1:
                 seekBar.setProgress(0);
                 break;
@@ -138,12 +133,12 @@ public class SettingsTaskTab extends Fragment {
 //                Log.i(TAG, seekParams.thumbPosition);
 //                Log.i(TAG, seekParams.tickText);
                 String value = seekParams.tickText.trim();
-                float fvalue = 0;
+                int ivalue = 0;
                 if (value.equals(NODISAPEARCHAR))
-                    fvalue = -1;
+                    ivalue = -1;
                 else
-                    fvalue = Float.parseFloat(value);
-                DataReader.SaveDisapRoundTime(fvalue, getActivity().getApplicationContext());
+                    ivalue = Integer.parseInt(value);
+                DataReader.SaveValue(ivalue, "DisapRoundTime", getContext());
             }
 
             @Override
@@ -164,7 +159,7 @@ public class SettingsTaskTab extends Fragment {
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxAdd" + i;
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
-            CheckBox cb = (CheckBox) view.findViewById(resID);
+            CheckBox cb = view.findViewById(resID);
             checked = DataReader.checkComplexity(0, i - 1, getActivity().getApplicationContext());
             if (cb.isChecked() != checked)
                 cb.setChecked(checked);
@@ -173,7 +168,7 @@ public class SettingsTaskTab extends Fragment {
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxSub" + i;
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
-            CheckBox cb = (CheckBox) view.findViewById(resID);
+            CheckBox cb = view.findViewById(resID);
             checked = DataReader.checkComplexity(1, i - 1, getActivity().getApplicationContext());
             if (cb.isChecked() != checked)
                 cb.setChecked(checked);
@@ -182,7 +177,7 @@ public class SettingsTaskTab extends Fragment {
         for (int i = 1; i <= 4; ++i) {
             String name = "checkBoxMul" + i;
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
-            CheckBox cb = (CheckBox) view.findViewById(resID);
+            CheckBox cb = view.findViewById(resID);
             checked = DataReader.checkComplexity(2, i - 1, getActivity().getApplicationContext());
             if (cb.isChecked() != checked)
                 cb.setChecked(checked);
@@ -192,7 +187,7 @@ public class SettingsTaskTab extends Fragment {
             //if (i != 2) {
             String name = "checkBoxDiv" + i;
             int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
-            CheckBox cb = (CheckBox) view.findViewById(resID);
+            CheckBox cb = view.findViewById(resID);
             checked = DataReader.checkComplexity(3, i - 1, getActivity().getApplicationContext());
             if (cb.isChecked() != checked)
                 cb.setChecked(checked);
@@ -221,7 +216,7 @@ public class SettingsTaskTab extends Fragment {
         }
         String name = "checkBox" + action + "1";
         int resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
-        CheckBox chk = (CheckBox) view.findViewById(resID);
+        CheckBox chk = view.findViewById(resID);
 
         if (chk.isChecked()) {
             currentComplexity.append("0").append(",");
@@ -229,21 +224,21 @@ public class SettingsTaskTab extends Fragment {
 
         name = "checkBox" + action + "2";
         resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
-        chk = (CheckBox) view.findViewById(resID);
+        chk = view.findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("1").append(",");
         }
 
         name = "checkBox" + action + "3";
         resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
-        chk = (CheckBox) view.findViewById(resID);
+        chk = view.findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("2").append(",");
         }
 
         name = "checkBox" + action + "4";
         resID = getResources().getIdentifier(name, "id", "com.education4all.decimals");
-        chk = (CheckBox) view.findViewById(resID);
+        chk = view.findViewById(resID);
         if (chk.isChecked()) {
             currentComplexity.append("3").append(",");
         }

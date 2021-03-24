@@ -84,7 +84,7 @@ public class SettingsMainActivity extends AppCompatActivity {
 //        });
 
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -116,7 +116,6 @@ public class SettingsMainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
 

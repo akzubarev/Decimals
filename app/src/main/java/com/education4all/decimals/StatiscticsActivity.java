@@ -16,7 +16,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.gridlayout.widget.GridLayout;
 
+import android.util.Log;
+import android.util.Pair;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,132 +32,193 @@ import android.widget.TextView;
 
 import com.education4all.decimals.MathCoachAlg.StatisticMaker;
 
+import com.education4all.decimals.MathCoachAlg.Task;
 import com.education4all.decimals.MathCoachAlg.Tour;
+
+import java.util.ArrayList;
 
 public class StatiscticsActivity extends AppCompatActivity {
     private Context l_context = this;
 
-    View.OnClickListener tourClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent i = new Intent(l_context, StatTourActivity.class);
-            i.putExtra("Tour", (Integer) (v.getTag()));
-            startActivity(i);
-        }
+    //deprecated
+    View.OnClickListener tourClick = v -> {
+        Intent i = new Intent(l_context, StatTourActivity.class);
+        i.putExtra("Tour", (Integer) (v.getTag()));
+        startActivity(i);
     };
+
+    public void tourClick(View v) {
+        Intent i = new Intent(l_context, StatTourActivity.class);
+        i.putExtra("Tour", (Integer) (v.getTag()));
+        startActivity(i);
+    }
+
+    public View generateBar() {
+//        View bar = new View(this);
+//        bar.setVisibility(View.VISIBLE);
+//        bar.setMinimumHeight(5);
+//        bar.setBackgroundColor(getResources().getColor(R.color.shadowed));
+//        bar.setPadding(50, 0, 50, 0);
+        return View.inflate(l_context, R.layout.tourbar, null);
+    }
+
+    RelativeLayout deprecatedRowGen(LinearLayout tourLayout, int tourNumber) {
+        View bar = new View(this);
+        bar.setVisibility(View.VISIBLE);
+        bar.setMinimumHeight(5);
+        bar.setBackgroundColor(getResources().getColor(R.color.shadowed));
+        bar.setPadding(50, 0, 50, 0);
+
+        RelativeLayout row = new RelativeLayout(this);
+
+        String tourInfoStr = StatisticMaker.getTourInfo(this, tourNumber);
+        String txt = Tour.DepictTour(tourInfoStr);
+        Typeface font = Typeface.create("sans-serif-light", Typeface.NORMAL);
+
+        boolean isAllTasksRight = (txt.substring(0, 1).equals("="));
+        int divider = txt.indexOf("Решено");
+        int end = txt.indexOf("сек");
+        String datetime = txt.substring(1, divider - 1);
+        String info = "";
+        if (isAllTasksRight)
+            info = getString(R.string.star) + " ";
+        info += txt.substring(divider, end);
+        // info = "★ " + txt.substring(divider);
+
+
+        TextView tourdatetime = new TextView(this);
+        tourdatetime.setId(tourNumber + 1);
+        tourdatetime.setText(datetime);
+        tourdatetime.setTag(tourNumber);
+        tourdatetime.setTextSize(getResources().getDimension(R.dimen.dimen5) / getResources().getDisplayMetrics().density);
+        tourdatetime.setOnClickListener(tourClick);
+        tourdatetime.setGravity(Gravity.TOP | Gravity.START);
+        tourdatetime.setTypeface(font);
+
+        TextView tourinfo = new TextView(this);
+        tourinfo.setId(tourNumber);
+        tourinfo.setText(info);
+        tourinfo.setTextSize(getResources().getDimension(R.dimen.dimen4) / getResources().getDisplayMetrics().density);
+        tourinfo.setOnClickListener(tourClick);
+        tourinfo.setTag(tourNumber);
+        tourinfo.setGravity(Gravity.BOTTOM | Gravity.START);
+        tourinfo.setTypeface(font);
+
+
+        Button arrow = new Button((this));
+        arrow.setTag(tourNumber);
+        arrow.setOnClickListener(tourClick);
+        arrow.setText(getString(R.string.arrow));
+        arrow.setPadding(0, 0, 0, 10);
+        arrow.setTextSize(getResources().getDimension(R.dimen.dimen1) / getResources().getDisplayMetrics().density);
+        arrow.setBackgroundColor(Color.TRANSPARENT);
+        arrow.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
+        arrow.setTextColor(ContextCompat.getColor(this, R.color.additional));
+
+        row.setGravity(Gravity.CENTER_VERTICAL);
+
+        tourdatetime.setTextColor(ContextCompat.getColor(this, R.color.main));
+        tourinfo.setTextColor(ContextCompat.getColor(this, R.color.main));
+
+//            if (isAllTasksRight)
+//                tourinfo.setTypeface(tourinfo.getTypeface(), Typeface.ITALIC);
+
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        arrow.setLayoutParams(layoutParams);
+
+
+        layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(RelativeLayout.BELOW, tourdatetime.getId());
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        if (!isAllTasksRight)
+            layoutParams.leftMargin = 50;
+        tourinfo.setLayoutParams(layoutParams);
+
+        row.addView(tourdatetime);
+        row.addView(tourinfo);
+        row.addView(arrow);
+        tourLayout.addView(row);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 20, 0, 20);
+        row.setLayoutParams(params);
+
+        bar = new View(this);
+        bar.setVisibility(View.VISIBLE);
+        bar.setMinimumHeight(5);
+        bar.setPadding(50, 0, 50, 0);
+        bar.setBackgroundColor(getResources().getColor(R.color.shadowed));
+        tourLayout.addView(bar);
+        return row;
+    }
+
+    Pair<String, String> getTourInfo(String tourdepiction) {
+        boolean isAllTasksRight = (tourdepiction.substring(0, 1).equals("="));
+        int divider = tourdepiction.indexOf("Решено");
+        int end = tourdepiction.indexOf("сек");
+        String datetime = tourdepiction.substring(1, divider - 1);
+        String info = "";
+        if (isAllTasksRight)
+            info = getString(R.string.star) + " ";
+        info += tourdepiction.substring(divider, end);
+        return new Pair<String, String>(datetime, info);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.statisctics);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         // myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_trash));
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         int tourCount = StatisticMaker.getTourCount(this);
-        ScrollView Tours = (ScrollView) findViewById(R.id.scrollView);
-        LinearLayout justALayout = new LinearLayout(this);
-        justALayout.setOrientation(LinearLayout.VERTICAL);
+        ScrollView Tours = findViewById(R.id.scrollView);
+        LinearLayout tourLayout = new LinearLayout(this);
+        tourLayout.setOrientation(LinearLayout.VERTICAL);
 
-        View bar = new View(this);
-        bar.setVisibility(View.VISIBLE);
-        bar.setMinimumHeight(5);
-        bar.setBackgroundColor(getResources().getColor(R.color.shadowed));
-        bar.setPadding(50, 0, 50, 0);
-        justALayout.addView(bar);
-        Tours.addView(justALayout);
+        View bar = generateBar();
+        tourLayout.addView(bar);
+        Tours.addView(tourLayout);
 
         for (int tourNumber = tourCount - 1; tourNumber >= 0; --tourNumber) {
+            //RelativeLayout row = new RelativeLayout(this);
             RelativeLayout row = new RelativeLayout(this);
+            RelativeLayout.inflate(l_context, R.layout.tourblock, row);
+            row.setBackgroundColor(Color.TRANSPARENT);
+
 
             String tourInfoStr = StatisticMaker.getTourInfo(this, tourNumber);
-            String txt = Tour.DepictTour(tourInfoStr);
-            Typeface font = Typeface.create("sans-serif-light", Typeface.NORMAL);
+            Pair<String, String> infopair = getTourInfo(Tour.DepictTour(tourInfoStr));
 
-            boolean isAllTasksRight = (txt.substring(0, 1).equals("="));
-            int divider = txt.indexOf("Решено");
-            String datetime = txt.substring(1, divider - 1);
-            String info;
-            if (!isAllTasksRight)
-                info = txt.substring(divider);
-            else
-                info = getString(R.string.star) + " " + txt.substring(divider);
-            // info = "★ " + txt.substring(divider);
+            String info = infopair.first,
+                    datetime = infopair.second;
 
-            TextView tourdatetime = new TextView(this);
+            TextView tourdatetime = row.findViewById(R.id.tourdatetime);
             tourdatetime.setId(tourNumber + 1);
             tourdatetime.setText(datetime);
             tourdatetime.setTag(tourNumber);
-            tourdatetime.setTextSize(getResources().getDimension(R.dimen.dimen5) / getResources().getDisplayMetrics().density);
-            tourdatetime.setOnClickListener(tourClick);
-            tourdatetime.setGravity(Gravity.TOP | Gravity.START);
-            tourdatetime.setTypeface(font);
 
-            TextView tourinfo = new TextView(this);
-            // tourinfo.setId(tourNumber);
+            TextView tourinfo = row.findViewById(R.id.tourinfo);
+            tourinfo.setId(tourNumber);
             tourinfo.setText(info);
-            tourinfo.setTextSize(getResources().getDimension(R.dimen.dimen4) / getResources().getDisplayMetrics().density);
-            tourinfo.setOnClickListener(tourClick);
             tourinfo.setTag(tourNumber);
-            tourinfo.setGravity(Gravity.BOTTOM | Gravity.START);
-            tourinfo.setTypeface(font);
 
-
-            Button arrow = new Button((this));
+            Button arrow = row.findViewById(R.id.arrow);
             arrow.setTag(tourNumber);
-            arrow.setOnClickListener(tourClick);
-//            arrow.setText("\u232A");
-            //arrow.setText("@strings/Arrow");
-            //arrow.setText("›");
-            arrow.setText(getString(R.string.arrow));
-            //  arrow.setPadding(0, 0, 0, 10);
-            arrow.setTextSize(getResources().getDimension(R.dimen.dimen1) / getResources().getDisplayMetrics().density);
-            arrow.setBackgroundColor(Color.TRANSPARENT);
-            arrow.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
-            arrow.setTextColor(ContextCompat.getColor(this, R.color.additional));
 
-            row.setGravity(Gravity.CENTER_VERTICAL);
+            bar = generateBar();
 
-            tourdatetime.setTextColor(ContextCompat.getColor(this, R.color.main));
-            tourinfo.setTextColor(ContextCompat.getColor(this, R.color.main));
-
-//            if (isAllTasksRight)
-//                tourinfo.setTypeface(tourinfo.getTypeface(), Typeface.ITALIC);
-
-
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            arrow.setLayoutParams(layoutParams);
-
-
-            layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.addRule(RelativeLayout.BELOW, tourdatetime.getId());
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            if (!isAllTasksRight)
-                layoutParams.leftMargin = 50;
-            tourinfo.setLayoutParams(layoutParams);
-
-            row.addView(tourdatetime);
-            row.addView(tourinfo);
-            row.addView(arrow);
-            justALayout.addView(row);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 20, 0, 20);
-            row.setLayoutParams(params);
-
-            bar = new View(this);
-            bar.setVisibility(View.VISIBLE);
-            bar.setMinimumHeight(5);
-            bar.setPadding(50, 0, 50, 0);
-            bar.setBackgroundColor(getResources().getColor(R.color.shadowed));
-            justALayout.addView(bar);
+            tourLayout.addView(row);
+            tourLayout.addView(bar);
         }
     }
 
