@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stat_tour_block"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/default_gap"
+    android:layout_marginBottom="@dimen/default_gap"
+    android:background="@color/color2"
+    tools:context="com.education4all.StatTourActivity">
+
+    <TextView
+        android:id="@+id/task"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_weight="1"
+        android:gravity="center_vertical|left"
+        android:text="3"
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+
+    <TextView
+        android:id="@+id/seconds"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|right"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:text="1 сек"
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+</LinearLayout>

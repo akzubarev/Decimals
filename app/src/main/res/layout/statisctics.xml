@@ -1,44 +1,33 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/color2"
-    tools:context="com.education4all.decimals.StatiscticsActivity">
+    android:orientation="vertical"
+    tools:context="com.education4all.StatiscticsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/actionbaricon"
-        android:elevation="4dp"
-        app:popupTheme="@style/CustomPopup"
-        app:titleTextAppearance="@style/ActionBarText"
         android:background="@color/color1"
-        />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:orientation="vertical" >
+        android:elevation="4dp"
+        android:minHeight="@dimen/actionbaricon"
+        app:popupTheme="@style/CustomPopup"
+        app:titleTextAppearance="@style/ActionBarText" />
 
     <ScrollView
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:id="@+id/scrollView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true" />
+        android:scrollbars="vertical">
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <LinearLayout
+            android:id="@+id/tourlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 </LinearLayout>

@@ -4,12 +4,11 @@
     android:id="@+id/tourblock"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
     android:layout_marginTop="@dimen/default_gap"
     android:layout_marginBottom="@dimen/default_gap"
     android:background="@color/color2"
     android:onClick="tourClick"
-    tools:context=".StatiscticsActivity">
+    tools:context="com.education4all.StatiscticsActivity">
 
     <TextView
         android:id="@+id/tourdatetime"

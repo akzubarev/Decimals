@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/MyCheckBox">
     <item
         android:id="@+id/one"
         android:checkable="true"
-        android:title="275:5"/>
+        android:title="275:5" />
 
     <item
         android:id="@+id/two"
         android:checkable="true"
-        android:title="275:55"/>
+        android:title="275:55" />
 
 </menu>

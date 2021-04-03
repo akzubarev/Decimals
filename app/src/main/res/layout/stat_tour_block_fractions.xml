@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stat_tour_block"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/default_gap"
+    android:layout_marginBottom="@dimen/default_gap"
+    android:background="@color/color2"
+    tools:context="com.education4all.StatTourActivity">
+
+    <TextView
+        android:id="@+id/integer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+       
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+
+    <TextView
+        android:id="@+id/fraction1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="1/2"
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+
+    <TextView
+        android:id="@+id/operation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" + "
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+
+    <TextView
+        android:id="@+id/integer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+
+    <TextView
+        android:id="@+id/fraction2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="1/3"
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+
+    <TextView
+        android:id="@+id/equals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text=" = "
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+    
+    <TextView
+        android:id="@+id/integerA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+
+    <TextView
+        android:id="@+id/fractionA"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text=""
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+
+    <TextView
+        android:id="@+id/seconds"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:text="1 сек"
+        android:textColor="@color/main"
+        android:textSize="@dimen/dimen4" />
+</LinearLayout>

@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Обыкновенные дроби</string>
+    <string name="short_app_name">Дроби</string>
+    <string name="about_text">Обыкновенные дроби\n(тренажёр устного счёта)\n\nИдея:\nАртём Казанович\n\nПрограммирование:\nАлександр Умнов\nАлексей Зубарев\nАртём Казанович\n</string>>
+<!--
+    <string name="additionName1">Сложение в пределах однозначных чисел</string>
+    <string name="additionName2">Сложение в пределах двузначных чисел</string>
+    <string name="additionName3">Сложение в пределах двузначных чисел</string>
+    <string name="additionName4">Сложение в пределах четырёхзначных чисел"</string>
+
+    <string name="substractionName1">Вычитание в пределах однозначных чисел</string>
+    <string name="substractionName2">Вычитание в пределах двузначных чисел</string>
+    <string name="substractionName3">Вычитание в пределах трёхзначных чисел</string>
+    <string name="substractionName4">Вычитание в пределах четырёхзначных чисел</string>
+
+    <string name="multiplicationName1">Умножение однозначных чисел</string>
+    <string name="multiplicationName2">"Умножение двузначного числа на однозначное</string>
+    <string name="multiplicationName3">Умножение трёхзначного числа на однозначное</string>
+    <string name="multiplicationName4">Умножение двузначных чисел</string>
+
+    <string name="divisionName1">Деление двузначного числа на однозначное</string>
+    <string name="divisionName2">Деление трёхзначного числа на однозначное</string>
+    <string name="divisionName3">Деление четырёхзначного числа на однозначное</string>
+    <string name="divisionName4">Деление четырёхзначного числа на двузначное</string>
+    <string name="divisionName5">Деление трёхзначного числа на двузначное</string>
+
+
+
+    <string name="additionExample1">7%s5</string>
+    <string name="additionExample2">77%s5</string>
+    <string name="additionExample3">777%s555</string>
+    <string name="additionExample4">7777%s5555</string>
+
+    <string name="substractionExample1">7%s5</string>
+    <string name="substractionExample2">77%s55</string>
+    <string name="substractionExample3">777%s555</string>
+    <string name="substractionExample4">7777%s5555</string>
+
+    <string name="multiplicationExample1">5%s5</string>
+    <string name="multiplicationExample2">5%s525</string>
+    <string name="multiplicationExample3">5%s525</string>
+    <string name="multiplicationExample4">25%s25</string>
+
+    <string name="divisionExample1">25%s5</string>
+    <string name="divisionExample2">2775%s5</string>
+    <string name="divisionExample3">2775%s5</string>
+    <string name="divisionExample4">3025%s25</string>
+    <string name="divisionExample5">275%s55</string>
+    -->
+</resources>
+

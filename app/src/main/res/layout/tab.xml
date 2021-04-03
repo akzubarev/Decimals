@@ -4,5 +4,6 @@
     android:layout_height="wrap_content"
     android:text="Интерфейс"
     android:textAppearance="@style/TabText"
+    style="@style/TabText"
     android:textColor="@color/shadowed">
 </TextView>

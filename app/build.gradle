@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    flavorDimensions 'tasktypes'
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.education4all.decimals"
+        applicationId "com.education4all.mathtrainer"
         minSdkVersion 15
         targetSdkVersion 29
         versionName '1.0.2'
@@ -16,15 +17,27 @@ android {
         }
     }
     productFlavors {
+        integers {
+            applicationId "com.education4all.mathcoach"
+        }
+        decimals {
+            applicationId "com.education4all.decimals"
+        }
+        fractions {
+            applicationId "com.education4all.fractions"
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def newApkName = "Decimals.apk"
-            outputFileName = new File(newApkName)
+            String variantName = variant.productFlavors[0].name
+            //../../allvariants/
+            variantName = "${variantName[0].toUpperCase()}${variantName.substring(1)}.apk"
+            outputFileName = new File(variantName)
         }
     }
 }

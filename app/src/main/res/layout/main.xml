@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context=".MainActivity">
+    tools:context="com.education4all.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
