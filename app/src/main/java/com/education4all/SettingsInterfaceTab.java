@@ -12,7 +12,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
 import com.education4all.MathCoachAlg.DataReader;
-import com.education4all.decimals.R;
 
 public class SettingsInterfaceTab extends Fragment {
     View view;

@@ -1,12 +1,8 @@
 package com.education4all;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.format.DateUtils;
-import android.text.style.RelativeSizeSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,9 +16,6 @@ import com.education4all.MathCoachAlg.DataReader;
 import com.education4all.MathCoachAlg.StatisticMaker;
 import com.education4all.MathCoachAlg.Tasks.Task;
 import com.education4all.MathCoachAlg.Tour;
-import com.education4all.decimals.BuildConfig;
-import com.education4all.decimals.R;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +27,7 @@ import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
-    String tasktype = BuildConfig.FLAVOR;
+    final String tasktype = BuildConfig.FLAVOR;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +78,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_about:
-                Intent intent = new Intent(this, AuthorsActivity.class);
-                startActivity(intent);
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
+        if (item.getItemId() == R.id.action_about) {
+            Intent intent = new Intent(this, AuthorsActivity.class);
+            startActivity(intent);
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
     }
 
     public void startTasks(View view) {
@@ -168,26 +156,28 @@ public class MainActivity extends AppCompatActivity {
                 Tour tourinfo = StatisticMaker.loadTour(this, tourNumber);
                 ArrayList<String> deTour = tourinfo.serialize();
 
-                int jump = 0; // костыль из StatTourActivity
+
+                int jump = 0; // костыль из прошлых версий
                 for (int i = 1; i < deTour.size() - 1; ++i) {
-                    ArrayList<String> answers = new ArrayList<String>();
+                    ArrayList<String> answers = new ArrayList<>();
                     Task currentTask = Task.makeTask(deTour.get(i), tasktype);
                     ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), tasktype, answers);
 
-                    //костыль
-                    for (int j = 0; j < TaskDepiction.size(); ++j) {
-                        boolean answerIsCorrect = answers.get(j).equals(currentTask.answer);
-                        boolean taskWasSkipped = answers.get(j).equals("\u2026");
-                        if (answerIsCorrect || taskWasSkipped) {
-                            i += jump;
-                            jump = 0;
-                        } else {
-                            ++jump;
+                    //начало костыля
+                    if (CommonOperations.requiresKostyl(date))
+                        for (int j = 0; j < TaskDepiction.size(); ++j) {
+                            boolean answerIsCorrect = answers.get(j).equals(currentTask.answer);
+                            boolean taskWasSkipped = answers.get(j).equals("\u2026");
+                            if (answerIsCorrect || taskWasSkipped) {
+                                i += jump;
+                                jump = 0;
+                            } else {
+                                ++jump;
+                            }
+                            if (i + jump == deTour.size() - 2) {
+                                i += jump;
+                            }
                         }
-                        if (i + jump == deTour.size() - 2) {
-                            i += jump;
-                        }
-                    }
                     //конец костыля
 
                     // debug += answers.get(answers.size() - 1).equals(currentTask.answer) ? "1 " : "0 ";
@@ -273,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
         showGoal(secondstoday, goal);
     }
 
+
     private void showSettings() {
         TextView settings = findViewById(R.id.settings_text);
         String text = "";
@@ -322,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
                 DateUtils.formatElapsedTime(goal)));
     }
 
-    Random rnd = new Random();
+    final Random rnd = new Random();
 
     public void genereteFakeStatistics() {
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 
 public class DataStorage {
-    private String settingsPath = "./settings.stf";
+    private final String settingsPath = "./settings.stf";
     //	private String logPath;
 //	private	String erLogPath;
     public int[][] allowedTasks;
@@ -37,7 +37,7 @@ public class DataStorage {
             layoutstate = Integer.parseInt(line);
             line = fileReader.readLine();
             buttonsplace = Integer.parseInt(line);
-            ArrayList<int[]> buf = new ArrayList<int[]>();
+            ArrayList<int[]> buf = new ArrayList<>();
             for (line = fileReader.readLine(); line != null; line = fileReader.readLine()) {
                 buf.add(LineToArr(line));
             }
@@ -80,22 +80,18 @@ public class DataStorage {
         pw.println(line);
         line = Integer.toString(buttonsplace);
         pw.println(line);
-        for (int i = 0; i < allowedTasks.length; ++i) {
+        for (int[] allowedTask : allowedTasks) {
             line = "";
-            for (int j = 0; j < allowedTasks[i].length; ++j) {
-                line += Integer.toString(allowedTasks[i][j]) + ' ';
+            for (int j = 0; j < allowedTask.length; ++j) {
+                line += Integer.toString(allowedTask[j]) + ' ';
             }
             pw.println(line);
         }
         pw.close();
     }
 
-    public void saveErrorLog(String message) {
-        // ����� �� ������
-    }
-
     public static int[] LineToArr(String s) {
-        ArrayList<Integer> buf = new ArrayList<Integer>();
+        ArrayList<Integer> buf = new ArrayList<>();
         int i = 0;
         int pos = s.indexOf(' ');
         int tmp;
@@ -112,7 +108,7 @@ public class DataStorage {
     public static int[] convertIntegers(ArrayList<Integer> integers) {
         int[] ret = new int[integers.size()];
         for (int i = 0; i < ret.length; i++) {
-            ret[i] = integers.get(i).intValue();
+            ret[i] = integers.get(i);
         }
         return ret;
     }

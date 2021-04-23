@@ -1,35 +1,46 @@
 package com.education4all.MathCoachAlg.Tasks;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 
 public abstract class Task {
-    public String expression;
-    public int operation;
-    public int complexity;
-    public String answer;
-    public String userAnswer;
-    public long taskTime;
-    public long timeTaken;
-    public Random rnd;
+    public String expression = "";
+    public int operation = 0;
+    public int complexity = 0;
+    public String answer = "";
+    public String userAnswer = "";
+    public long taskTime = 0;
+    public long timeTaken = 0;
+    public Random rnd = new Random();
     public static final String[] operations = {"\u2006+\u2006", "\u2006−\u2006", "\u2006\u22C5\u2006", "\u2006:\u2006"};
 
     public Task() {
         expression = "2 + 2";
         answer = "4";
         userAnswer = "";
-        rnd = new Random();
+    }
+
+    public static Task makeTask(Task t, String type) {
+        Task newTask = makeTask(type);
+        newTask.expression = t.expression;
+        newTask.operation = t.operation;
+        newTask.complexity = t.complexity;
+        newTask.answer = t.answer;
+        newTask.userAnswer = "";
+        return newTask;
     }
 
     public static Task makeTask(String type) {
         Task task;
         switch (type) {
-            case "integer":
+            case "integers":
             default:
                 task = new IntegerTask();
                 break;
-            case "decimal":
+            case "decimals":
                 task = new DecimalTask();
                 break;
             case "fractions":
@@ -64,7 +75,7 @@ public abstract class Task {
 
     public static ArrayList<String> DepictTaskExtended(String line, String type, ArrayList<String> answers) {
         Task task = makeTask(line, type);
-        ArrayList<String> res = new ArrayList<String>();
+        ArrayList<String> res = new ArrayList<>();
         String firstPart = task.expression + " = ";
         String partToBeParsed = task.userAnswer;
         int commaIndex;
@@ -102,8 +113,8 @@ public abstract class Task {
     public abstract void generate(final int[][] allowedTasks);
 
     public boolean areTasks(int[][] p_allowedTasks) {
-        for (int i = 0; i < p_allowedTasks.length; ++i) {
-            if (p_allowedTasks[i].length > 0) {
+        for (int[] p_allowedTask : p_allowedTasks) {
+            if (p_allowedTask.length > 0) {
                 return true;
             }
         }

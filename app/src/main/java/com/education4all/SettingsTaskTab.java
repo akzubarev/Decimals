@@ -14,8 +14,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
 import com.education4all.MathCoachAlg.DataReader;
-import com.education4all.decimals.BuildConfig;
-import com.education4all.decimals.R;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
@@ -25,7 +23,7 @@ public class SettingsTaskTab extends Fragment {
     public static final String COMPLEXITY_SETTINGS = "ComplexitySettings";
     private View view;
     public static final String NODISAPEARCHAR = "∞"; //DecimalFormatSymbols.getInstance().getInfinity()
-    String id = BuildConfig.APPLICATION_ID;
+    final String id = BuildConfig.APPLICATION_ID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -257,7 +255,7 @@ public class SettingsTaskTab extends Fragment {
 
     void addComplexityFromPopup(boolean one, boolean two) {
         StringBuilder currentComplexity = new StringBuilder();
-        SharedPreferences.Editor editor = getContext().getSharedPreferences(COMPLEXITY_SETTINGS, getContext().MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getContext().getSharedPreferences(COMPLEXITY_SETTINGS, Context.MODE_PRIVATE).edit();
 
         CheckBox chk = view.findViewById(R.id.checkBoxDiv1);
         if (chk.isChecked()) {

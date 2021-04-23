@@ -1,15 +1,7 @@
 package com.education4all;
 
-import androidx.appcompat.app.AlertDialog;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,19 +9,21 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import com.education4all.MathCoachAlg.StatisticMaker;
-
-import java.util.ArrayList;
-
 import com.education4all.MathCoachAlg.Tasks.Task;
 import com.education4all.MathCoachAlg.Tour;
-import com.education4all.decimals.BuildConfig;
-import com.education4all.decimals.R;
+
+import java.util.ArrayList;
 
 
 public class StatTourActivity extends AppCompatActivity {
     int TourNumber;
-    String tasktype = BuildConfig.FLAVOR;
+    final String tasktype = BuildConfig.FLAVOR;
 
 
     @Override
@@ -50,19 +44,20 @@ public class StatTourActivity extends AppCompatActivity {
             ArrayList<String> deTour = tourinfo.serialize();
 
 
-//            String tourInfoStr = StatisticMaker.getTourInfo(this, TourNumber);
-//            String txt = Tour.DepictTour(tourInfoStr);
-//            String datetime = txt.substring(1, 6);
+            String tourInfoStr = StatisticMaker.getTourInfo(this, TourNumber);
+            String txt = Tour.DepictTour(tourInfoStr);
+            int divider = txt.indexOf("Решено");
+            String datetime = txt.substring(1, divider - 1);
+            String date = datetime.substring(0, 10);
 
             String line = String.format("%s %d/%d (%d%%)",
                     getString(R.string.star), tourinfo.rightTasks, tourinfo.tourTasks.size(),
                     (int) (tourinfo.rightTasks * 100.0 / tourinfo.tourTasks.size()));
             getSupportActionBar().setTitle(line);
 
-// КОСТЫЛЬ (на самом деле сейчас в TaskActivity сохраняются лишние дубликаты строк, а здесь из них приходится отбирать нужные) TODO когда-нибудь поправить это
-            int jump = 0; // костыль
+            int jump = 0; // раньше сохранялись лишние копии заданий, которые нужно пропускать
             for (int i = 1; i < deTour.size() - 1; ++i) {
-                ArrayList<String> answers = new ArrayList<String>();
+                ArrayList<String> answers = new ArrayList<>();
                 Task currentTask = Task.makeTask(deTour.get(i), tasktype);
                 //         FractionTask ft = null;
                 ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), tasktype, answers);
@@ -79,7 +74,7 @@ public class StatTourActivity extends AppCompatActivity {
                     int ind = output.indexOf('(');
                     int end = output.indexOf(')');
 
-                    TextView seconds = new TextView(this);
+                    TextView seconds =  row.findViewById(R.id.seconds);
                     boolean userAnswerIsCorrect = answers.get(j).equals(currentTask.answer);
                     String taskAndUserAnswer = output.substring(0, ind - 2);
 
@@ -134,58 +129,38 @@ public class StatTourActivity extends AppCompatActivity {
 //
 //                    }
 
-                    if (!userAnswerIsCorrect)
+                    if (userAnswerIsCorrect)
+                        task.setTextColor(ContextCompat.getColor(this, R.color.main));
+                    else
                         task.setTextColor(ContextCompat.getColor(this, R.color.shadowed));
-
 
                     String userTime = output.substring(ind + 1, end) + ".";
                     seconds.setText(userTime);
 
-//                    String testPart = ", i=" + Integer.toString(i) + " of " + Integer.toString(deTour.size())
-//                            + ", j=" + Integer.toString(j) + " of " + Integer.toString(TaskDepiction.size());
+                    if (CommonOperations.requiresKostyl(date)) {
+//                    String testPart = "\ni=" + i + " of " + (deTour.size()-2)
+//                            + ", j=" + (j+1) + " of " + TaskDepiction.size();
 //                    testPart += ", jump=" + jump;
-//                    taskAndUserAnswer += testPart; // Вывод данных в тестовом режиме, TODO закомментировать перед релизом
+//                    taskAndUserAnswer += testPart; // Вывод данных в тестовом режиме
+//                    task.setText(taskAndUserAnswer);
 
+                        // костыль
+                        boolean taskWasSkipped = answers.get(j).equals("\u2026");
+                        if (userAnswerIsCorrect || taskWasSkipped) {
+                            i += jump;
+                            jump = 0;
+                        } else
+                            ++jump;
+                        if (i + jump == deTour.size() - 2)
+                            i += jump;
+                    }
 
-                    // костыль
-                    boolean taskWasSkipped = answers.get(j).equals("\u2026");
-                    if (userAnswerIsCorrect || taskWasSkipped) {
-                        i += jump;
-                        jump = 0;
-                    } else {
-                        ++jump;
-                    }
-                    if (i + jump == deTour.size() - 2) {
-                        i += jump;
-                    }
                     layout.addView(row);
                 }
-                //ИСХОДНЫЙ КОД
-//                for (int j = 0; j < TaskDepiction.size(); ++j) {
-//                    String output = TaskDepiction.get(j);
-//                    String testPart = ", i=" + Integer.toString(i) + " of " + Integer.toString(deTour.size())
-//                            + ", j=" + Integer.toString(j) + " of " + Integer.toString(TaskDepiction.size());
-//                    output += testPart; // Вывод данных в тестовом режиме, TODO убрать
-//                    newTask.setText(output);
-//                    if (answers.get(j).equals(currentTask.answer)) {
-//                        newTask.setTextColor(Color.parseColor("#1B5E20"));
-//                    }
-//                    else {
-//                        newTask.setTextColor(Color.GRAY);
-//                    }
-//                    newTask.setTextSize(20);
-//                    justALayout.addView(newTask);
-//                    newTask = new TextView(this);
-//                }
-
-//                newTask.setText(Task.DepictTask(deTour.get(i)));
-//                newTask.setTextSize(20);
-//                justALayout.addView(newTask);
             }
         } else {
             finish();
         }
-
     }
 
     @Override
@@ -197,45 +172,34 @@ public class StatTourActivity extends AppCompatActivity {
 
 
     private void deleteTour() {
-
         StatisticMaker.removeTour(this, TourNumber);
         Intent intent = new Intent(this, StatiscticsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //finish();
         startActivity(intent);
-        // User chose the "Settings" item, show the app settings UI...
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete_tour:
-                AlertDialog dialog = new AlertDialog.Builder(StatTourActivity.this)
-                        .setTitle("Удаление результатов")
-                        .setMessage("Вы уверены? Это действие нельзя будет отменить.")
+        if (item.getItemId() == R.id.action_delete_tour) {
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle("Удаление результатов")
+                    .setMessage("Вы уверены? Это действие нельзя будет отменить.")
 
-                        .setNegativeButton("Отменить", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //finish();
-                            }
-                        })
-                        .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+                    .setNegativeButton("Отменить", (dialog1, which) -> {
+                        //finish();
+                    })
+                    .setPositiveButton("Удалить", (dialog12, which) -> {
 //                        saveTaskStatistic(); //Текущее задание не записываем!
 //                            StatisticMaker.saveTour(currentTour, context); // Результаты тура тут сохранять не нужно, они сохранятся при завершении раунда.
-                                deleteTour();
-                            }
-                        })
-                        .show();
+                        deleteTour();
+                    })
+                    .show();
 
-                CommonOperations.FixDialog(dialog, getApplicationContext());
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
+            CommonOperations.FixDialog(dialog, getApplicationContext()); // почему-то нужно для планшетов
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
     }
 }

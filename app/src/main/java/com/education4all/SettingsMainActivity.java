@@ -2,20 +2,15 @@ package com.education4all;
 
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.education4all.decimals.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -35,7 +30,6 @@ public class SettingsMainActivity extends AppCompatActivity {
                     int color = position == 0 ? getResources().getColor(R.color.main) :
                             getResources().getColor(R.color.shadowed);
 
-                    // tab.setText(name);
                     tab.setCustomView(R.layout.tab); //TextView
 
                     if (tab.getCustomView() instanceof TextView) {
@@ -73,18 +67,16 @@ public class SettingsMainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         boolean fromtask = intent.getBooleanExtra("FromTask", false);
         if (fromtask) {
-            AlertDialog dialog = new AlertDialog.Builder(this, R.style.AlertDialogTheme)
+            AlertDialog dialog = new AlertDialog.Builder(this)//, R.style.AlertDialogTheme)
 //                    .setTitle("Ошибка")
                     .setMessage("Пожалуйста, сначала выберите виды заданий.")
                     .setCancelable(false)
                     .setPositiveButton("Ок", (dialog1, which) -> {
                         // finish();
-                    })
-                    .show();
-            CommonOperations.FixDialog(dialog, getApplicationContext());
+                    }).create();
+            dialog.show();
+            CommonOperations.FixDialog(dialog, getApplicationContext()); // почему-то нужно для планшетов
         }
-
-
     }
 
 
@@ -99,11 +91,6 @@ public class SettingsMainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
 }

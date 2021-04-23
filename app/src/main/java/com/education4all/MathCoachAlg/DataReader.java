@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
 public class DataReader {
     public static final String COMPLEXITY_SETTINGS = "ComplexitySettings";
     public static final String ROUND_TIME_SETTINGS ="RoundTimeSettings";
-    private static  HashMap<String, Integer> defaultValues= new HashMap<>();
+    private static final HashMap<String, Integer> defaultValues= new HashMap<>();
     static {
         defaultValues.put("RoundTime",1);
         defaultValues.put("DisapRoundTime", -1);
@@ -33,7 +33,7 @@ public class DataReader {
 
     static private int[] StrToIntArr(String savedString) {
         StringTokenizer st = new StringTokenizer(savedString, ",");
-        ArrayList<Integer> savedList = new ArrayList<Integer>();
+        ArrayList<Integer> savedList = new ArrayList<>();
         int i = 0;
         while(st.hasMoreTokens()) {
             savedList.add(Integer.parseInt(st.nextToken()));

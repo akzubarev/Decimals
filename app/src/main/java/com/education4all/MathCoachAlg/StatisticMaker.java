@@ -31,12 +31,12 @@ public class StatisticMaker {
     }
 
     public static ArrayList<Tour> loadTours(Context p_context) {
-        ArrayList<Tour> resultTours = new ArrayList<Tour>();
+        ArrayList<Tour> resultTours = new ArrayList<>();
         SharedPreferences prefs = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
         int toursCount = Integer.parseInt(prefs.getString(TOURS, "0"));
         for (int tourNumber = 0; tourNumber < toursCount; ++tourNumber) {
             int taskCount = Integer.parseInt(prefs.getString(TOURS + "_" + tourNumber, "0"));
-            ArrayList<String> currentTour = new ArrayList<String>();
+            ArrayList<String> currentTour = new ArrayList<>();
 
             for (int taskNumber = 0; taskNumber < taskCount; ++taskNumber) {
                 currentTour.add(prefs.getString(TOURS + "_" + tourNumber + "_" + taskNumber, "0"));
@@ -53,14 +53,12 @@ public class StatisticMaker {
     public static Tour loadTour(Context p_context, int tourNumber) {
         SharedPreferences prefs = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
         int taskCount = Integer.parseInt(prefs.getString(TOURS + "_" + tourNumber, "0"));
-        ArrayList<String> currentTour = new ArrayList<String>();
+        ArrayList<String> currentTour = new ArrayList<>();
         for (int taskNumber = 0; taskNumber < taskCount + 2; ++taskNumber) {
             currentTour.add(prefs.getString(TOURS + "_" + tourNumber + "_" + taskNumber, "0"));
         }
         if (currentTour.size() > 0) {
-            Tour currentT_Tour = new Tour(tasktype, currentTour);
-
-            return currentT_Tour;
+            return new Tour(tasktype, currentTour);
         } else {
             return null;
         }
@@ -68,8 +66,7 @@ public class StatisticMaker {
 
     public static int getTourCount(Context p_context) {
         SharedPreferences prefs = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
-        int toursCount = Integer.parseInt(prefs.getString(TOURS, "0"));
-        return toursCount;
+        return Integer.parseInt(prefs.getString(TOURS, "0"));
     }
 
     public static String getTourInfo(Context p_context, int tourNumber) {

@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import com.education4all.MathCoachAlg.DataReader;
 import com.education4all.MathCoachAlg.StatisticMaker;
-import com.education4all.decimals.BuildConfig;
 
 public class ThemedApplication extends Application {
 

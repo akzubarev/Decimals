@@ -1,26 +1,12 @@
 package com.education4all;
 
-import androidx.appcompat.app.AlertDialog;
-
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-
-import java.lang.Runnable;
-import java.util.Calendar;
-
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.gridlayout.widget.GridLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.text.Html;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.style.URLSpan;
@@ -36,23 +22,27 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.gridlayout.widget.GridLayout;
+
 import com.education4all.MathCoachAlg.DataReader;
 import com.education4all.MathCoachAlg.StatisticMaker;
-
-
-import com.education4all.MathCoachAlg.Tasks.FractionTask;
-import com.education4all.MathCoachAlg.Tour;
+import com.education4all.MathCoachAlg.Tasks.Fraction;
 import com.education4all.MathCoachAlg.Tasks.Task;
-import com.education4all.decimals.BuildConfig;
-import com.education4all.decimals.R;
+import com.education4all.MathCoachAlg.Tour;
+
+import java.util.Calendar;
 
 
 public class TaskActivity extends AppCompatActivity {
-    String tasktype = BuildConfig.FLAVOR; //тип заданий
-    private Tour currentTour = new Tour(tasktype); // элемент класса Tour - текущий тур
+    final String tasktype = BuildConfig.FLAVOR; //тип заданий
+    private final Tour currentTour = new Tour(tasktype); // элемент класса Tour - текущий тур
     private Handler roundTimeHandler = new Handler(); // хэндлер для времени раунда
-    private Handler progressBarHandler = new Handler(); // хэндлер для прогресс бара
-    private Handler taskDisapHandler = new Handler(); // хэндлер для времени исчезновения
+    private final Handler progressBarHandler = new Handler(); // хэндлер для прогресс бара
+    private final Handler taskDisapHandler = new Handler(); // хэндлер для времени исчезновения
     private Task newTask; // текущее задание
     private String answer = "", // текущий ответ
             answerI = "", // текущая целая часть ответа
@@ -64,7 +54,7 @@ public class TaskActivity extends AppCompatActivity {
     private TextView timerText; //текстовый таймер
     private ProgressBar G_progressBar; // прогресс бар
     private int progressStatus = 0; //позиция прогресс бара
-    private Context context = this; // переменная контекста, нужна чтобы передавть её в другие классы
+    private final Context context = this; // переменная контекста, нужна чтобы передавть её в другие классы
     private boolean answerShown = false; // показан ли ответ
     private boolean showTask = true; // показано ли задание
     private float disapTime; // время изсчезновения задания
@@ -73,6 +63,7 @@ public class TaskActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout; // сама шторка
     private ArrayAdapter<String> mAdapter; // адаптер для фоматирования строк
     long prevTaskTime;
+    long prevAnswerTime;
     long tourStartTime; //время начала раунда
     long millis; //время раунда в миллисекундах
     int seconds; //время раунда в секундах
@@ -80,7 +71,7 @@ public class TaskActivity extends AppCompatActivity {
     int solved = 0; //сколько заданий решено
     int shown = 1; //сколько заданий показано
     boolean answerWasShown = false; //был ли уже показан ответ
-    String id = BuildConfig.APPLICATION_ID;
+    final String id = BuildConfig.APPLICATION_ID;
     Mode mode = Mode.integer;
 
     enum Mode {
@@ -119,6 +110,7 @@ public class TaskActivity extends AppCompatActivity {
         } else {
             tourStartTime = Calendar.getInstance().getTimeInMillis();
             prevTaskTime = tourStartTime;
+            prevAnswerTime = tourStartTime;
             currentTour.totalTasks = 0;
             currentTour.rightTasks = 0;
             answer = "";
@@ -210,10 +202,12 @@ public class TaskActivity extends AppCompatActivity {
         }
     }
 
-    private String timeString(int count, int seconds) {
-        return String.format("%s/%s", DateUtils.formatElapsedTime(count), DateUtils.formatElapsedTime(seconds));
+    // формирует вывод о прошедшем времени
+    private String timeString(int count, int max) {
+        return String.format("%s/%s", DateUtils.formatElapsedTime(count), DateUtils.formatElapsedTime(max));
     }
 
+    //обновляет текстовый и визуальный таймеры
     void updateTimers() {
         G_progressBar.setProgress(progressStatus);
         timerText.setText(timeString(count, seconds));
@@ -265,6 +259,7 @@ public class TaskActivity extends AppCompatActivity {
             alterLayout();
     }
 
+    //меняет раскладку с 789 на 123
     void alterLayout() {
         Button b1 = findViewById(R.id.But_7);
         Button b2 = findViewById(R.id.But_1);
@@ -291,12 +286,14 @@ public class TaskActivity extends AppCompatActivity {
 
     }
 
+    //меняет местами два объекта
     void switchPlaces(View b1, View b2) {
         ViewGroup.LayoutParams temp = b1.getLayoutParams();
         b1.setLayoutParams(b2.getLayoutParams());
         b2.setLayoutParams(temp);
     }
 
+    //перемещает кнопки-значки в левую сторону экрана
     void alterButtons() {
         View b1 = findViewById(R.id.But_7);
         View b2 = findViewById(R.id.But_8);
@@ -390,68 +387,74 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     //сохраняем информацию о данной попытке и обновляем информацию раунда
-    private void saveTaskStatistic() {
+    private void saveTaskStatistic(boolean finished) {
         //    if (!tasktype.equals("fractions")) {
         if (answer.equals(newTask.answer))
-            ++currentTour.rightTasks; // увеличиваем счетчик правильных заданий, если ответ правильный
-        newTask.userAnswer += answer;
+            currentTour.rightTasks++;
+        currentTour.totalTasks++;
+
 //        } else {
 //            FractionTask ft = (FractionTask) newTask;
 //            if (ft.checkanswer(answerI, answerT, answerB))
 //                ++currentTour.rightTasks;
 //            newTask.userAnswer += FractionTask.makeValue(answerI, answerT, answerB);
 //        }
+        newTask.userAnswer += String.format("%s:%d|", answer, (System.currentTimeMillis() - prevAnswerTime) / 1000);
+        //newTask.userAnswer += ":" + (System.currentTimeMillis() - prevAnswerTime) / 1000 + '|';
+        prevAnswerTime = System.currentTimeMillis();
 
-        newTask.userAnswer += ":" + (System.currentTimeMillis() - prevTaskTime) / 1000 + '|';
-        prevTaskTime = System.currentTimeMillis();
-        newTask.timeTaken = (System.currentTimeMillis() - newTask.taskTime) / 1000; //??? вычисляем время, потраченное пользователем на ПРАВИЛЬНОЕ решение текущего задания
-        currentTour.tourTasks.add(newTask); //сохраняем информацию о текущем задании
-        currentTour.tourTime = (Calendar.getInstance().getTimeInMillis() - currentTour.tourDateTime) / 1000; //обновляем реальную продолжительность раунда
-        ++currentTour.totalTasks; //увеличиваем счетчик количества заданий в раунде
+        if (finished) {
+            prevTaskTime = prevAnswerTime;
+            newTask.timeTaken = (System.currentTimeMillis() - prevTaskTime) / 1000;
+            currentTour.tourTasks.add(newTask);
+        } else {
+            currentTour.tourTasks.add(newTask);
+            newTask = Task.makeTask(newTask, tasktype);
+        }
+
+        //обновляем реальную продолжительность раунда
+        currentTour.tourTime = (Calendar.getInstance().getTimeInMillis() - currentTour.tourDateTime) / 1000;
 
     }
 
     //нажатие на кнопку "ОК", проверяем правильность ответа и заносим в статистику
     public void okButtonClick(View view) {
         mode = Mode.integer;
-        if (tasktype.equals("fractions")) {
-            if ((answerI + answerT + answerB).length() == 0)
-                return;
-        } else if (answer.equals(""))
+//        if (tasktype.equals("fractions")) {
+//            if ((answerI + answerT + answerB).length() == 0)
+//                return;
+//        }  else
+        if (answer.equals(""))
             return;
 
         showTaskSetTrueAndRestartDisappearTimer();
         updateTimers();
 
         if (answerShown) {
-            if (!tasktype.equals("fractions"))
-                answer = "?";
-            else {
-                answerI = "?";
-                answerT = "";
-                answerB = "";
-                answerF = "";
-            }
+            answerI = "?";
+            answerT = "";
+            answerB = "";
+            answerF = "";
+            answer = "?";
             answerShown = false;
-            textViewUpdate();
         }
-        saveTaskStatistic();
 
         //  if (!tasktype.equals("fractions"))
         if (answer.equals(newTask.answer)) {
             updateProgressIcons(getString(R.string.star));
             startNewTask();
         } else {
+            saveTaskStatistic(false);
             if (!answer.equals("?")) {
                 updateWrongAnswers(answer);
                 updateProgressIcons(getString(R.string.dot));
                 answerWasShown = false;
             }
-            answer = "";
             answerI = "";
             answerT = "";
             answerB = "";
             answerF = "";
+            answer = "";
             textViewUpdate();
         }
 //        else {
@@ -479,6 +482,7 @@ public class TaskActivity extends AppCompatActivity {
 
     }
 
+    //выводит новый неправильный ответ к остальным
     private void updateWrongAnswers(String answer) {
         TextView wrongAnswers = findViewById(R.id.wrongAnswers);
         String text = "";
@@ -492,7 +496,6 @@ public class TaskActivity extends AppCompatActivity {
         wrongAnswers.setText(Html.fromHtml(text));
     }
 
-
     //пропуск задания
     public void skipTask(View view) {
         showTaskSetTrueAndRestartDisappearTimer();
@@ -502,12 +505,12 @@ public class TaskActivity extends AppCompatActivity {
             answer = "\u2026";
             updateProgressIcons(getString(R.string.arrow));
         }
-        saveTaskStatistic();
         startNewTask();
     }
 
     //запуск нового задания
     private void startNewTask() {
+        saveTaskStatistic(true);
         newTask = Task.makeTask(tasktype);
         answerShown = false;
         answerWasShown = false;
@@ -551,14 +554,15 @@ public class TaskActivity extends AppCompatActivity {
 //        saveTaskStatistic(); // Здесь сохранять статистику задания не нужно!
         if (answerShown) {
             answer = "?";
-            saveTaskStatistic();
+            saveTaskStatistic(true);
         }
         StatisticMaker.saveTour(currentTour, context);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(TaskActivity.this, R.style.AlertDialogTheme)
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)//, R.style.AlertDialogTheme)
                 .setTitle("Раунд завершён")
-                .setMessage("Решено заданий: " + currentTour.rightTasks + "/" + currentTour.totalTasks);
-        //   .setCancelable(false);
+                .setMessage(String.format("Решено заданий: %d/%d (%d%%)",
+                        currentTour.rightTasks, currentTour.totalTasks, 100 * currentTour.rightTasks / currentTour.totalTasks))
+                .setCancelable(false);
 
         LayoutInflater inflater = getLayoutInflater();
         // Pass null as the parent view because its going in the dialog layout
@@ -586,13 +590,12 @@ public class TaskActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.setOnKeyListener((arg0, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
-                dialog.dismiss();
-                finish();
+                dialog.getButton(dialog.BUTTON_POSITIVE).callOnClick();
             }
             return true;
         });
         dialog.show();
-        CommonOperations.FixDialog(dialog, context);
+        CommonOperations.FixDialog(dialog, context); // почему-то нужно для планшетов
     }
 
     public void goToWeb(View view) {
@@ -603,31 +606,29 @@ public class TaskActivity extends AppCompatActivity {
 
     //досрочное завершение раунда по нажатию выхода
     public void crossClick(View view) {
-        if (currentTour.totalTasks == 0 && !answerShown) {
+        if (currentTour.totalTasks == 0 && newTask.userAnswer.length() == 0 && !answerShown) {
             finish();
-        } else {
-            AlertDialog dialog =
-                    new AlertDialog.Builder(TaskActivity.this, R.style.AlertDialogTheme)
-                            .setTitle("Досрочное завершение раунда")
-                            .setMessage("Сохранить результаты?")
-                            .setNeutralButton("Отмена", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            })
-                            .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    finish();
-                                }
-                            })
-                            .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
+            return;
+        }
+//        if (currentTour.totalTasks == 0 && newTask.userAnswer.length() > 0) {
+//            newTask.timeTaken = (System.currentTimeMillis() - prevTaskTime) / 1000;
+//            currentTour.tourTasks.add(newTask);
+//        }
+
+        AlertDialog dialog =
+                new AlertDialog.Builder(this)//, R.style.AlertDialogTheme)
+                        .setTitle("Досрочное завершение раунда")
+                        .setMessage("Сохранить результаты?")
+                        .setNeutralButton("Отмена", (dialog1, which) -> {
+                        })
+                        .setNegativeButton("Нет", (dialog12, which) -> finish())
+                        .setPositiveButton("Да", (dialog13, which) -> {
 //                        saveTaskStatistic(); //Текущее задание не записываем!
 //                            StatisticMaker.saveTour(currentTour, context); // Результаты тура тут сохранять не нужно, они сохранятся при завершении раунда.
-                                    endRound();
-                                }
-                            }).show();
-            CommonOperations.FixDialog(dialog, context);
-        }
+                            endRound();
+                        }).show();
+        CommonOperations.FixDialog(dialog, context);// почему-то нужно для планшетов
+
     }
 
     //обновляем поля вывода выражения
@@ -635,7 +636,7 @@ public class TaskActivity extends AppCompatActivity {
         TextView expressionTV = findViewById(R.id.expTextView);
 
         if (tasktype.equals("fractions")) {
-            answerF = FractionTask.makeFraction(answerT, answerB);
+            answerF = Fraction.makeFraction(answerT, answerB);
             answer = answerI + answerF;
         }
 
@@ -759,21 +760,24 @@ public class TaskActivity extends AppCompatActivity {
                     answer = answer.substring(0, answer.length() - 1);
                 else
                     switch (mode) {
+                        case bottom:
+                            if (!answerB.isEmpty()) {
+                                answerB = answerB.substring(0, answerB.length() - 1);
+                                break;
+                            } else
+                                mode = Mode.top;
+                        case top:
+                            if (!answerT.isEmpty()) {
+                                answerT = answerT.substring(0, answerT.length() - 1);
+                                break;
+                            } else
+                                mode = Mode.integer;
                         case integer:
                         default:
                             if (!answerI.isEmpty())
                                 answerI = answerI.substring(0, answerI.length() - 1);
                             break;
-                        case top:
-                            if (!answerT.isEmpty())
-                                answerT = answerT.substring(0, answerT.length() - 1);
-                            break;
-                        case bottom:
-                            if (!answerB.isEmpty())
-                                answerB = answerB.substring(0, answerB.length() - 1);
-                            break;
                     }
-
                 textViewUpdate();
             }
         }
@@ -783,6 +787,7 @@ public class TaskActivity extends AppCompatActivity {
     public void showAnswer(View view) {
         // if (!tasktype.equals("fractions")) {
         answer = newTask.answer;
+        answerI = newTask.answer;
 //        } else {
 //            FractionTask ft = (FractionTask) newTask;
 //            String[] answers = ft.getAnswer();
@@ -800,7 +805,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     //таймер для исчезновения задания
-    private Runnable disapTask = () -> {
+    private final Runnable disapTask = () -> {
         showTask = false;
         textViewUpdate();
         TextView pressToShowTaskTV = findViewById(R.id.pressToShowTaskTV);

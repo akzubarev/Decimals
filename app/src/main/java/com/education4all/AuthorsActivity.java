@@ -11,8 +11,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.education4all.decimals.R;
-
 public class AuthorsActivity extends AppCompatActivity {
 
     @Override

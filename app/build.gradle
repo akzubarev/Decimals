@@ -7,8 +7,8 @@ android {
         applicationId "com.education4all.mathtrainer"
         minSdkVersion 15
         targetSdkVersion 29
-        versionName '1.0.2'
-        versionCode 4
+        versionName '1.1.0'
+        versionCode 6
     }
     buildTypes {
         release {
@@ -19,12 +19,18 @@ android {
     productFlavors {
         integers {
             applicationId "com.education4all.mathcoach"
+            versionCode 6
+            versionName '2'
         }
         decimals {
             applicationId "com.education4all.decimals"
+            versionCode 1
+            versionName '1'
         }
         fractions {
             applicationId "com.education4all.fractions"
+            versionCode 1
+            versionName '1'
         }
     }
     compileOptions {

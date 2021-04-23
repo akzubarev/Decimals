@@ -67,7 +67,7 @@ public class DecimalTask extends Task {
                 temp *= 10;
                 precision++;
 
-                if (precision >= 5 || temp - (int) temp >= 1) {
+                if (precision >= 10 || temp - (int) temp >= 1) {
                     int temp1 = (int) temp;
                     if (temp1 % 10 == 9)
                         temp1++;
@@ -87,9 +87,21 @@ public class DecimalTask extends Task {
 
         if (precision == 0)
             return String.format(new Locale("ru", "RU"), "%d", Math.round(value));
-        else
-            return String.format(new Locale("ru", "RU"), "%." + precision + "f", value);
+        else {
+            String out = String.format(new Locale("ru", "RU"), "%." + precision + "f", value);
+            return trimZeroes(out);
+        }
+    }
 
+    private String trimZeroes(String out) {
+        for (int i = out.length() - 1; i >= 0; i--) {
+            char c = out.charAt(i);
+            if (c == ',')
+                return out.substring(0, i);
+            if (c != '0')
+                return out.substring(0, i+1);
+        }
+        return "0";
     }
 
     // +

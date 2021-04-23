@@ -3,18 +3,28 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="alertDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+
+        <item name="actionMenuTextAppearance">@style/MenuTextStyle</item>
         <item name="android:actionMenuTextAppearance">@style/MenuTextStyle</item>
+
         <item name="popupMenuStyle">@style/CustomPopup</item>
+        <item name="android:popupMenuStyle">@style/CustomPopup</item>
+
         <item name="android:textAppearanceLargePopupMenu">@style/MenuTextStyle</item>
+        <item name="textAppearanceLargePopupMenu">@style/MenuTextStyle</item>
+
         <item name="android:textAppearanceSmallPopupMenu">@style/MenuTextStyle</item>
+        <item name="textAppearanceSmallPopupMenu">@style/MenuTextStyle</item>
+
+        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
+        <item name="actionButtonStyle">@style/ActionButtonStyle</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:textColorPrimary">@color/main</item>
         <item name="android:textColorSecondary">@color/additional</item>
         <item name="fontFamily">sans-serif-light</item>
-        <item name="android:actionButtonStyle">@style/ActionButtonStyle</item>
-        <item name="actionButtonStyle">@style/ActionButtonStyle</item>
-
     </style>
 
     <style name="ActionBarText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
@@ -30,32 +40,12 @@
         <item name="android:popupBackground">@color/color4</item>
         <item name="android:textSize">@dimen/dimen4</item>item>
         <item name="android:textAllCaps">false</item>item>
-        <item name="android:colorControlActivated" tools:targetApi="lollipop">@color/additional</item>
-        <item name="android:colorControlHighlight" tools:targetApi="lollipop">@color/additional</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:colorControlActivated" tools:targetApi="lollipop">@color/additional
+        </item>
+        <item name="android:colorControlHighlight" tools:targetApi="lollipop">@color/additional
+        </item>
         <item name="android:colorControlNormal" tools:targetApi="lollipop">@color/additional</item>
-
-    </style>
-
-    <style name="AppThemeNoTitle" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-    </style>
-
-    <style name='Theme.AppCompat.NoActionBar.OldMenu' parent="Theme.AppCompat.NoActionBar">
-        <item name="actionOverflowMenuStyle">@style/OverflowMenuCustom</item>
-    </style>
-
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/AppTheme">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="OverflowMenuCustom" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <!-- Required for pre-Lollipop. -->
-        <item name="overlapAnchor">false</item>
-        <item name="selectableItemBackground">@color/color4</item>
-        <item name="android:dropDownVerticalOffset">-4.0dip</item>
     </style>
 
     <style name="MyCheckBox" parent="Theme.AppCompat.Light">
@@ -67,10 +57,8 @@
         <item name="android:background">@color/color3</item>
         <item name="android:itemBackground">@color/color3</item>
         <item name="android:textColorPrimary">@color/main</item>
-
         <item name="android:windowTitleStyle">@style/AlertTitleStyle</item>
         <item name="android:textAppearanceMedium">@style/AlertTitleStyle</item>
-
         <item name="android:buttonStyle">@style/AlertButtonStyle</item>
     </style>
 
@@ -91,7 +79,7 @@
     </style>
 
     <style name="TabText" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">@dimen/dimen2</item>
+        <item name="android:textSize">@dimen/dimen3</item>
         <item name="textAllCaps">false</item>
         <item name="android:textFontWeight">300</item>
         <item name="fontWeight">300</item>
@@ -101,11 +89,13 @@
         <item name="android:textSize">@dimen/dimen4</item>
         <item name="android:textColor">@color/main</item>
         <item name="android:textAllCaps">false</item>
+        <item name="iconTint">@color/additional</item>
     </style>
 
     <style name="ActionButtonStyle" parent="Widget.AppCompat.ActionButton">
         <item name="android:minWidth">@dimen/actionbaricon</item>
         <item name="android:maxWidth">@dimen/actionbaricon</item>
         <item name="android:width">@dimen/actionbaricon</item>
+        <item name="iconTint">@color/additional</item>
     </style>
 </resources>

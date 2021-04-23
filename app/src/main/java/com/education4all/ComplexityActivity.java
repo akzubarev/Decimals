@@ -11,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.education4all.MathCoachAlg.DataReader;
-import com.education4all.decimals.BuildConfig;
-import com.education4all.decimals.R;
 
 
 public class ComplexityActivity extends AppCompatActivity {
@@ -22,7 +20,8 @@ public class ComplexityActivity extends AppCompatActivity {
     public static final String SUB = "\u2006−\u2006";
     public static final String MUL = "\u2006\u22C5\u2006";
     public static final String DIV = "\u2006:\u2006";
-    String id = BuildConfig.APPLICATION_ID;
+    final String id = BuildConfig.APPLICATION_ID;
+    boolean isIntegers = BuildConfig.FLAVOR.equals("integers");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +39,17 @@ public class ComplexityActivity extends AppCompatActivity {
         for (int i = 1; i < 5; i++) {
             int resID = getResources().getIdentifier("checkBox" + i, "id", id);
             CheckBox chk = findViewById(resID);
-            checked = DataReader.checkComplexity(actionType - 1, i, this);
+            checked = DataReader.checkComplexity(actionType - 1, i-1, this);
             if (chk.isChecked() != checked)
                 chk.setChecked(checked);
         }
 
-        if (BuildConfig.FLAVOR.equals("integers") && actionType != 4) {
+        if (isIntegers && actionType == 4) {
+            CheckBox chk = findViewById(R.id.checkBox5);
+            checked = DataReader.checkComplexity(actionType - 1, 4, this);
+            if (chk.isChecked() != checked)
+                chk.setChecked(checked);
+        } else {
             LinearLayout layout = findViewById(R.id.layout5);
             ((ViewManager) layout.getParent()).removeView(layout);
 //            ((ViewManager) chk.getParent()).removeView(chk);
@@ -53,12 +57,6 @@ public class ComplexityActivity extends AppCompatActivity {
 //            ((ViewManager) tw1.getParent()).removeView(tw1);
 //            TextView tw2 = findViewById(R.id.textView52);
 //            ((ViewManager) tw2.getParent()).removeView(tw2);
-        } else {
-            CheckBox chk = findViewById(R.id.checkBox5);
-            checked = DataReader.checkComplexity(actionType - 1, 4, this);
-            if (chk.isChecked() != checked)
-                chk.setChecked(checked);
-
         }
 
         // StupidTextFill(actionType);
@@ -94,7 +92,8 @@ public class ComplexityActivity extends AppCompatActivity {
                 operation = "division";
                 symbol = DIV;
                 complType.setText("Деление");
-                limit = 6;
+                if (isIntegers)
+                    limit = 6;
                 break;
         }
 
@@ -149,7 +148,7 @@ public class ComplexityActivity extends AppCompatActivity {
         if (chk.isChecked()) {
             currentComplexity.append("3").append(",");
         }
-        if (actionType == 4) {
+        if (isIntegers && actionType == 4) {
             chk = findViewById(R.id.checkBox5);
             if (chk.isChecked()) {
                 currentComplexity.append("4").append(",");

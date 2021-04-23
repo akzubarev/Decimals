@@ -28,13 +28,12 @@ import android.widget.TextView;
 import com.education4all.MathCoachAlg.StatisticMaker;
 
 import com.education4all.MathCoachAlg.Tour;
-import com.education4all.decimals.R;
 
 public class StatiscticsActivity extends AppCompatActivity {
-    private Context l_context = this;
+    private final Context l_context = this;
 
     //deprecated
-    View.OnClickListener tourClick = v -> {
+    final View.OnClickListener tourClick = v -> {
         Intent i = new Intent(l_context, StatTourActivity.class);
         i.putExtra("Tour", (Integer) (v.getTag()));
         startActivity(i);
@@ -159,7 +158,7 @@ public class StatiscticsActivity extends AppCompatActivity {
         if (isAllTasksRight)
             info = getString(R.string.star) + " ";
         info += tourdepiction.substring(divider, end);
-        return new Pair<String, String>(datetime, info);
+        return new Pair<>(datetime, info);
     }
 
     @Override
@@ -235,27 +234,22 @@ public class StatiscticsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_delete_stats:
-                if (StatisticMaker.getTourCount(this) > 0) {
-                    AlertDialog dialog = new AlertDialog.Builder(StatiscticsActivity.this)
-                            .setTitle("Удаление результатов")
-                            .setMessage("Вы уверены? Это действие нельзя будет отменить.")
+        if (item.getItemId() == R.id.action_delete_stats) {
+            if (StatisticMaker.getTourCount(this) > 0) {
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("Удаление результатов")
+                        .setMessage("Вы уверены? Это действие нельзя будет отменить.")
 
-                            .setNegativeButton("Отменить", (dialog1, which) -> {
-                                //finish();
-                            })
-                            .setPositiveButton("Удалить", (dialog12, which) -> DeleteStatistics())
-                            .show();
+                        .setNegativeButton("Отменить", (dialog1, which) -> {
+                            //finish();
+                        })
+                        .setPositiveButton("Удалить", (dialog12, which) -> DeleteStatistics())
+                        .show();
 
-                    CommonOperations.FixDialog(dialog, getApplicationContext());
-                }
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-        }
+                CommonOperations.FixDialog(dialog, getApplicationContext()); // почему-то нужно для планшетов
+            }
+            return true;
+        } else
+            return super.onOptionsItemSelected(item);
     }
 }

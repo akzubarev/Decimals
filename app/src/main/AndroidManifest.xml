@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.education4all.decimals">
+    package="com.education4all">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -88,7 +88,6 @@
         <activity
             android:name="com.education4all.AuthorsActivity"
             android:label="@string/title_activity_authors"
-            android:parentActivityName="com.education4all.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data

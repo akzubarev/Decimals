@@ -12,11 +12,11 @@ public class Tour {
     public int rightTasks;
     public long tourTime;
     public long tourDateTime;
-    public static String tourEndStr = "tourEnd";
-    String taskType;
+    public static final String tourEndStr = "tourEnd";
+    final String taskType;
 
     public Tour(String type) {
-        tourTasks = new ArrayList<Task>(0);
+        tourTasks = new ArrayList<>(0);
         totalTasks = 0;
         rightTasks = 0;
         tourDateTime = System.currentTimeMillis();
@@ -52,7 +52,7 @@ public class Tour {
 
     public Tour(String type, ArrayList<String> lineVect) {
         taskType = type;
-        tourTasks = new ArrayList<Task>(0);
+        tourTasks = new ArrayList<>(0);
         String line = lineVect.get(0);
         Task myTask;
         int found = line.indexOf(';');
@@ -77,7 +77,7 @@ public class Tour {
 
     public ArrayList<String> serialize() {
         String line;
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         line = "tourStart;" + tourDateTime + ';' + totalTasks + ';' +
                 rightTasks + ';' + tourTime + ';';
         result.add(line);
@@ -90,7 +90,7 @@ public class Tour {
     }
 
     public void deSerialize(ArrayList<String> lineVect) {
-        tourTasks = new ArrayList<Task>(0);
+        tourTasks = new ArrayList<>(0);
         String line = lineVect.get(0);
         Task myTask;
         int found = line.indexOf(';');

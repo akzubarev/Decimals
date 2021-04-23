@@ -3,28 +3,19 @@ package com.education4all;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Html;
-import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.education4all.decimals.R;
-
 public class WebActivity extends AppCompatActivity {
     private WebView webView;
     private boolean connected = false;
-
-    private String message = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +64,7 @@ public class WebActivity extends AppCompatActivity {
 //                message += actNw == null ? ", actNw==null" : ", no transport";
 //            }
         //      } else {
-        message = "Build version < M";
+        String message = "Build version < M";
         NetworkInfo nwInfo = connectivityManager.getActiveNetworkInfo();
         internetConnection = nwInfo != null && nwInfo.isConnected();
         message += nwInfo == null ? ", nwInfo==null" : ", nw is not connected";
@@ -90,7 +81,7 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
-    private class MyWebViewClient extends WebViewClient {
+    private static class MyWebViewClient extends WebViewClient {
         @TargetApi(Build.VERSION_CODES.N)
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
