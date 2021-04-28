@@ -9,7 +9,6 @@ public class DecimalTask extends Task {
         expression = "2 + 2";
         answer = "4";
         userAnswer = "";
-        rnd = new Random();
     }
 
     public DecimalTask(String line) {
@@ -37,7 +36,7 @@ public class DecimalTask extends Task {
     }
 
     @Override
-    public void generate(int[][] allowedTasks) {
+    public void generate() {
         if (areTasks(allowedTasks)) {
             operation = operationRandomizer(allowedTasks);
             switch (operation) {
@@ -61,26 +60,23 @@ public class DecimalTask extends Task {
     String withPrecision(double value) {
         int precision = 0;
         double temp = value;
+        int maxprecision = 10;
+        double mindifference =  Math.pow(0.1, maxprecision);
 
-        if (value - (int) value > 0.00001)
-            while (temp - (int) temp > 0.00001) {
+        if (value - (int) value > mindifference)
+            while (temp - (int) temp >mindifference && precision <= maxprecision) {
                 temp *= 10;
                 precision++;
 
-                if (precision >= 10 || temp - (int) temp >= 1) {
+                if (precision >= maxprecision || temp - (int) temp >= 1) {
                     int temp1 = (int) temp;
                     if (temp1 % 10 == 9)
                         temp1++;
-                    while (temp1 % 10 == 0 && temp1 > value - 0.00001) {
+                    while (temp1 % 10 == 0 && value - temp1 > mindifference) {
                         temp1 /= 10;
                         precision--;
 
                     }
-
-//                    Log.d("EndlessLoop", String.format("%d", temp1));
-//                    Log.d("EndlessLoop", String.format("%f", value));
-//                    Log.d("EndlessLoop", String.format("%f", value - (int) value));
-//                Log.v("EndlessLoop", String.format("%d", temp1 % 10));
                     break;
                 }
             }
@@ -91,6 +87,26 @@ public class DecimalTask extends Task {
             String out = String.format(new Locale("ru", "RU"), "%." + precision + "f", value);
             return trimZeroes(out);
         }
+
+//        int log = (int) Math.log10(value);
+//
+//        long longdouble = (long) (value * Math.pow(10, 10));
+//        if (longdouble % 10 == 9)
+//            longdouble++;
+//        while (longdouble % 10 == 0 && Math.log(longdouble) > log)
+//            longdouble /= 10;
+//
+//        if (Math.log(longdouble) == log)
+//            return String.format(new Locale("ru", "RU"), "%d", Math.round(value));
+//        else {
+//            String double_ = "" + longdouble;
+//            String integer = double_.substring(0, log + 2);
+//            if (integer.isEmpty())
+//                integer = "0";
+//            String decimal = double_.substring(log + 2, double_.length());
+//            return integer + "." + decimal;
+//        }
+
     }
 
     private String trimZeroes(String out) {
@@ -99,7 +115,7 @@ public class DecimalTask extends Task {
             if (c == ',')
                 return out.substring(0, i);
             if (c != '0')
-                return out.substring(0, i+1);
+                return out.substring(0, i + 1);
         }
         return "0";
     }

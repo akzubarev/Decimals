@@ -99,4 +99,14 @@ public class DataReader {
         return prefs.getInt(name, defaultValues.get(name));
     }
 
+    public static void SaveQueue(String json, Context p_context) {
+        SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
+        editor.putString("Queue", json);
+        editor.commit();
+    }
+
+    static public String GetQueue(Context p_context) {
+        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
+        return prefs.getString("Queue", "");
+    }
 }

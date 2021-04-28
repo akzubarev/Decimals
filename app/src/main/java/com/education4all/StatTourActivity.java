@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat;
 
 import com.education4all.MathCoachAlg.StatisticMaker;
 import com.education4all.MathCoachAlg.Tasks.Task;
-import com.education4all.MathCoachAlg.Tour;
+import com.education4all.MathCoachAlg.Tours.Tour;
 
 import java.util.ArrayList;
 
@@ -58,7 +58,7 @@ public class StatTourActivity extends AppCompatActivity {
             int jump = 0; // раньше сохранялись лишние копии заданий, которые нужно пропускать
             for (int i = 1; i < deTour.size() - 1; ++i) {
                 ArrayList<String> answers = new ArrayList<>();
-                Task currentTask = Task.makeTask(deTour.get(i), tasktype);
+                Task currentTask = Task.makeTask(deTour.get(i));
                 //         FractionTask ft = null;
                 ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), tasktype, answers);
 
@@ -75,7 +75,7 @@ public class StatTourActivity extends AppCompatActivity {
                     int end = output.indexOf(')');
 
                     TextView seconds =  row.findViewById(R.id.seconds);
-                    boolean userAnswerIsCorrect = answers.get(j).equals(currentTask.answer);
+                    boolean userAnswerIsCorrect = answers.get(j).equals(currentTask.getAnswer());
                     String taskAndUserAnswer = output.substring(0, ind - 2);
 
                     //   if (!tasktype.equals("fractions"))

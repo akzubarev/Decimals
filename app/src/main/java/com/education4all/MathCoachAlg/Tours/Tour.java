@@ -1,4 +1,4 @@
-package com.education4all.MathCoachAlg;
+package com.education4all.MathCoachAlg.Tours;
 
 import com.education4all.MathCoachAlg.Tasks.Task;
 
@@ -70,7 +70,7 @@ public class Tour {
         tourTime = Long.parseLong(line.substring(0, found));
         for (int i = 1; i < lineVect.size() - 1; ++i) {
             line = lineVect.get(i);
-            myTask = Task.makeTask(line, taskType);
+            myTask = Task.makeTask(line);
             tourTasks.add(myTask);
         }
     }
@@ -108,7 +108,7 @@ public class Tour {
         tourTime = Long.parseLong(line.substring(0, found));
         for (int i = 1; i < lineVect.size() - 1; ++i) {
             line = lineVect.get(i);
-            myTask = Task.makeTask(line, taskType);
+            myTask = Task.makeTask(line);
             tourTasks.add(myTask);
         }
     }

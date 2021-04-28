@@ -11,41 +11,8 @@ public class FractionTask extends Task {
         answer = Fraction.makeValue("5", "5", "6");
 
         userAnswer = "";
-        rnd = new Random();
     }
 
-//    void breakTask() {
-//        int idx1, idx2, idx3;
-//        String[] parts = expression.split(" ");
-//        String part;
-//        String fraction;
-//
-//        part = parts[0];
-//        idx1 = part.indexOf("[");
-//        idx2 = part.indexOf("]");
-//        integer1 = part.substring(0, idx1);
-//        fraction = part.substring(idx1 + 1, idx2);
-//        idx3 = fraction.indexOf("/");
-//        fraction1 = makeFraction(fraction.substring(0, idx3), fraction.substring(idx3 + 1));
-//
-//        part = parts[2];
-//        idx1 = part.indexOf("[");
-//        idx2 = part.indexOf("]");
-//        integer2 = part.substring(0, idx1);
-//        fraction = part.substring(idx1 + 1, idx2);
-//        idx3 = fraction.indexOf("/");
-//        fraction2 = makeFraction(fraction.substring(0, idx3), fraction.substring(idx3 + 1));
-//
-//        part = answer;
-//        idx1 = part.indexOf("[");
-//        idx2 = part.indexOf("]");
-//        integerA = part.substring(0, idx1);
-//        fraction = part.substring(idx1 + 1, idx2);
-//        idx3 = fraction.indexOf("/");
-//        fractionA = makeFraction(fraction.substring(0, idx3), fraction.substring(idx3 + 1));
-//
-//        operationSym = operations[operation];
-//    }
 
     public FractionTask(String line) {
         int found = line.indexOf(';');
@@ -68,12 +35,10 @@ public class FractionTask extends Task {
         line = line.substring(found + 1);
         found = line.indexOf(';');
         timeTaken = Long.parseLong(line.substring(0, found));
-
-        // breakTask();
     }
 
     @Override
-    public void generate(int[][] allowedTasks) {
+    public void generate() {
         if (areTasks(allowedTasks)) {
             operation = operationRandomizer(allowedTasks);
             switch (operation) {
@@ -113,7 +78,6 @@ public class FractionTask extends Task {
         expression = left + operations[0] + right;
         answer = left.plus(right).toString();
     }
-
 
     // -
     private void substraction(final int[][] allowedTasks) {

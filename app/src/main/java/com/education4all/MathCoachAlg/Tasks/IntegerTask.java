@@ -8,7 +8,6 @@ public class IntegerTask extends Task {
         expression = "2 + 2";
         answer = "4";
         userAnswer = "";
-        rnd = new Random();
     }
 
     public IntegerTask(String line) {
@@ -36,7 +35,7 @@ public class IntegerTask extends Task {
     }
 
     @Override
-    public void generate(final int[][] allowedTasks) {
+    public void generate() {
         if (areTasks(allowedTasks)) {
             operation = operationRandomizer(allowedTasks);
             switch (operation) {

@@ -3,6 +3,8 @@ package com.education4all.MathCoachAlg;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.education4all.MathCoachAlg.Tours.Tour;
+
 import java.util.ArrayList;
 
 

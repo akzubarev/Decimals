@@ -15,7 +15,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.education4all.MathCoachAlg.DataReader;
 import com.education4all.MathCoachAlg.StatisticMaker;
 import com.education4all.MathCoachAlg.Tasks.Task;
-import com.education4all.MathCoachAlg.Tour;
+import com.education4all.MathCoachAlg.Tours.Tour;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
         // myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_overflow));
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("");
-
-
+        Task.setType(tasktype);
 //        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 //        getSupportActionBar().setCustomView(R.layout.abs_layout);
 
@@ -160,13 +160,13 @@ public class MainActivity extends AppCompatActivity {
                 int jump = 0; // костыль из прошлых версий
                 for (int i = 1; i < deTour.size() - 1; ++i) {
                     ArrayList<String> answers = new ArrayList<>();
-                    Task currentTask = Task.makeTask(deTour.get(i), tasktype);
+                    Task currentTask = Task.makeTask(deTour.get(i));
                     ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), tasktype, answers);
 
                     //начало костыля
                     if (CommonOperations.requiresKostyl(date))
                         for (int j = 0; j < TaskDepiction.size(); ++j) {
-                            boolean answerIsCorrect = answers.get(j).equals(currentTask.answer);
+                            boolean answerIsCorrect = answers.get(j).equals(currentTask.getAnswer());
                             boolean taskWasSkipped = answers.get(j).equals("\u2026");
                             if (answerIsCorrect || taskWasSkipped) {
                                 i += jump;
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                     //конец костыля
 
                     // debug += answers.get(answers.size() - 1).equals(currentTask.answer) ? "1 " : "0 ";
-                    if (answers.get(0).equals(currentTask.answer)) {
+                    if (answers.get(0).equals(currentTask.getAnswer())) {
                         subsequentAnswers++;
                         lastAnswerStreakIsValid = true;
                     } else {
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
                             subsequentAnswers = 0;
                             lastAnswerStreakIsValid = false;
                         }
-                        if (answers.get(answers.size() - 1).equals(currentTask.answer)) {
+                        if (answers.get(answers.size() - 1).equals(currentTask.getAnswer())) {
                             subsequentAnswers++;
                             lastAnswerStreakIsValid = true;
                         }
@@ -269,10 +269,11 @@ public class MainActivity extends AppCompatActivity {
         String text = "";
 
         Map<Integer, String> map = new HashMap<>();
-        map.put(0, Task.operations[0]);
-        map.put(1, Task.operations[1]);
-        map.put(2, Task.operations[2]);
-        map.put(3, Task.operations[3]);
+        String[] operations = Task.getOperations();
+        map.put(0, operations[0]);
+        map.put(1, operations[1]);
+        map.put(2, operations[2]);
+        map.put(3, operations[3]);
 
         for (int action = 0; action < 4; action++) {
             String fragment = "";
@@ -345,9 +346,9 @@ public class MainActivity extends AppCompatActivity {
             tour.tourTime = 0;
 
             for (int j = 1; j < lines.length; j++) {
-                Task task = Task.makeTask(tasktype);
-                task.timeTaken = rnd.nextInt(100);
-                tour.tourTime += task.timeTaken;
+                Task task = Task.makeTask();
+                task.setTimeTaken(rnd.nextInt(100));
+                tour.tourTime += task.getTimeTaken();
 
 //                for (int k = 0; k < rnd.nextInt(4); k++) {
 //                    int wronganswer = 0;
@@ -358,10 +359,10 @@ public class MainActivity extends AppCompatActivity {
 //                }
 
                 if (Integer.parseInt(lines[j]) == 1) {
-                    task.userAnswer += task.answer + ":" + rnd.nextInt(20) + '|';
+                    task.setUserAnswer(task.getUserAnswer() + task.getAnswer() + ":" + rnd.nextInt(20) + '|');
                     tour.rightTasks++;
                 } else
-                    task.userAnswer += "\u2026" + ":" + rnd.nextInt(20) + '|';
+                    task.setUserAnswer(task.getUserAnswer() + "\u2026" + ":" + rnd.nextInt(20) + '|');
 
                 tour.tourTasks.add(task);
             }

@@ -1,21 +1,81 @@
 package com.education4all.MathCoachAlg.Tasks;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 
 public abstract class Task {
-    public String expression = "";
-    public int operation = 0;
-    public int complexity = 0;
-    public String answer = "";
-    public String userAnswer = "";
-    public long taskTime = 0;
-    public long timeTaken = 0;
-    public Random rnd = new Random();
-    public static final String[] operations = {"\u2006+\u2006", "\u2006−\u2006", "\u2006\u22C5\u2006", "\u2006:\u2006"};
+    String expression = "";
+    int operation = 0;
+    int complexity = 0;
+    String answer = "";
+    String userAnswer = "";
+    long taskTime = 0;
+    long timeTaken = 0;
+    Random rnd = new Random();
+    static final String[] operations = {"\u2006+\u2006", "\u2006−\u2006", "\u2006\u22C5\u2006", "\u2006:\u2006"};
+    static String type = "decimals";
+    static int[][] allowedTasks;
+
+    public String getExpression() {
+        return expression;
+    }
+
+    public int getOperation() {
+        return operation;
+    }
+
+    public void setOperation(int operation) {
+        this.operation = operation;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public String getUserAnswer() {
+        return userAnswer;
+    }
+
+    public void setUserAnswer(String userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    public long getTaskTime() {
+        return taskTime;
+    }
+
+    public long getTimeTaken() {
+        return timeTaken;
+    }
+
+    public void setTimeTaken(long timeTaken) {
+        this.timeTaken = timeTaken;
+    }
+
+    public static String[] getOperations() {
+        return operations;
+    }
+
+    public int getComplexity() {
+        return complexity;
+    }
+
+    public static String getType() {
+        return type;
+    }
+
+    public static int[][] getAllowedTasks() {
+        return allowedTasks;
+    }
+
+    public static void setAllowedTasks(int[][] allowedTasks) {
+        Task.allowedTasks = allowedTasks;
+    }
+
+    public static void setType(String type) {
+        Task.type = type;
+    }
 
     public Task() {
         expression = "2 + 2";
@@ -23,8 +83,8 @@ public abstract class Task {
         userAnswer = "";
     }
 
-    public static Task makeTask(Task t, String type) {
-        Task newTask = makeTask(type);
+    public static Task makeTask(Task t) {
+        Task newTask = makeTask();
         newTask.expression = t.expression;
         newTask.operation = t.operation;
         newTask.complexity = t.complexity;
@@ -33,7 +93,7 @@ public abstract class Task {
         return newTask;
     }
 
-    public static Task makeTask(String type) {
+    public static Task makeTask() {
         Task task;
         switch (type) {
             case "integers":
@@ -47,10 +107,11 @@ public abstract class Task {
                 task = new FractionTask();
                 break;
         }
+        task.generate();
         return task;
     }
 
-    public static Task makeTask(String line, String type) {
+    public static Task makeTask(String line) {
         Task task;
         switch (type) {
             case "integer":
@@ -67,14 +128,14 @@ public abstract class Task {
         return task;
     }
 
-    public static String DepictTask(String line, String type) {
-        Task task = makeTask(line, type);
+    public static String DepictTask(String line) {
+        Task task = makeTask(line);
 //		return l_task.expression + " = " + l_task.userAnswer + "(" + l_task.answer + ") " + l_task.timeTaken + " сек. ";
         return task.expression + " = " + task.userAnswer + " " + task.timeTaken + " сек. ";
     }
 
     public static ArrayList<String> DepictTaskExtended(String line, String type, ArrayList<String> answers) {
-        Task task = makeTask(line, type);
+        Task task = makeTask(line);
         ArrayList<String> res = new ArrayList<>();
         String firstPart = task.expression + " = ";
         String partToBeParsed = task.userAnswer;
@@ -96,28 +157,12 @@ public abstract class Task {
         return res;
     }
 
-//	public static ArrayList<String> DepictTaskExpanded(String line) {
-//		Task l_task = new Task(line);
-//		ArrayList<String> result = new ArrayList<String>();
-//		String answers = l_task.userAnswer;
-//		int coma = 0;
-//		coma = answers.indexOf(',');
-//		while (coma > 0) {
-//			result.add(l_task.userAnswer.substring(coma - 1, coma));
-//			answers = answers.substring(coma + 1);
-//			coma = answers.indexOf(',');
-//		}
-//		return result;
-//	}
+    public abstract void generate();
 
-    public abstract void generate(final int[][] allowedTasks);
-
-    public boolean areTasks(int[][] p_allowedTasks) {
-        for (int[] p_allowedTask : p_allowedTasks) {
-            if (p_allowedTask.length > 0) {
+    public static boolean areTasks(int[][] p_allowedTasks) {
+        for (int[] p_allowedTask : p_allowedTasks)
+            if (p_allowedTask.length > 0)
                 return true;
-            }
-        }
         return false;
     }
 
@@ -150,20 +195,19 @@ public abstract class Task {
         timeTaken = Integer.parseInt(line.substring(0, found));
     }
 
-    // ����� ������ ��������
-    int operationRandomizer(final int[][] allowedTasks) {
-        int c = 0;
-        int i;
-        while (true) {
-            ++c;
-            i = rnd.nextInt(allowedTasks.length);
-            if (allowedTasks[i].length > 0) {
-                return i;
-            }
-        }
+    ArrayList<Integer> availableOperations(int[][] allowedTasks) {
+        ArrayList<Integer> out = new ArrayList<>();
+        for (int i = 0; i < allowedTasks.length; i++)
+            if (allowedTasks[i].length > 0)
+                out.add(i);
+        return out;
     }
 
-    // ����� ��������� �������
+    int operationRandomizer(final int[][] allowedTasks) {
+        ArrayList<Integer> choices = availableOperations(allowedTasks);
+        return choices.get(rnd.nextInt(choices.size()));
+    }
+
     int complexityRandomizer(final int[][] allowedTasks) {
         if (allowedTasks[operation].length > 0) {
             int r = rnd.nextInt(allowedTasks[operation].length);

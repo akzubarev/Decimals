@@ -19,18 +19,12 @@ android {
     productFlavors {
         integers {
             applicationId "com.education4all.mathcoach"
-            versionCode 6
-            versionName '2'
         }
         decimals {
             applicationId "com.education4all.decimals"
-            versionCode 1
-            versionName '1'
         }
         fractions {
             applicationId "com.education4all.fractions"
-            versionCode 1
-            versionName '1'
         }
     }
     compileOptions {
@@ -55,4 +49,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.6.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
 }

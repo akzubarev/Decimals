@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.education4all.MathCoachAlg.StatisticMaker;
 
-import com.education4all.MathCoachAlg.Tour;
+import com.education4all.MathCoachAlg.Tours.Tour;
 
 public class StatiscticsActivity extends AppCompatActivity {
     private final Context l_context = this;

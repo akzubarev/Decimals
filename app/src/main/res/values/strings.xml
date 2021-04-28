@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Десятичные дроби</string>
-    <string name="short_app_name">Десятичные</string>
+    <string name="app_name">-----</string>
+    <string name="short_app_name">-----</string>
     <string name="action_about">О приложении</string>
     <string name="action_settings">Настройки</string>
     <string name='action_delete_stats'>Удалить все результаты</string>
@@ -16,7 +16,7 @@
     <string name="title_activity_statisctics">Результаты</string>
     <string name="title_activity_stat_tour">Раунд</string>
     <string name="title_activity_wheel_picker">wheel_picker</string>>
-    <string name="about_text">Десятичные дроби\n(тренажёр устного счёта)
+    <string name="about_text">-----\n(тренажёр устного счёта)
         \n\nИдея:\nАртём Казанович
         \n\nПрограммирование:\nАлександр Умнов\nАлексей Зубарев\nАртём Казанович\n</string>>
     <string name="email">mathcoach.support@yandex.ru</string>>
@@ -41,49 +41,49 @@
         Нажмите еще раз на ссылку \"Поддержать проект,\" когда будете в сети, или заходите на сайт math-trainer.ru,
         там вы сможете сделать пожертвование на развитие проекта.</string>
 
-    <string name="additionName1">Сложение в одном разряде, дроби одного порядка</string>
-    <string name="additionName2">Сложение в двух разрядах, дроби одного порядка</string>
-    <string name="additionName3">Сложение в одном разряде, дроби разных порядков</string>
-    <string name="additionName4">Сложение в двух разрядах, дроби разных порядков</string>
+    <string name="additionName1">-----</string>
+    <string name="additionName2">-----</string>
+    <string name="additionName3">-----</string>
+    <string name="additionName4">-----</string>
 
-    <string name="substractionName1">Вычитание в одном разряде, дроби одного порядка</string>
-    <string name="substractionName2">Вычитание в двух разрядах, дроби одного порядка</string>
-    <string name="substractionName3">Вычитание в одном разряде, дроби разных порядков</string>
-    <string name="substractionName4">Вычитание в двух разрядах, дроби разных порядков</string>
+    <string name="substractionName1">-----</string>
+    <string name="substractionName2">-----</string>
+    <string name="substractionName3">-----</string>
+    <string name="substractionName4">-----</string>
 
-    <string name="multiplicationName1">Умножение на десятичную дробь с единичной базой</string>
-    <string name="multiplicationName2">Умножение двух чисел и десятичных дробей c однозначной базой</string>
-    <string name="multiplicationName3">Умножение числа и десятичной дроби с двузначной и однозначной базой</string>
-    <string name="multiplicationName4">Умножение числа и десятичной дроби с трёхзначной и однозначной базой</string>
+    <string name="multiplicationName1">-----</string>
+    <string name="multiplicationName2">-----</string>
+    <string name="multiplicationName3">-----</string>
+    <string name="multiplicationName4">-----</string>
 
-    <string name="divisionName1">Деление на число с единичной базой</string>
-    <string name="divisionName2">Деление числа с двузначной базой на число с однозначной базой</string>
-    <string name="divisionName3">Деление числа с трёхзначной базой на число с однозначной базой</string>
-    <string name="divisionName4">Деление числа с четырёхзначной базой на число с однозначной базой</string>
+    <string name="divisionName1">-----</string>
+    <string name="divisionName2">-----</string>
+    <string name="divisionName3">-----</string>
+    <string name="divisionName4">-----</string>
 
     <!---->
 
-    <string name="additionExample1">0,5%s0,7\n0,55%s0,07\n0,555%s0,007</string>
-    <string name="additionExample2">5,5%s7,7\n5,55%s0,77\n0,555%s0,077</string>
-    <string name="additionExample3">5%s7,7\n5,5%s0,77\n0,5%s0,777</string>
-    <string name="additionExample4">55%s77,7\n55,5%s7,77\n0,55%s0,777</string>
+    <string name="additionExample1">-----</string>
+    <string name="additionExample2">-----7</string>
+    <string name="additionExample3">-----</string>
+    <string name="additionExample4">-----</string>
 
-    <string name="substractionExample1">0,7%s0,5\n0,77%s0,05\n0,777%s0,005</string>
-    <string name="substractionExample2">7,7%s5,5\n7,77%s0,55\n0,777%s0,055</string>
-    <string name="substractionExample3">7,7%s5\n0,77%s0,7\n7,77%s0,005</string>
-    <string name="substractionExample4">77,7%s55\n77,7%s0,55\n7,77%s0,055</string>
+    <string name="substractionExample1">-----</string>
+    <string name="substractionExample2">-----</string>
+    <string name="substractionExample3">-----</string>
+    <string name="substractionExample4">-----</string>
 
-    <string name="multiplicationExample1">550%s0,001\n5,5%s0,01\n0,55%s0,1</string>
-    <string name="multiplicationExample2">500%s0,005\n5%s0,05\n0,5%s0,5</string>
-    <string name="multiplicationExample3">550%s0,005\n5,5%s0,05\n0,55%s0,5</string>
-    <string name="multiplicationExample4">555%s0,005\n5,55%s0,05\n0,555%s0,5</string>
+    <string name="multiplicationExample1">-----</string>
+    <string name="multiplicationExample2">-----</string>
+    <string name="multiplicationExample3">-----</string>
+    <string name="multiplicationExample4">-----</string>
 
-    <string name="divisionExample1">500%s1000\n5,5%s10\n0,555%s0,01</string>
-    <string name="divisionExample2">320%s400\n3,2%s4\n0,032%s0,04</string>
-    <string name="divisionExample3">1280%s4000\n1,28%s40\n0,0128%s0,4</string>
-    <string name="divisionExample4">2048%s4000\n20,48%s40\n2,048%s4</string>
+    <string name="divisionExample1">-----</string>
+    <string name="divisionExample2">-----</string>
+    <string name="divisionExample3">-----</string>
+    <string name="divisionExample4">-----</string>
 
-    
-    
-    
+
+
+
 </resources>
