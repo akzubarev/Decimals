@@ -60,7 +60,7 @@ public class StatTourActivity extends AppCompatActivity {
                 ArrayList<String> answers = new ArrayList<>();
                 Task currentTask = Task.makeTask(deTour.get(i));
                 //         FractionTask ft = null;
-                ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), tasktype, answers);
+                ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), answers);
 
 //                if (tasktype.equals("fractions"))
 //                    ft = (FractionTask) currentTask;

@@ -15,7 +15,7 @@ public abstract class Task {
     Random rnd = new Random();
     static final String[] operations = {"\u2006+\u2006", "\u2006−\u2006", "\u2006\u22C5\u2006", "\u2006:\u2006"};
     static String type = "decimals";
-    static int[][] allowedTasks;
+    static int[][] allowedTasks = new int[][]{new int[]{1}};
 
     public String getExpression() {
         return expression;
@@ -134,7 +134,7 @@ public abstract class Task {
         return task.expression + " = " + task.userAnswer + " " + task.timeTaken + " сек. ";
     }
 
-    public static ArrayList<String> DepictTaskExtended(String line, String type, ArrayList<String> answers) {
+    public static ArrayList<String> DepictTaskExtended(String line, ArrayList<String> answers) {
         Task task = makeTask(line);
         ArrayList<String> res = new ArrayList<>();
         String firstPart = task.expression + " = ";

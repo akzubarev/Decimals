@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,11 +28,23 @@ import android.widget.TextView;
 
 import com.education4all.MathCoachAlg.StatisticMaker;
 
+import com.education4all.MathCoachAlg.Tasks.Task;
 import com.education4all.MathCoachAlg.Tours.Tour;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
 
 public class StatiscticsActivity extends AppCompatActivity {
     private final Context l_context = this;
-
+    ArrayList<Integer> stat = new ArrayList<>();
     //deprecated
     final View.OnClickListener tourClick = v -> {
         Intent i = new Intent(l_context, StatTourActivity.class);
@@ -210,6 +223,8 @@ public class StatiscticsActivity extends AppCompatActivity {
             layout.addView(row);
             layout.addView(bar);
         }
+
+        setUpChart();
     }
 
     @Override
@@ -251,5 +266,163 @@ public class StatiscticsActivity extends AppCompatActivity {
             return true;
         } else
             return super.onOptionsItemSelected(item);
+    }
+
+    protected void setUpChart() {
+        readChartData();
+        LineChart chart = findViewById(R.id.chart);
+
+        // enable touch gestures
+        chart.setTouchEnabled(true);
+        // enable scaling and dragging
+        chart.setDragEnabled(true);
+        chart.setScaleEnabled(true);
+        // if disabled, scaling can be done on x- and y-axis separately
+        chart.setPinchZoom(false);
+
+//        chart.setBackgroundColor(Color.WHITE);
+//        chart.setDrawGridBackground(false);
+
+        chart.getDescription().setEnabled(false);
+        chart.setDrawGridBackground(false);
+        chart.setDrawBorders(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(stat.size()/2);
+        xAxis.setLabelCount(stat.size()/2);
+
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawAxisLine(true);
+
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setLabelCount(5, false);
+        leftAxis.setAxisMinimum(0);
+        leftAxis.setAxisMaximum(100);
+        leftAxis.setLabelCount(10);
+
+        chart.getAxisRight().setEnabled(false);
+
+        Legend l = chart.getLegend();
+        l.setEnabled(false);
+
+
+        LineData data = generateDataFromArray(stat);
+        chart.setData(data);
+        chart.invalidate();
+        // chart.animateX(750);
+    }
+
+    void readChartData() {
+        if (StatisticMaker.getTourCount(this) > 0) {
+            for (int tourNumber = StatisticMaker.getTourCount(this)-1; tourNumber >= 0; tourNumber--) {
+                String tourInfoStr = StatisticMaker.getTourInfo(this, tourNumber);
+                String txt = Tour.DepictTour(tourInfoStr);
+                int divider = txt.indexOf("Решено");
+
+                Tour tourinfo = StatisticMaker.loadTour(this, tourNumber);
+                ArrayList<String> deTour = tourinfo.serialize();
+
+                int jump = 0; // костыль из прошлых версий
+                for (int i = deTour.size() - 2; i > 0; i--) {
+                    ArrayList<String> answers = new ArrayList<>();
+                    Task currentTask = Task.makeTask(deTour.get(i));
+                    ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), answers);
+
+                    String datetime = txt.substring(1, divider - 1);
+                    String date = datetime.substring(0, 10);
+
+                    //начало костыля
+                    if (CommonOperations.requiresKostyl(date))
+                        for (int j = 0; j < TaskDepiction.size(); ++j) {
+                            boolean answerIsCorrect = answers.get(j).equals(currentTask.getAnswer());
+                            boolean taskWasSkipped = answers.get(j).equals("\u2026");
+                            if (answerIsCorrect || taskWasSkipped) {
+                                i += jump;
+                                jump = 0;
+                            } else {
+                                ++jump;
+                            }
+                            if (i + jump == deTour.size() - 2) {
+                                i += jump;
+                            }
+                        }
+                    //конец костыля
+
+                    boolean right = answers.get(0).equals(currentTask.getAnswer());
+
+                    stat.add(0, right ? 1 : 0);
+                    if (stat.size() == 20)
+                        break;
+                }
+            }
+        }
+
+        if (stat.size() < 4) {
+            stat.clear();
+            CommonOperations.genereteFakeTour("10 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 0 1 1", this);
+            readChartData();
+        }
+    }
+
+    private LineData generateDataFromArray(ArrayList<Integer> last20tasks) {
+        ArrayList<Entry> values = new ArrayList<>();
+
+        int pool = last20tasks.size() / 2;
+        int border = pool - 1;
+        int stat = 0;
+        for (int i = 0; i < last20tasks.size(); i++) {
+            stat += last20tasks.get(i);
+            if (i >= border) {
+                stat -= last20tasks.get(i - border);
+                values.add(new Entry(i - border, Math.round(100 * stat / pool)));
+            }
+        }
+
+        LineDataSet data = new LineDataSet(values, "New DataSet");
+        data.setLineWidth(2.5f);
+        data.setDrawCircles(false);
+        data.setCircleRadius(0);
+        data.setHighLightColor(Color.rgb(244, 117, 117));
+        data.setDrawValues(false);
+        return new LineData(data);
+    }
+
+    private LineData generateRandomData() {
+
+        ArrayList<Entry> values1 = new ArrayList<>();
+
+        for (int i = 0; i < 100; i++) {
+            values1.add(new Entry(i, (int) (Math.random() * 65) + 40));
+        }
+
+        LineDataSet d1 = new LineDataSet(values1, "New DataSet");
+        d1.setLineWidth(2.5f);
+        d1.setCircleRadius(0);
+        d1.setHighLightColor(Color.rgb(244, 117, 117));
+        d1.setDrawValues(false);
+
+//        ArrayList<Entry> values2 = new ArrayList<>();
+//
+//        for (int i = 0; i < 12; i++) {
+//            values2.add(new Entry(i, values1.get(i).getY() - 30));
+//        }
+//
+//        LineDataSet d2 = new LineDataSet(values2, "New DataSet " + cnt + ", (2)");
+//        d2.setLineWidth(2.5f);
+//        d2.setCircleRadius(4.5f);
+//        d2.setHighLightColor(Color.rgb(244, 117, 117));
+//        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+//        d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+//        d2.setDrawValues(false);
+
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
+        sets.add(d1);
+        //sets.add(d2);
+
+        return new LineData(d1);
     }
 }

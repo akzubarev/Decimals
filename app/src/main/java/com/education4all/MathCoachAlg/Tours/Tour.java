@@ -7,20 +7,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Tour {
-    public ArrayList<Task> tourTasks;
-    public int totalTasks;
-    public int rightTasks;
+    public ArrayList<Task> tourTasks = new ArrayList<>(0);
+    public int totalTasks = 0;
+    public int rightTasks= 0;
     public long tourTime;
     public long tourDateTime;
     public static final String tourEndStr = "tourEnd";
-    final String taskType;
 
-    public Tour(String type) {
-        tourTasks = new ArrayList<>(0);
-        totalTasks = 0;
-        rightTasks = 0;
+    public Tour() {
         tourDateTime = System.currentTimeMillis();
-        taskType = type;
     }
 
     public static String DepictTour(String line) {
@@ -51,7 +46,6 @@ public class Tour {
     }
 
     public Tour(String type, ArrayList<String> lineVect) {
-        taskType = type;
         tourTasks = new ArrayList<>(0);
         String line = lineVect.get(0);
         Task myTask;

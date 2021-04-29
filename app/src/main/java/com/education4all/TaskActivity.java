@@ -44,7 +44,7 @@ import java.util.Calendar;
 
 public class TaskActivity extends AppCompatActivity {
     final String tasktype = BuildConfig.FLAVOR; //тип заданий
-    private final Tour currentTour = new Tour(tasktype); // элемент класса Tour - текущий тур
+    private final Tour currentTour = new Tour(); // элемент класса Tour - текущий тур
     private Handler roundTimeHandler = new Handler(); // хэндлер для времени раунда
     private final Handler progressBarHandler = new Handler(); // хэндлер для прогресс бара
     private final Handler taskDisapHandler = new Handler(); // хэндлер для времени исчезновения
