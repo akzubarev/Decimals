@@ -12,102 +12,115 @@ public class StatisticMaker {
 
     public static final String STATISTICS = "Statistics";
     public static final String TOURS = "tours";
-    static String tasktype;
 
-    public static void setTaskType(String type) {
-        tasktype = type;
-    }
 
-    public static void saveTour(Tour p_Tour, Context p_context) {
-        SharedPreferences.Editor l_editor = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
-        SharedPreferences prefs = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+    public static void saveTour(Tour tour, Context context) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
+        SharedPreferences prefs = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+
         String tourCountStr = prefs.getString(TOURS, "0");
         int tourCount = Integer.parseInt(tourCountStr);
-        l_editor.putString(TOURS + "_" + tourCountStr, Integer.toString(p_Tour.totalTasks));
-        ArrayList<String> serializedTour = p_Tour.serialize();
-        for (int taskNumber = 0; taskNumber < p_Tour.totalTasks + 2; ++taskNumber) {
+        saveTour_by_number(tour, context, tourCount);
+        editor.putString(TOURS, Integer.toString(tourCount + 1));
+        editor.apply();
+    }
+
+    public static void saveTourOLD(Tour tour, Context context) {
+        SharedPreferences.Editor l_editor = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
+        SharedPreferences prefs = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+        String tourCountStr = prefs.getString(TOURS, "0");
+        int tourCount = Integer.parseInt(tourCountStr);
+        l_editor.putString(TOURS + "_" + tourCountStr, Integer.toString(tour.getTotalTasks()));
+        ArrayList<String> serializedTour = tour.serializeOLD();
+        for (int taskNumber = 0; taskNumber < tour.getTotalTasks() + 2; ++taskNumber) {
             l_editor.putString(TOURS + "_" + tourCountStr + "_" + taskNumber, serializedTour.get(taskNumber));
         }
         l_editor.putString(TOURS, Integer.toString(tourCount + 1));
         l_editor.apply();
     }
 
-    public static ArrayList<Tour> loadTours(Context p_context) {
+    public static ArrayList<Tour> loadToursOLD(Context context) {
         ArrayList<Tour> resultTours = new ArrayList<>();
-        SharedPreferences prefs = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
         int toursCount = Integer.parseInt(prefs.getString(TOURS, "0"));
-        for (int tourNumber = 0; tourNumber < toursCount; ++tourNumber) {
-            int taskCount = Integer.parseInt(prefs.getString(TOURS + "_" + tourNumber, "0"));
-            ArrayList<String> currentTour = new ArrayList<>();
 
-            for (int taskNumber = 0; taskNumber < taskCount; ++taskNumber) {
-                currentTour.add(prefs.getString(TOURS + "_" + tourNumber + "_" + taskNumber, "0"));
-            }
-            if (currentTour.size() > 0) {
-                Tour currentT_Tour = new Tour(tasktype, currentTour);
+        for (int tourNumber = 0; tourNumber < toursCount; ++tourNumber)
+            resultTours.add(loadTourOld(context, tourNumber));
 
-                resultTours.add(currentT_Tour);
-            }
-        }
         return resultTours;
     }
 
-    public static Tour loadTour(Context p_context, int tourNumber) {
-        SharedPreferences prefs = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+    public static Tour loadTour(Context context, int tourNumber) {
+        SharedPreferences prefs = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+        String currentTour = prefs.getString(TOURS + "_" + tourNumber, "");
+        return Tour.deSerialize(currentTour);
+    }
+
+    public static Tour loadTourOld(Context context, int tourNumber) {
+        SharedPreferences prefs = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
         int taskCount = Integer.parseInt(prefs.getString(TOURS + "_" + tourNumber, "0"));
         ArrayList<String> currentTour = new ArrayList<>();
         for (int taskNumber = 0; taskNumber < taskCount + 2; ++taskNumber) {
             currentTour.add(prefs.getString(TOURS + "_" + tourNumber + "_" + taskNumber, "0"));
         }
         if (currentTour.size() > 0) {
-            return new Tour(tasktype, currentTour);
+            return new Tour(currentTour);
         } else {
             return null;
         }
     }
 
-    public static int getTourCount(Context p_context) {
-        SharedPreferences prefs = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+    public static int getTourCount(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
         return Integer.parseInt(prefs.getString(TOURS, "0"));
     }
 
-    public static String getTourInfo(Context p_context, int tourNumber) {
-        SharedPreferences prefs = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+    public static String getTourInfoOLD(Context context, int tourNumber) {
+        SharedPreferences prefs = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
         return prefs.getString(TOURS + "_" + tourNumber + "_" + "0", "");
     }
 
-    public static void removeStatistics(Context p_context) {
-        SharedPreferences.Editor l_editor = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
-        l_editor.clear();
-        l_editor.apply();
+    public static void removeStatistics(Context context) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.apply();
     }
 
-    public static void removeTour(Context p_context, int tourNumber) {
-        SharedPreferences.Editor l_editor = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
-        SharedPreferences prefs = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+    public static void removeTour(Context context, int tourNumber) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
+        SharedPreferences prefs = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+        editor.remove(TOURS + "_" + tourNumber);
+        int toursCount = Integer.parseInt(prefs.getString(TOURS, "0"));
+        editor.putString(TOURS, Integer.toString(toursCount - 1));
+        editor.apply();
+        for (int i = tourNumber + 1; i < toursCount; ++i) {
+            Tour tour = loadTour(context, i);
+            saveTour_by_number(tour, context, i - 1);
+        }
+    }
+
+    public static void removeTourOld(Context context, int tourNumber) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
+        SharedPreferences prefs = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
         int taskCount = Integer.parseInt(prefs.getString(TOURS + "_" + tourNumber, "0"));
         for (int taskNumber = 0; taskNumber < taskCount + 2; ++taskNumber) {
-            l_editor.remove(TOURS + "_" + tourNumber + "_" + taskNumber);
+            editor.remove(TOURS + "_" + tourNumber + "_" + taskNumber);
         }
-        l_editor.remove(TOURS + "_" + tourNumber);
+        editor.remove(TOURS + "_" + tourNumber);
         int toursCount = Integer.parseInt(prefs.getString(TOURS, "0"));
-        l_editor.putString(TOURS, Integer.toString(toursCount - 1));
-        l_editor.apply();
+        editor.putString(TOURS, Integer.toString(toursCount - 1));
+        editor.apply();
         for (int i = tourNumber + 1; i < toursCount; ++i) {
-            Tour l_tour = loadTour(p_context, i);
-            saveTour_by_number(l_tour, p_context, i - 1);
+            Tour tour = loadTour(context, i);
+            saveTour_by_number(tour, context, i - 1);
         }
     }
 
-    public static void saveTour_by_number(Tour p_Tour, Context p_context, int tourNumber) {
-        SharedPreferences.Editor l_editor = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
-        SharedPreferences prefs = p_context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE);
+    public static void saveTour_by_number(Tour tour, Context context, int tourNumber) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
         String tourNumberString = Integer.toString(tourNumber);
-        l_editor.putString(TOURS + "_" + tourNumberString, Integer.toString(p_Tour.totalTasks));
-        ArrayList<String> serializedTour = p_Tour.serialize();
-        for (int taskNumber = 0; taskNumber < p_Tour.totalTasks + 2; ++taskNumber) {
-            l_editor.putString(TOURS + "_" + tourNumberString + "_" + taskNumber, serializedTour.get(taskNumber));
-        }
-        l_editor.apply();
+        String serializedTour = tour.serialize();
+        editor.putString(TOURS + "_" + tourNumberString, serializedTour);
+        editor.apply();
     }
 }

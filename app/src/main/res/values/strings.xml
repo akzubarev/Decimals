@@ -84,6 +84,6 @@
     <string name="divisionExample4">-----</string>
 
 
-
+    <string name="monkeyteststring">adb shell monkey -s 1 --pct-syskeys 0 --throttle 100 --kill-process-after-error -p com.education4all.mathcoach -v 1000 > monkeyreport.txt</string>
 
 </resources>

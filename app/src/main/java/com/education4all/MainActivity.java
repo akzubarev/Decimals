@@ -24,7 +24,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,24 +34,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        // myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_overflow));
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("");
         Task.setType(tasktype);
-//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-//        getSupportActionBar().setCustomView(R.layout.abs_layout);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         try {
             showStatitics();
         } catch (Exception e) {
             TextView statistics = findViewById(R.id.statistics);
-            statistics.setText("Ошибка\nИзменен формат записи результатов\nУдалите результаты для возможности подсчета статистики");
+            statistics.setText("\nИзменен формат записи результатов\nПерейдите на экран результатов для обновления");
         }
         showSettings();
 
@@ -71,19 +65,41 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_main, menu);
         inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_about) {
-            Intent intent = new Intent(this, AuthorsActivity.class);
-            startActivity(intent);
-            return true;
-        } else
-            return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                Intent intent = new Intent(this, AuthorsActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_update:
+                CommonOperations.updateStatistics(this);
+                break;
+            case R.id.action_trash:
+                StatisticMaker.removeStatistics(this);
+                break;
+            case R.id.action_generate:
+                CommonOperations.genereteFakeStatistics(this, false);
+                break;
+            case R.id.action_generateOLD:
+                CommonOperations.genereteFakeStatistics(this, true);
+                break;
+            case R.id.action_save:
+                CommonOperations.save(this);
+                break;
+            case R.id.action_load:
+                CommonOperations.load(this);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+
+
     }
 
     public void startTasks(View view) {
@@ -94,8 +110,6 @@ public class MainActivity extends AppCompatActivity {
     public void startSettings(View view) {
         Intent intent = new Intent(this, SettingsMainActivity.class);
         startActivity(intent);
-        //  genereteFakeStatistics();
-        showStatitics();
     }
 
     public void startStatistic(View view) {
@@ -104,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void showStatitics() {
+    private void showStatitics() throws Exception {
         TextView statistics = findViewById(R.id.statistics);
         String solvedText = "Сейчас 0, в среднем 0",
                 daysText = "Сейчас 0, в среднем 0";
@@ -115,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
             int subsequentAnswers = 0, subsequentDays = 0;
             boolean lastAnswerStreakIsValid = false, lastDayStreakIsvalid = false;
 
-
             ArrayList<Integer> streakDays = new ArrayList<>();
             ArrayList<Integer> streakSolved = new ArrayList<>();
 
@@ -123,19 +136,17 @@ public class MainActivity extends AppCompatActivity {
                     lastStreakEndDate = null;
 
             for (int tourNumber = 0; tourNumber < StatisticMaker.getTourCount(this); tourNumber++) {
-                // String debug = "";
-                String tourInfoStr = StatisticMaker.getTourInfo(this, tourNumber);
-                String txt = Tour.DepictTour(tourInfoStr);
 
-                int divider = txt.indexOf("Решено");
-                int seconds = txt.indexOf("сек") + "сек".length();
-                seconds = Integer.parseInt(txt.substring(seconds));
+                Tour tour = StatisticMaker.loadTour(this, tourNumber);
 
-                String datetime = txt.substring(1, divider - 1);
-                date = datetime.substring(0, 10);
+                if (tour.getTotalTasks() == 0)
+                    throw new Exception("Старый формат данных");
 
+                int seconds = (int) tour.getTourTime();
+                date = tour.date();
 
                 twodates relationOfDates = twodates.equal;
+
                 if (tourNumber > 0)
                     relationOfDates = isSubsequent(prevdate, date);
 
@@ -153,56 +164,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
+                for (Task task : tour.getTourTasks()) {
 
-                Tour tourinfo = StatisticMaker.loadTour(this, tourNumber);
-                ArrayList<String> deTour = tourinfo.serialize();
-
-
-                int jump = 0; // костыль из прошлых версий
-                for (int i = 1; i < deTour.size() - 1; ++i) {
-                    ArrayList<String> answers = new ArrayList<>();
-                    Task currentTask = Task.makeTask(deTour.get(i));
-                    ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), answers);
-
-                    //начало костыля
-                    if (CommonOperations.requiresKostyl(date))
-                        for (int j = 0; j < TaskDepiction.size(); ++j) {
-                            boolean answerIsCorrect = answers.get(j).equals(currentTask.getAnswer());
-                            boolean taskWasSkipped = answers.get(j).equals("\u2026");
-                            if (answerIsCorrect || taskWasSkipped) {
-                                i += jump;
-                                jump = 0;
-                            } else {
-                                ++jump;
-                            }
-                            if (i + jump == deTour.size() - 2) {
-                                i += jump;
-                            }
-                        }
-                    //конец костыля
-
-                    // debug += answers.get(answers.size() - 1).equals(currentTask.answer) ? "1 " : "0 ";
-                    boolean right = answers.get(0).equals(currentTask.getAnswer());
-
+                    boolean right = task.correct();
                     if (right) {
                         subsequentAnswers++;
                         lastAnswerStreakIsValid = true;
                     } else {
                         if (subsequentAnswers != 0) {
-                            //   Log.d("fuckkkkkk", String.valueOf(subsequentAnswers));
                             streakSolved.add(subsequentAnswers);
                             subsequentAnswers = 0;
                             lastAnswerStreakIsValid = false;
                         }
-                        if (answers.get(answers.size() - 1).equals(currentTask.getAnswer())) {
-                            subsequentAnswers++;
-                            lastAnswerStreakIsValid = true;
-                        }
                     }
-
                 }
-
-                // Log.d("fuckkkkkk", debug);
                 prevdate = date;
             }
 
@@ -271,29 +246,30 @@ public class MainActivity extends AppCompatActivity {
         TextView settings = findViewById(R.id.settings_text);
         String text = "";
 
-        Map<Integer, String> map = new HashMap<>();
         String[] operations = Task.getOperations();
-        map.put(0, operations[0]);
-        map.put(1, operations[1]);
-        map.put(2, operations[2]);
-        map.put(3, operations[3]);
 
         for (int action = 0; action < 4; action++) {
             String fragment = "";
-            for (int i = 0; i <= 3; ++i)
-                if (DataReader.checkComplexity(action, i, this))
-                    fragment += (i + 1) + ", ";
-
-            if (BuildConfig.FLAVOR.equals("integers") && action == 3)
-                if (DataReader.checkComplexity(action, 4, this))
-                    fragment += "" + 5;
-
+            if (BuildConfig.FLAVOR.equals("integers") && action == 3) {
+                for (int i = 0; i <= 3; ++i)
+                    if (i == 1) {
+                        if (DataReader.checkComplexity(3, 1, this) ||
+                                DataReader.checkComplexity(3, 4, this))
+                            fragment += 2 + ", ";
+                    } else if (DataReader.checkComplexity(action, i, this))
+                        fragment += (i + 1) + ", ";
+            } else {
+                for (int i = 0; i <= 3; ++i)
+                    if (DataReader.checkComplexity(action, i, this))
+                        fragment += (i + 1) + ", ";
+            }
 
             if (!fragment.isEmpty()) {
                 fragment = fragment.substring(0, fragment.lastIndexOf(","));
                 if (action < 3)
                     fragment += " ";
-                text += map.get(action) + " " + fragment;
+
+                text += operations[action] + " " + fragment;
             }
         }
 

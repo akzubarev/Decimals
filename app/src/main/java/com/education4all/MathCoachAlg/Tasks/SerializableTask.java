@@ -14,6 +14,7 @@ public class SerializableTask extends Task {
         operation = t.operation;
         complexity = t.complexity;
         answer = t.answer;
-        userAnswer = "";
+        userAnswer = t.userAnswer;
+        userAnswerTime = t.userAnswerTime;
     }
 }

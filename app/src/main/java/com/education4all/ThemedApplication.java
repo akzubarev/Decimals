@@ -29,7 +29,5 @@ public class ThemedApplication extends Application {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
                 break;
         }
-
-        StatisticMaker.setTaskType(BuildConfig.FLAVOR);
     }
 }

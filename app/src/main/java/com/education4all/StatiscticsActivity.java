@@ -6,25 +6,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 
-import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
+import android.util.Log;
 import android.util.Pair;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.education4all.MathCoachAlg.StatisticMaker;
 
@@ -38,19 +37,14 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
 public class StatiscticsActivity extends AppCompatActivity {
     private final Context l_context = this;
     ArrayList<Integer> stat = new ArrayList<>();
-    //deprecated
-    final View.OnClickListener tourClick = v -> {
-        Intent i = new Intent(l_context, StatTourActivity.class);
-        i.putExtra("Tour", (Integer) (v.getTag()));
-        startActivity(i);
-    };
+    int statistics = 0;
+    int statsize = 10;
 
     public void tourClick(View v) {
         Intent i = new Intent(l_context, StatTourActivity.class);
@@ -59,119 +53,7 @@ public class StatiscticsActivity extends AppCompatActivity {
     }
 
     public View generateBar() {
-//        View bar = new View(this);
-//        bar.setVisibility(View.VISIBLE);
-//        bar.setMinimumHeight(5);
-//        bar.setBackgroundColor(getResources().getColor(R.color.shadowed));
-//        bar.setPadding(50, 0, 50, 0);
         return View.inflate(l_context, R.layout.tourbar, null);
-    }
-
-    RelativeLayout deprecatedRowGen(LinearLayout tourLayout, int tourNumber) {
-        View bar = new View(this);
-        bar.setVisibility(View.VISIBLE);
-        bar.setMinimumHeight(5);
-        bar.setBackgroundColor(getResources().getColor(R.color.shadowed));
-        bar.setPadding(50, 0, 50, 0);
-
-        RelativeLayout row = new RelativeLayout(this);
-
-        String tourInfoStr = StatisticMaker.getTourInfo(this, tourNumber);
-        String txt = Tour.DepictTour(tourInfoStr);
-        Typeface font = Typeface.create("sans-serif-light", Typeface.NORMAL);
-
-        boolean isAllTasksRight = (txt.substring(0, 1).equals("="));
-        int divider = txt.indexOf("Решено");
-        int end = txt.indexOf("сек");
-        String datetime = txt.substring(1, divider - 1);
-        String info = "";
-        if (isAllTasksRight)
-            info = getString(R.string.star) + " ";
-        info += txt.substring(divider, end);
-        // info = "★ " + txt.substring(divider);
-
-
-        TextView tourdatetime = new TextView(this);
-        tourdatetime.setId(tourNumber + 1);
-        tourdatetime.setText(datetime);
-        tourdatetime.setTag(tourNumber);
-        tourdatetime.setTextSize(getResources().getDimension(R.dimen.dimen5) / getResources().getDisplayMetrics().density);
-        tourdatetime.setOnClickListener(tourClick);
-        tourdatetime.setGravity(Gravity.TOP | Gravity.START);
-        tourdatetime.setTypeface(font);
-
-        TextView tourinfo = new TextView(this);
-        tourinfo.setId(tourNumber);
-        tourinfo.setText(info);
-        tourinfo.setTextSize(getResources().getDimension(R.dimen.dimen4) / getResources().getDisplayMetrics().density);
-        tourinfo.setOnClickListener(tourClick);
-        tourinfo.setTag(tourNumber);
-        tourinfo.setGravity(Gravity.BOTTOM | Gravity.START);
-        tourinfo.setTypeface(font);
-
-
-        Button arrow = new Button((this));
-        arrow.setTag(tourNumber);
-        arrow.setOnClickListener(tourClick);
-        arrow.setText(getString(R.string.arrow));
-        arrow.setPadding(0, 0, 0, 10);
-        arrow.setTextSize(getResources().getDimension(R.dimen.dimen1) / getResources().getDisplayMetrics().density);
-        arrow.setBackgroundColor(Color.TRANSPARENT);
-        arrow.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
-        arrow.setTextColor(ContextCompat.getColor(this, R.color.additional));
-
-        row.setGravity(Gravity.CENTER_VERTICAL);
-
-        tourdatetime.setTextColor(ContextCompat.getColor(this, R.color.main));
-        tourinfo.setTextColor(ContextCompat.getColor(this, R.color.main));
-
-//            if (isAllTasksRight)
-//                tourinfo.setTypeface(tourinfo.getTypeface(), Typeface.ITALIC);
-
-
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        arrow.setLayoutParams(layoutParams);
-
-
-        layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
-        layoutParams.addRule(RelativeLayout.BELOW, tourdatetime.getId());
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        if (!isAllTasksRight)
-            layoutParams.leftMargin = 50;
-        tourinfo.setLayoutParams(layoutParams);
-
-        row.addView(tourdatetime);
-        row.addView(tourinfo);
-        row.addView(arrow);
-        tourLayout.addView(row);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(0, 20, 0, 20);
-        row.setLayoutParams(params);
-
-        bar = new View(this);
-        bar.setVisibility(View.VISIBLE);
-        bar.setMinimumHeight(5);
-        bar.setPadding(50, 0, 50, 0);
-        bar.setBackgroundColor(getResources().getColor(R.color.shadowed));
-        tourLayout.addView(bar);
-        return row;
-    }
-
-    Pair<String, String> getTourInfo(String tourdepiction) {
-        boolean isAllTasksRight = (tourdepiction.substring(0, 1).equals("="));
-        int divider = tourdepiction.indexOf("Решено");
-        int end = tourdepiction.indexOf("сек");
-        String datetime = tourdepiction.substring(1, divider - 1);
-        String info = "";
-        if (isAllTasksRight)
-            info = getString(R.string.star) + " ";
-        info += tourdepiction.substring(divider, end);
-        return new Pair<>(datetime, info);
     }
 
     @Override
@@ -180,30 +62,67 @@ public class StatiscticsActivity extends AppCompatActivity {
         setContentView(R.layout.statisctics);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        // myToolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_trash));
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //  LineChart chart = findViewById(R.id.chart);
+        LinearLayout prohressLL = findViewById(R.id.graphlayout);
+        LinearLayout layout = findViewById(R.id.tourlayout);
+        layout.removeAllViews();
+        layout.addView(prohressLL);
+        //    layout.addView(chart);
 
+        try {
+            fill();
+            // setUpChart();
+            setupProgress(findViewById(R.id.toggle));
+        } catch (Exception e) {
+//            chart = findViewById(R.id.chart);
+//            chart.setNoDataText("Обновите статистику, чтобы увидеть результаты");
+//            chart.setNoDataTextColor(Color.WHITE);
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+//            chart.setLayoutParams(params);
+
+            Log.d("EXCEPTION", e.getMessage());
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setMessage("Обновите статистику, чтобы увидеть результаты")
+                    .setCancelable(false)
+                    .setPositiveButton("Обновить", (dialog1, which) -> {
+                        CommonOperations.updateStatistics(this);
+                        startActivity(getIntent());
+                    })
+                    .setNegativeButton("Назад", (dialog1, which) -> {
+                        finish();
+                    }).create();
+            dialog.show();
+            CommonOperations.FixDialog(dialog, getApplicationContext()); // почему-то нужно для планшетов
+        }
+    }
+
+    public void fill() {
         int tourCount = StatisticMaker.getTourCount(this);
-        ScrollView Tours = findViewById(R.id.scrollView);
         LinearLayout layout = findViewById(R.id.tourlayout);
 
         View bar = generateBar();
         layout.addView(bar);
 
         for (int tourNumber = tourCount - 1; tourNumber >= 0; --tourNumber) {
-            //RelativeLayout row = new RelativeLayout(this);
             RelativeLayout row = new RelativeLayout(this);
             RelativeLayout.inflate(l_context, R.layout.tourblock, row);
             row.setBackgroundColor(Color.TRANSPARENT);
 
 
-            String tourInfoStr = StatisticMaker.getTourInfo(this, tourNumber);
-            Pair<String, String> infopair = getTourInfo(Tour.DepictTour(tourInfoStr));
+            Tour tour = StatisticMaker.loadTour(this, tourNumber);
+            String info = tour.info();
+            String datetime = tour.dateTime();
 
-            String info = infopair.first,
-                    datetime = infopair.second;
+            if (tour.getRightTasks() == tour.getTotalTasks())
+                info = getString(R.string.star) + " " + info;
+
 
             TextView tourdatetime = row.findViewById(R.id.tourdatetime);
             tourdatetime.setId(tourNumber + 1);
@@ -223,8 +142,6 @@ public class StatiscticsActivity extends AppCompatActivity {
             layout.addView(row);
             layout.addView(bar);
         }
-
-        setUpChart();
     }
 
     @Override
@@ -238,7 +155,6 @@ public class StatiscticsActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
     }
-
 
     public void DeleteStatistics() {
         finish();
@@ -268,10 +184,64 @@ public class StatiscticsActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
     }
 
+    public void setupProgress(View v) {
+        ToggleButton toggle = (ToggleButton) v;
+        statsize = toggle.isChecked() ? 100 : 10;
+        readProgressData();
+        com.warkiz.widget.IndicatorSeekBar pb = findViewById(R.id.progress);
+        if (statsize == 10) {
+            pb.setMin(0);
+            pb.setMax(10);
+            pb.setProgress(statistics);
+            pb.customTickTexts(new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "     10"});
+        } else {
+            pb.setMin(90);
+            pb.setMax(100);
+            pb.customTickTexts(new String[]{"90    ", "91", "92", "93", "94", "95", "96", "97", "98", "99", "     100"});
+            pb.setProgress(statistics > 90 ? (statistics - 90) * 10 : 0);
+        }
+    }
+
+    void readProgressData() {
+        int count = 0;
+        statistics = 0;
+        if (StatisticMaker.getTourCount(this) > 0) {
+            for (int tourNumber = StatisticMaker.getTourCount(this) - 1; tourNumber >= 0; tourNumber--) {
+                Tour tour = StatisticMaker.loadTour(this, tourNumber);
+
+                for (int i = tour.getTotalTasks() - 1; i >= 0; i--) {
+                    Task task = tour.getTourTasks().get(i);
+
+                    statistics += task.correct() ? 1 : 0;
+                    count++;
+
+                    if (count == statsize)
+                        return;
+                }
+            }
+        }
+    }
+
+    // region chart
     protected void setUpChart() {
         readChartData();
-        LineChart chart = findViewById(R.id.chart);
+        LineChart chart = new LineChart(this);// = findViewById(R.id.chart);
+        configureChart(chart);
 
+        if (stat.size() >= 4) {
+            LineData data = generateDataFromArray(stat);
+            chart.setData(data);
+        } else {
+            chart.setNoDataText("Недостаточно данных для постройки графика");
+            chart.setNoDataTextColor(Color.WHITE);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            chart.setLayoutParams(params);
+        }
+        chart.invalidate();
+        // chart.animateX(750);
+    }
+
+    private void configureChart(LineChart chart) {
         // enable touch gestures
         chart.setTouchEnabled(true);
         // enable scaling and dragging
@@ -291,8 +261,8 @@ public class StatiscticsActivity extends AppCompatActivity {
         xAxis.setTextColor(Color.WHITE);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(stat.size()/2);
-        xAxis.setLabelCount(stat.size()/2);
+        xAxis.setAxisMaximum(stat.size() / 2);
+        xAxis.setLabelCount(stat.size() / 2);
 
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(true);
@@ -308,64 +278,28 @@ public class StatiscticsActivity extends AppCompatActivity {
 
         Legend l = chart.getLegend();
         l.setEnabled(false);
-
-
-        LineData data = generateDataFromArray(stat);
-        chart.setData(data);
-        chart.invalidate();
-        // chart.animateX(750);
     }
 
     void readChartData() {
         if (StatisticMaker.getTourCount(this) > 0) {
-            for (int tourNumber = StatisticMaker.getTourCount(this)-1; tourNumber >= 0; tourNumber--) {
-                String tourInfoStr = StatisticMaker.getTourInfo(this, tourNumber);
-                String txt = Tour.DepictTour(tourInfoStr);
-                int divider = txt.indexOf("Решено");
+            for (int tourNumber = StatisticMaker.getTourCount(this) - 1; tourNumber >= 0; tourNumber--) {
+                Tour tour = StatisticMaker.loadTour(this, tourNumber);
 
-                Tour tourinfo = StatisticMaker.loadTour(this, tourNumber);
-                ArrayList<String> deTour = tourinfo.serialize();
+                for (int i = tour.getTotalTasks() - 1; i >= 0; i--) {
+                    Task task = tour.getTourTasks().get(i);
 
-                int jump = 0; // костыль из прошлых версий
-                for (int i = deTour.size() - 2; i > 0; i--) {
-                    ArrayList<String> answers = new ArrayList<>();
-                    Task currentTask = Task.makeTask(deTour.get(i));
-                    ArrayList<String> TaskDepiction = Task.DepictTaskExtended(deTour.get(i), answers);
-
-                    String datetime = txt.substring(1, divider - 1);
-                    String date = datetime.substring(0, 10);
-
-                    //начало костыля
-                    if (CommonOperations.requiresKostyl(date))
-                        for (int j = 0; j < TaskDepiction.size(); ++j) {
-                            boolean answerIsCorrect = answers.get(j).equals(currentTask.getAnswer());
-                            boolean taskWasSkipped = answers.get(j).equals("\u2026");
-                            if (answerIsCorrect || taskWasSkipped) {
-                                i += jump;
-                                jump = 0;
-                            } else {
-                                ++jump;
-                            }
-                            if (i + jump == deTour.size() - 2) {
-                                i += jump;
-                            }
-                        }
-                    //конец костыля
-
-                    boolean right = answers.get(0).equals(currentTask.getAnswer());
-
-                    stat.add(0, right ? 1 : 0);
+                    stat.add(0, task.correct() ? 1 : 0);
                     if (stat.size() == 20)
-                        break;
+                        return;
                 }
             }
         }
 
-        if (stat.size() < 4) {
-            stat.clear();
-            CommonOperations.genereteFakeTour("10 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 0 1 1", this);
-            readChartData();
-        }
+//        if (stat.size() < 4) {
+////            stat.clear();
+////            CommonOperations.genereteFakeTour("10 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 0 1 1", this);
+////            readChartData();
+//        }
     }
 
     private LineData generateDataFromArray(ArrayList<Integer> last20tasks) {
@@ -425,4 +359,5 @@ public class StatiscticsActivity extends AppCompatActivity {
 
         return new LineData(d1);
     }
+    //endregion
 }

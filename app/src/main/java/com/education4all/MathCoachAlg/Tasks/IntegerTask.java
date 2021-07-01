@@ -1,37 +1,11 @@
 package com.education4all.MathCoachAlg.Tasks;
 
-import java.util.Random;
-
 public class IntegerTask extends Task {
 
     public IntegerTask(){
         expression = "2 + 2";
         answer = "4";
         userAnswer = "";
-    }
-
-    public IntegerTask(String line) {
-
-        int found = line.indexOf(';');
-        expression = line.substring(0, found);
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        operation = Integer.parseInt(line.substring(0, found));
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        complexity = Integer.parseInt(line.substring(0, found));
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        answer = line.substring(0, found);
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        userAnswer = line.substring(0, found);
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        taskTime = Long.parseLong(line.substring(0, found));
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        timeTaken = Long.parseLong(line.substring(0, found));
     }
 
     @Override
@@ -55,8 +29,6 @@ public class IntegerTask extends Task {
             taskTime = System.currentTimeMillis();
         }
     }
-
-
 
     // +
     private void addition(final int[][] allowedTasks) {

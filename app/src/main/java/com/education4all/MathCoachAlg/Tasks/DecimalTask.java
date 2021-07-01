@@ -12,27 +12,7 @@ public class DecimalTask extends Task {
     }
 
     public DecimalTask(String line) {
-
-        int found = line.indexOf(';');
-        expression = line.substring(0, found);
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        operation = Integer.parseInt(line.substring(0, found));
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        complexity = Integer.parseInt(line.substring(0, found));
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        answer = line.substring(0, found);
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        userAnswer = line.substring(0, found);
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        taskTime = Long.parseLong(line.substring(0, found));
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        timeTaken = Long.parseLong(line.substring(0, found));
+       deSerializeOld(line);
     }
 
     @Override

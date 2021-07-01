@@ -37,12 +37,12 @@
     <string name="substractionExample4">7777%s5555</string>
 
     <string name="multiplicationExample1">5%s5</string>
-    <string name="multiplicationExample2">5%s525</string>
+    <string name="multiplicationExample2">5%s25</string>
     <string name="multiplicationExample3">5%s525</string>
     <string name="multiplicationExample4">25%s25</string>
 
     <string name="divisionExample1">25%s5</string>
-    <string name="divisionExample2">2775%s5</string>
+    <string name="divisionExample2">275%s5</string>
     <string name="divisionExample3">2775%s5</string>
     <string name="divisionExample4">3025%s25</string>
     <string name="divisionExample5">275%s55</string>

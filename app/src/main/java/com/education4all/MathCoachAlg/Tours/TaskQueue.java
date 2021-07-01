@@ -49,7 +49,6 @@ public class TaskQueue {
     public void save() {
         try {
             String json = objectMapper.writeValueAsString(items);
-            Log.d("debuggggggggggggggggg", json);
             DataReader.SaveQueue(json, context);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -58,7 +57,6 @@ public class TaskQueue {
 
     public void load() {
         String json = DataReader.GetQueue(context);
-        Log.d("debuggggggggggggggggg", json);
         if (!json.isEmpty()) {
             try {
                 items = objectMapper.readValue(json, new TypeReference<ArrayList<QueueItem>>() {
@@ -72,22 +70,9 @@ public class TaskQueue {
     public void activateTasks(int[][] allowedTasks) {
         for (int operation = 0; operation < allowedTasks.length; operation++) {
             if (allowedTasks[operation].length > 0)
-                for (int complexity : allowedTasks[operation]) {
+                for (int complexity : allowedTasks[operation])
                     activate(operation, complexity);
-                    if (items.size() > 0) {
-                        String debug = (items.get(0).task.getOperation() == operation) + " " + (items.get(0).task.getComplexity() == complexity);
-                        Log.d("debuggggggggggggggggg", debug);
-                    }
-                }
         }
-
-        try {
-            String json = objectMapper.writeValueAsString(activeitems);
-            Log.d("debuggggggggggggggggg", "Active Tasks: " + json);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
     }
 
     void activate(int operation, int complexity) {
@@ -128,7 +113,6 @@ public class TaskQueue {
             items.remove(item);
             activeitems.remove(item);
         }
-
         return out;
     }
 

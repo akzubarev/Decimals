@@ -39,7 +39,7 @@ public class ComplexityActivity extends AppCompatActivity {
         for (int i = 1; i < 5; i++) {
             int resID = getResources().getIdentifier("checkBox" + i, "id", id);
             CheckBox chk = findViewById(resID);
-            checked = DataReader.checkComplexity(actionType - 1, i-1, this);
+            checked = DataReader.checkComplexity(actionType - 1, i - 1, this);
             if (chk.isChecked() != checked)
                 chk.setChecked(checked);
         }
@@ -49,6 +49,11 @@ public class ComplexityActivity extends AppCompatActivity {
             checked = DataReader.checkComplexity(actionType - 1, 4, this);
             if (chk.isChecked() != checked)
                 chk.setChecked(checked);
+            LinearLayout layout5 = findViewById(R.id.layout5);
+            LinearLayout biglayout = (LinearLayout) layout5.getParent();
+            biglayout.removeView(layout5);
+            biglayout.addView(layout5, 3);
+
         } else {
             LinearLayout layout = findViewById(R.id.layout5);
             ((ViewManager) layout.getParent()).removeView(layout);

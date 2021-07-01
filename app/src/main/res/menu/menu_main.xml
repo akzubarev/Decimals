@@ -6,8 +6,62 @@
         android:id="@+id/action_about"
         android:icon="@drawable/ic_info"
         android:iconTint="@color/additional"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:title="@string/action_about"
         app:iconTint="@color/additional"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_generate"
+        android:icon="@drawable/ic_generate"
+        android:iconTint="@color/additional"
+        android:orderInCategory="2"
+        android:title="2"
+        app:iconTint="@color/additional"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_generateOLD"
+        android:icon="@drawable/ic_generateold"
+        android:iconTint="@color/additional"
+        android:orderInCategory="3"
+        android:title="3"
+        app:iconTint="@color/additional"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/ic_save"
+        android:iconTint="@color/additional"
+        android:orderInCategory="4"
+        android:title="3"
+        app:iconTint="@color/additional"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_load"
+        android:icon="@drawable/ic_load"
+        android:iconTint="@color/additional"
+        android:orderInCategory="5"
+        android:title="3"
+        app:iconTint="@color/additional"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_trash"
+        android:icon="@drawable/ic_trash"
+        android:iconTint="@color/additional"
+        android:orderInCategory="6"
+        android:title="3"
+        app:iconTint="@color/additional"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_update"
+        android:icon="@drawable/ic_update"
+        android:iconTint="@color/additional"
+        android:orderInCategory="7"
+        android:title="1"
+        app:iconTint="@color/additional"
+        app:showAsAction="always" />
+
 </menu>

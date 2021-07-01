@@ -13,30 +13,6 @@ public class FractionTask extends Task {
         userAnswer = "";
     }
 
-
-    public FractionTask(String line) {
-        int found = line.indexOf(';');
-        expression = line.substring(0, found);
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        operation = Integer.parseInt(line.substring(0, found));
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        complexity = Integer.parseInt(line.substring(0, found));
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        answer = line.substring(0, found);
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        userAnswer = line.substring(0, found);
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        taskTime = Long.parseLong(line.substring(0, found));
-        line = line.substring(found + 1);
-        found = line.indexOf(';');
-        timeTaken = Long.parseLong(line.substring(0, found));
-    }
-
     @Override
     public void generate() {
         if (areTasks(allowedTasks)) {

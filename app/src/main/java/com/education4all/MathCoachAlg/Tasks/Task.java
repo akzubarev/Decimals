@@ -10,6 +10,7 @@ public abstract class Task {
     int complexity = 0;
     String answer = "";
     String userAnswer = "";
+    String userAnswerTime = "";
     long taskTime = 0;
     long timeTaken = 0;
     Random rnd = new Random();
@@ -17,8 +18,13 @@ public abstract class Task {
     static String type = "decimals";
     static int[][] allowedTasks = new int[][]{new int[]{1}};
 
+    //region get/set
     public String getExpression() {
         return expression;
+    }
+
+    public String getUserAnswerTime() {
+        return userAnswerTime;
     }
 
     public int getOperation() {
@@ -35,10 +41,6 @@ public abstract class Task {
 
     public String getUserAnswer() {
         return userAnswer;
-    }
-
-    public void setUserAnswer(String userAnswer) {
-        this.userAnswer = userAnswer;
     }
 
     public long getTaskTime() {
@@ -77,6 +79,8 @@ public abstract class Task {
         Task.type = type;
     }
 
+    //endregion
+
     public Task() {
         expression = "2 + 2";
         answer = "4";
@@ -85,11 +89,10 @@ public abstract class Task {
 
     public static Task makeTask(Task t) {
         Task newTask = makeTask();
-        newTask.expression = t.expression;
-        newTask.operation = t.operation;
-        newTask.complexity = t.complexity;
-        newTask.answer = t.answer;
+        newTask.copy(t);
         newTask.userAnswer = "";
+        newTask.timeTaken = 0;
+        newTask.taskTime = 0;
         return newTask;
     }
 
@@ -111,27 +114,112 @@ public abstract class Task {
         return task;
     }
 
+    public void makeUserAnswer(String userAnswer, String time) {
+        this.userAnswer = userAnswer;
+        this.userAnswerTime = time;
+    }
+
+    public abstract void generate();
+
+    public static boolean areTasks(int[][] p_allowedTasks) {
+        for (int[] p_allowedTask : p_allowedTasks)
+            if (p_allowedTask.length > 0)
+                return true;
+        return false;
+    }
+
+    public void copy(Task task) {
+        expression = task.getExpression();
+        operation = task.getOperation();
+        complexity = task.getComplexity();
+        answer = task.getAnswer();
+        userAnswer = task.getUserAnswer();
+        userAnswerTime = task.getUserAnswerTime();
+        taskTime = task.getTaskTime();
+        timeTaken = task.getTimeTaken();
+    }
+
+    public boolean correct() {
+        return userAnswer.equals(answer);
+    }
+
+    public void update() {
+        int commaIndex = userAnswer.indexOf('|');
+        int colonIndex = userAnswer.indexOf(':');
+
+        if (colonIndex > 0) {
+            userAnswerTime = userAnswer.substring(colonIndex + 1, commaIndex);
+            userAnswer = userAnswer.substring(0, colonIndex);
+        }
+    }
+
+    //region complexity
+    ArrayList<Integer> availableOperations(int[][] allowedTasks) {
+        ArrayList<Integer> out = new ArrayList<>();
+        for (int i = 0; i < allowedTasks.length; i++)
+            if (allowedTasks[i].length > 0)
+                out.add(i);
+        return out;
+    }
+
+    int operationRandomizer(final int[][] allowedTasks) {
+        ArrayList<Integer> choices = availableOperations(allowedTasks);
+        return choices.get(rnd.nextInt(choices.size()));
+    }
+
+    int complexityRandomizer(final int[][] allowedTasks) {
+        if (allowedTasks[operation].length > 0) {
+            int r = rnd.nextInt(allowedTasks[operation].length);
+            return allowedTasks[operation][r];
+        } else {
+            return -1;
+        }
+    }
+
+    //endregion
+
+    //region random
+    int randomInclusive(int left, int right, boolean nozeroes) {
+        int result = rnd.nextInt(right - left + 1) + left;
+
+        if (nozeroes)
+            while (result % 10 == 0)
+                result = rnd.nextInt(right - left + 1) + left;
+
+        return result;
+    }
+
+    int rndtype(int type) {
+        switch (type) {
+            case 1:
+            default:
+                return randomInclusive(1, 9, true);
+            case 2:
+                return randomInclusive(11, 99, true);
+            case 3:
+                return randomInclusive(101, 999, true);
+        }
+    }
+//endregion
+
+    //region deprecated
+
     public static Task makeTask(String line) {
         Task task;
         switch (type) {
             case "integer":
             default:
-                task = new IntegerTask(line);
+                task = new IntegerTask();
                 break;
             case "decimal":
-                task = new DecimalTask(line);
+                task = new DecimalTask();
                 break;
             case "fractions":
-                task = new FractionTask(line);
+                task = new FractionTask();
                 break;
         }
+        task.deSerializeOld(line);
         return task;
-    }
-
-    public static String DepictTask(String line) {
-        Task task = makeTask(line);
-//		return l_task.expression + " = " + l_task.userAnswer + "(" + l_task.answer + ") " + l_task.timeTaken + " сек. ";
-        return task.expression + " = " + task.userAnswer + " " + task.timeTaken + " сек. ";
     }
 
     public static ArrayList<String> DepictTaskExtended(String line, ArrayList<String> answers) {
@@ -157,22 +245,13 @@ public abstract class Task {
         return res;
     }
 
-    public abstract void generate();
-
-    public static boolean areTasks(int[][] p_allowedTasks) {
-        for (int[] p_allowedTask : p_allowedTasks)
-            if (p_allowedTask.length > 0)
-                return true;
-        return false;
-    }
-
-    public String serialize() {
+    public String serializeOLD() {
         return expression + ";" + operation + ";" + complexity + ";" +
                 answer + ";" + userAnswer + ";" + taskTime + ";" +
                 timeTaken + ";";
     }
 
-    public void deSerialize(String line) {
+    public void deSerializeOld(String line) {
         int found = line.indexOf(';');
         expression = line.substring(0, found);
         line = line.substring(found + 1);
@@ -189,54 +268,10 @@ public abstract class Task {
         userAnswer = line.substring(0, found);
         line = line.substring(found + 1);
         found = line.indexOf(';');
-        taskTime = Integer.parseInt(line.substring(0, found));
+        taskTime = Long.parseLong(line.substring(0, found));
         line = line.substring(found + 1);
         found = line.indexOf(';');
-        timeTaken = Integer.parseInt(line.substring(0, found));
+        timeTaken = Long.parseLong(line.substring(0, found));
     }
-
-    ArrayList<Integer> availableOperations(int[][] allowedTasks) {
-        ArrayList<Integer> out = new ArrayList<>();
-        for (int i = 0; i < allowedTasks.length; i++)
-            if (allowedTasks[i].length > 0)
-                out.add(i);
-        return out;
-    }
-
-    int operationRandomizer(final int[][] allowedTasks) {
-        ArrayList<Integer> choices = availableOperations(allowedTasks);
-        return choices.get(rnd.nextInt(choices.size()));
-    }
-
-    int complexityRandomizer(final int[][] allowedTasks) {
-        if (allowedTasks[operation].length > 0) {
-            int r = rnd.nextInt(allowedTasks[operation].length);
-            return allowedTasks[operation][r];
-        } else {
-            return -1;
-        }
-    }
-
-    int randomInclusive(int left, int right, boolean nozeroes) {
-        int result = rnd.nextInt(right - left + 1) + left;
-
-        if (nozeroes)
-            while (result % 10 == 0)
-                result = rnd.nextInt(right - left + 1) + left;
-
-        return result;
-    }
-
-    int rndtype(int type) {
-        switch (type) {
-            case 1:
-            default:
-                return randomInclusive(1, 9, true);
-            case 2:
-                return randomInclusive(11, 99, true);
-            case 3:
-                return randomInclusive(101, 999, true);
-        }
-    }
-
+    //endregion
 }

@@ -10,10 +10,11 @@ import java.util.StringTokenizer;
 
 public class DataReader {
     public static final String COMPLEXITY_SETTINGS = "ComplexitySettings";
-    public static final String ROUND_TIME_SETTINGS ="RoundTimeSettings";
-    private static final HashMap<String, Integer> defaultValues= new HashMap<>();
+    public static final String ROUND_TIME_SETTINGS = "RoundTimeSettings";
+    private static final HashMap<String, Integer> defaultValues = new HashMap<>();
+
     static {
-        defaultValues.put("RoundTime",1);
+        defaultValues.put("RoundTime", 1);
         defaultValues.put("DisapRoundTime", -1);
         defaultValues.put("TimerState", 1);
         defaultValues.put("ButtonsPlace", 0);
@@ -21,11 +22,10 @@ public class DataReader {
         defaultValues.put("Goal", 5);
         defaultValues.put("Theme", -1);
     }
-    public static int[] convertIntegers(ArrayList<Integer> integers)
-    {
+
+    public static int[] convertIntegers(ArrayList<Integer> integers) {
         int[] ret = new int[integers.size()];
-        for (int i=0; i < ret.length; i++)
-        {
+        for (int i = 0; i < ret.length; i++) {
             ret[i] = integers.get(i);
         }
         return ret;
@@ -35,12 +35,11 @@ public class DataReader {
         StringTokenizer st = new StringTokenizer(savedString, ",");
         ArrayList<Integer> savedList = new ArrayList<>();
         int i = 0;
-        while(st.hasMoreTokens()) {
+        while (st.hasMoreTokens()) {
             savedList.add(Integer.parseInt(st.nextToken()));
         }
         return convertIntegers(savedList);
     }
-
 
     static public int[][] readAllowedTasks(Context p_context) {
         SharedPreferences prefs = p_context.getSharedPreferences(COMPLEXITY_SETTINGS, Context.MODE_PRIVATE);
@@ -78,15 +77,15 @@ public class DataReader {
         return new int[][]{Add, Sub, Mul, Div};
     }
 
-       static public boolean checkComplexity(int p_action, int p_complexity, Context p_context ) {
-           int[][] l_allowedTasks = DataReader.readAllowedTasks(p_context);
-           for (int i = 0; i < l_allowedTasks[p_action].length; ++i) {
-               if (l_allowedTasks[p_action][i] == p_complexity) {
-                   return true;
-               }
-           }
-           return false;
-       }
+    static public boolean checkComplexity(int p_action, int p_complexity, Context p_context) {
+        int[][] l_allowedTasks = DataReader.readAllowedTasks(p_context);
+        for (int i = 0; i < l_allowedTasks[p_action].length; ++i) {
+            if (l_allowedTasks[p_action][i] == p_complexity) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static void SaveValue(int value, String name, Context p_context) {
         SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
@@ -109,4 +108,16 @@ public class DataReader {
         SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
         return prefs.getString("Queue", "");
     }
+
+    public static void SaveStat(String json, Context p_context) {
+        SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
+        editor.putString("Stat", json);
+        editor.commit();
+    }
+
+    static public String GetStat(Context p_context) {
+        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
+        return prefs.getString("Stat", "");
+    }
+
 }

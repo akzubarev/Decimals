@@ -101,8 +101,8 @@ public class TaskActivity extends AppCompatActivity {
             fractionSymsSpan[i].setSpan(new SuperscriptSpan(), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             fractionSymsSpan[i].setSpan(new AbsoluteSizeSpan(size), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-           // fractionSymsSpan[i].setSpan(new SubscriptSpan(), 2, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-           fractionSymsSpan[i].setSpan(new AbsoluteSizeSpan(size), 2, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            // fractionSymsSpan[i].setSpan(new SubscriptSpan(), 2, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            fractionSymsSpan[i].setSpan(new AbsoluteSizeSpan(size), 2, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
         setContentView(R.layout.task);
@@ -130,8 +130,6 @@ public class TaskActivity extends AppCompatActivity {
             tourStartTime = System.currentTimeMillis();
             prevTaskTime = tourStartTime;
             prevAnswerTime = tourStartTime;
-            currentTour.totalTasks = 0;
-            currentTour.rightTasks = 0;
             answer = "";
 
             G_progressBar = findViewById(R.id.taskProgress);
@@ -413,25 +411,20 @@ public class TaskActivity extends AppCompatActivity {
 
     //сохраняем информацию о данной попытке и обновляем информацию раунда
     private void saveTaskStatistic(boolean finished) {
-        //    if (!tasktype.equals("fractions")) {
-        if (answer.equals(task.getAnswer()))
-            currentTour.rightTasks++;
-        currentTour.totalTasks++;
-
-        task.setUserAnswer(task.getUserAnswer() + String.format("%s:%d|", answer, (System.currentTimeMillis() - prevAnswerTime) / 1000));
+        task.makeUserAnswer(answer, String.valueOf((System.currentTimeMillis() - prevAnswerTime) / 1000));
         prevAnswerTime = System.currentTimeMillis();
 
         if (finished) {
-            prevTaskTime = prevAnswerTime;
             task.setTimeTaken((System.currentTimeMillis() - prevTaskTime) / 1000);
-            currentTour.tourTasks.add(task);
+            currentTour.addTask(task);
+            prevTaskTime = prevAnswerTime;
         } else {
-            currentTour.tourTasks.add(task);
+            currentTour.addTask(task);
             task = Task.makeTask(task);
         }
 
         //обновляем реальную продолжительность раунда
-        currentTour.tourTime = (Calendar.getInstance().getTimeInMillis() - currentTour.tourDateTime) / 1000;
+        currentTour.setTourTime((Calendar.getInstance().getTimeInMillis() - currentTour.getTourDateTime()) / 1000);
     }
 
     //нажатие на кнопку "ОК", проверяем правильность ответа и заносим в статистику
@@ -553,7 +546,7 @@ public class TaskActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)//, R.style.AlertDialogTheme)
                 .setTitle("Раунд завершён")
                 .setMessage(String.format("Решено заданий: %d/%d (%d%%)",
-                        currentTour.rightTasks, currentTour.totalTasks, 100 * currentTour.rightTasks / currentTour.totalTasks))
+                        currentTour.getRightTasks(), currentTour.getTotalTasks(), 100 * currentTour.getRightTasks() / currentTour.getTotalTasks()))
                 .setCancelable(false);
 
         LayoutInflater inflater = getLayoutInflater();
@@ -598,7 +591,7 @@ public class TaskActivity extends AppCompatActivity {
 
     //досрочное завершение раунда по нажатию выхода
     public void crossClick(View view) {
-        if (currentTour.totalTasks == 0 && task.getUserAnswer().length() == 0 && !answerShown) {
+        if (currentTour.getTotalTasks() == 0 && task.getUserAnswer().length() == 0 && !answerShown) {
             finish();
             return;
         }

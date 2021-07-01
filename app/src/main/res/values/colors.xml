@@ -8,4 +8,6 @@
     <color name="main">#262626</color>
     <color name="shadowed">#7f7f7f</color>
     <color name="additional">#00CCB4</color>
+
+    <color name="transparent">@android:color/transparent</color>
 </resources>

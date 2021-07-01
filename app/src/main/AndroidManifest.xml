@@ -80,11 +80,6 @@
                 android:value="com.education4all.StatiscticsActivity" />
         </activity>
 
-        <!--<activity-->
-        <!--android:name=".wheel_picker"-->
-        <!--android:label="@string/title_activity_wheel_picker">-->
-        <!--</activity>-->
-
         <activity
             android:name="com.education4all.AuthorsActivity"
             android:label="@string/title_activity_authors"
@@ -94,7 +89,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.education4all.MainActivity" />
         </activity>
-
 
         <activity
             android:name="com.education4all.WebActivity"
