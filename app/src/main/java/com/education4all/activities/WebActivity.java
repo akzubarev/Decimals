@@ -1,4 +1,4 @@
-package com.education4all;
+package com.education4all.activities;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -12,6 +12,8 @@ import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.education4all.R;
 
 public class WebActivity extends AppCompatActivity {
     private WebView webView;

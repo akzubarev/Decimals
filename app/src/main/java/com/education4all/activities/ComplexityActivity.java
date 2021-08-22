@@ -1,4 +1,4 @@
-package com.education4all;
+package com.education4all.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.education4all.BuildConfig;
+import com.education4all.R;
 import com.education4all.mathCoachAlg.DataReader;
 
 

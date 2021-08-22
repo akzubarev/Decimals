@@ -4,8 +4,8 @@ import android.app.Application;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.education4all.MathCoachAlg.DataReader;
-import com.education4all.MathCoachAlg.StatisticMaker;
+import com.education4all.mathCoachAlg.DataReader;
+import com.education4all.mathCoachAlg.StatisticMaker;
 
 public class ThemedApplication extends Application {
 

@@ -1,4 +1,4 @@
-package com.education4all;
+package com.education4all.activities.tabs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +13,8 @@ import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
+import com.education4all.BuildConfig;
+import com.education4all.R;
 import com.education4all.mathCoachAlg.DataReader;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;

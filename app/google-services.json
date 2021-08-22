@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "813854005216",
+    "project_id": "mathtrainer-9b2ef",
+    "storage_bucket": "mathtrainer-9b2ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813854005216:android:1b3ee5c52f322b9c247d85",
+        "android_client_info": {
+          "package_name": "com.education4all"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813854005216-4m8jmp8qr75g1lgo581cm05tav8fqfvl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.education4all",
+            "certificate_hash": "76975a403bd1df7d7114f7c0a2ca16e6e9ed93ee"
+          }
+        },
+        {
+          "client_id": "813854005216-ebm06j4m04qv89p4g7o6qpktr3lpvbh4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpn0ybyB90sWOr2CfBip1OVMKROhBqQ5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813854005216-ebm06j4m04qv89p4g7o6qpktr3lpvbh4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

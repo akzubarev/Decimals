@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/color2"
     android:orientation="vertical"
-    tools:context="com.education4all.StatiscticsActivity">
+    tools:context="com.education4all.activities.StatiscticsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -56,8 +56,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:gravity="center"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="★ Решено из последних"
                         android:textColor="@color/main"
                         android:textSize="@dimen/dimen4" />
@@ -66,8 +66,8 @@
                         android:id="@+id/toggle"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@color/transparent"
                         android:layout_gravity="right"
+                        android:background="@color/transparent"
                         android:onClick="setupProgress"
                         android:textColor="@color/additional"
                         android:textOff="10"
@@ -99,6 +99,13 @@
                     app:isb_track_progress_size="20dp"
                     app:isb_user_seekable="false" />
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tourlist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:scrollbars="vertical" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

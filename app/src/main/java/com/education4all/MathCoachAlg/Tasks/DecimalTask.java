@@ -1,4 +1,4 @@
-package com.education4all.MathCoachAlg.Tasks;
+package com.education4all.mathCoachAlg.tasks;
 
 import java.util.Locale;
 import java.util.Random;

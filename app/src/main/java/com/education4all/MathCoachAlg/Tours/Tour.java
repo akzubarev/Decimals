@@ -1,9 +1,9 @@
-package com.education4all.MathCoachAlg.Tours;
+package com.education4all.mathCoachAlg.tours;
 
 import android.util.Log;
 
-import com.education4all.MathCoachAlg.Tasks.SerializableTask;
-import com.education4all.MathCoachAlg.Tasks.Task;
+import com.education4all.mathCoachAlg.tasks.SerializableTask;
+import com.education4all.mathCoachAlg.tasks.Task;
 import com.education4all.R;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package com.education4all.MathCoachAlg.Tasks;
+package com.education4all.mathCoachAlg.tasks;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -189,6 +189,10 @@ public abstract class Task {
         return result;
     }
 
+    int randomInclusive(int left, int right) {
+        return randomInclusive(left, right, false);
+    }
+
     int rndtype(int type) {
         switch (type) {
             case 1:
@@ -222,7 +226,8 @@ public abstract class Task {
         return task;
     }
 
-    public static ArrayList<String> DepictTaskExtended(String line, ArrayList<String> answers) {
+    public static ArrayList<String> DepictTaskExtended(String
+                                                               line, ArrayList<String> answers) {
         Task task = makeTask(line);
         ArrayList<String> res = new ArrayList<>();
         String firstPart = task.expression + " = ";

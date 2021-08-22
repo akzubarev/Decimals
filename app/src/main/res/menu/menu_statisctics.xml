@@ -1,12 +1,29 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.education4all.StatiscticsActivity">
-    <item android:id="@+id/action_delete_stats"
-        android:title="@string/action_delete_stats"
+    tools:context="com.education4all.activities.StatiscticsActivity">
+    <item
+        android:id="@+id/action_delete_stats"
         android:icon="@drawable/ic_trash"
+        android:iconTint="@color/additional"
         android:orderInCategory="100"
-        app:showAsAction="always"
-        app:iconTint = "@color/additional"
-        android:iconTint="@color/additional"/>
+        android:title="@string/action_delete_stats"
+        app:iconTint="@color/additional"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_upload_stats"
+        android:icon="@drawable/ic_upload"
+        android:iconTint="@color/additional"
+        android:orderInCategory="100"
+        android:title="Загрузить статистику"
+        app:iconTint="@color/additional"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_another_user"
+        android:icon="@drawable/ic_people"
+        android:iconTint="@color/additional"
+        android:orderInCategory="100"
+        android:title="Посмотреть чужие результаты"
+        app:iconTint="@color/additional"
+        app:showAsAction="always" />
 </menu>

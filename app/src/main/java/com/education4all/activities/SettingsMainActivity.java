@@ -1,4 +1,4 @@
-package com.education4all;
+package com.education4all.activities;
 
 
 import android.content.Intent;
@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.education4all.R;
+import com.education4all.activities.tabs.SectionsPagerAdapter;
+import com.education4all.Utils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 

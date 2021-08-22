@@ -1,4 +1,4 @@
-package com.education4all;
+package com.education4all.activities.tabs;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

@@ -1,14 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     flavorDimensions 'tasktypes'
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.education4all.mathtrainer"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
-        versionName '1.1.0'
-        versionCode 6
     }
     buildTypes {
         release {
@@ -19,12 +18,18 @@ android {
     productFlavors {
         integers {
             applicationId "com.education4all.mathcoach"
+            versionName '2.0.0'
+            versionCode 6
         }
         decimals {
             applicationId "com.education4all.decimals"
+            versionName '0.9.0'
+            versionCode 1
         }
         fractions {
             applicationId "com.education4all.fractions"
+            versionName '0.9.0'
+            versionCode 1
         }
     }
     compileOptions {
@@ -53,4 +58,9 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.6.3'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-database'
+    implementation 'com.google.firebase:firebase-auth'
+
 }

@@ -1,4 +1,4 @@
-package com.education4all;
+package com.education4all.activities;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import com.education4all.R;
+import com.education4all.Utils;
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tasks.Task;
 import com.education4all.mathCoachAlg.tours.Tour;

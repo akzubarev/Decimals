@@ -1,10 +1,10 @@
-package com.education4all.MathCoachAlg.Tours;
+package com.education4all.mathCoachAlg.tours;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.education4all.MathCoachAlg.DataReader;
-import com.education4all.MathCoachAlg.Tasks.Task;
+import com.education4all.mathCoachAlg.DataReader;
+import com.education4all.mathCoachAlg.tasks.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

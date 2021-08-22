@@ -1,4 +1,4 @@
-package com.education4all.MathCoachAlg.Tasks;
+package com.education4all.mathCoachAlg.tasks;
 
 public class SerializableTask extends Task {
     @Override

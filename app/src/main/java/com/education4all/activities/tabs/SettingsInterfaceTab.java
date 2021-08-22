@@ -1,4 +1,4 @@
-package com.education4all;
+package com.education4all.activities.tabs;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 
+import com.education4all.R;
 import com.education4all.mathCoachAlg.DataReader;
 
 public class SettingsInterfaceTab extends Fragment {

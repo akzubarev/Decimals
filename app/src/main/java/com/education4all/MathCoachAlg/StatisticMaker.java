@@ -1,9 +1,9 @@
-package com.education4all.MathCoachAlg;
+package com.education4all.mathCoachAlg;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.education4all.MathCoachAlg.Tours.Tour;
+import com.education4all.mathCoachAlg.tours.Tour;
 
 import java.util.ArrayList;
 

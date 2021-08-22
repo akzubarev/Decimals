@@ -1,4 +1,4 @@
-package com.education4all;
+package com.education4all.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +31,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.gridlayout.widget.GridLayout;
 
+import com.education4all.BuildConfig;
+import com.education4all.R;
+import com.education4all.Utils;
 import com.education4all.mathCoachAlg.DataReader;
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tours.TaskQueue;

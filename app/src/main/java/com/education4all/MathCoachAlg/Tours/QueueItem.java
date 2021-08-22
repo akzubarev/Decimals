@@ -1,7 +1,7 @@
-package com.education4all.MathCoachAlg.Tours;
+package com.education4all.mathCoachAlg.tours;
 
-import com.education4all.MathCoachAlg.Tasks.SerializableTask;
-import com.education4all.MathCoachAlg.Tasks.Task;
+import com.education4all.mathCoachAlg.tasks.SerializableTask;
+import com.education4all.mathCoachAlg.tasks.Task;
 
 public class QueueItem {
     SerializableTask task;
