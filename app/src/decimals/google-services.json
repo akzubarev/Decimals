@@ -1,0 +1,121 @@
+{
+  "project_info": {
+    "project_number": "813854005216",
+    "project_id": "mathtrainer-9b2ef",
+    "storage_bucket": "mathtrainer-9b2ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813854005216:android:48331f498d969a85247d85",
+        "android_client_info": {
+          "package_name": "com.education4all.decimals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813854005216-ko3uj6q3lm5i1v8sr3dsq15vvp9tr9h1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.education4all.decimals",
+            "certificate_hash": "9c69c73296a08e8a6469062a7cf9bec628b24857"
+          }
+        },
+        {
+          "client_id": "813854005216-ebm06j4m04qv89p4g7o6qpktr3lpvbh4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpn0ybyB90sWOr2CfBip1OVMKROhBqQ5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813854005216-ebm06j4m04qv89p4g7o6qpktr3lpvbh4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813854005216:android:7b3383bd2a3ff372247d85",
+        "android_client_info": {
+          "package_name": "com.education4all.fractions"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813854005216-n0i9nio8sb69vfftjjsu2qlgpvluj86v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.education4all.fractions",
+            "certificate_hash": "9c69c73296a08e8a6469062a7cf9bec628b24857"
+          }
+        },
+        {
+          "client_id": "813854005216-ebm06j4m04qv89p4g7o6qpktr3lpvbh4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpn0ybyB90sWOr2CfBip1OVMKROhBqQ5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813854005216-ebm06j4m04qv89p4g7o6qpktr3lpvbh4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813854005216:android:e7ee796fad31be14247d85",
+        "android_client_info": {
+          "package_name": "com.education4all.mathcoach"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813854005216-74oa3rt40b4gjo9sgh7et5q05q0epo6t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.education4all.mathcoach",
+            "certificate_hash": "9c69c73296a08e8a6469062a7cf9bec628b24857"
+          }
+        },
+        {
+          "client_id": "813854005216-ebm06j4m04qv89p4g7o6qpktr3lpvbh4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpn0ybyB90sWOr2CfBip1OVMKROhBqQ5Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813854005216-ebm06j4m04qv89p4g7o6qpktr3lpvbh4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
