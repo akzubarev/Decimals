@@ -18,6 +18,7 @@ import com.education4all.mathCoachAlg.DataReader;
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tasks.Task;
 import com.education4all.mathCoachAlg.tours.Tour;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setTitle("");
         Task.setType(tasktype);
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null)
+            auth.signInAnonymously();
     }
 
     @Override

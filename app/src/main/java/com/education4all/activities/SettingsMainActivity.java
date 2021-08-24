@@ -3,6 +3,9 @@ package com.education4all.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import com.education4all.activities.tabs.SectionsPagerAdapter;
 import com.education4all.Utils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingsMainActivity extends AppCompatActivity {
 
@@ -96,4 +100,21 @@ public class SettingsMainActivity extends AppCompatActivity {
         finish();
     }
 
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_settings, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if (item.getItemId() == R.id.action_logout) {
+//            FirebaseAuth.getInstance().signOut();
+//            startActivity(new Intent(this, MainActivity.class));
+//            finish();
+//            return true;
+//        } else
+//            return super.onOptionsItemSelected(item);
+//    }
 }

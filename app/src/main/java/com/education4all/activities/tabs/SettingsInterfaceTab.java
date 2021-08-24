@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.education4all.R;
 import com.education4all.mathCoachAlg.DataReader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SettingsInterfaceTab extends Fragment {
     View view;
@@ -94,6 +96,16 @@ public class SettingsInterfaceTab extends Fragment {
 //        }
 //        theme.setText(state);
 //        theme.setOnClickListener(this::themeDropdown);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        TextView id = view.findViewById(R.id.id);
+        id.setText(user.getUid());
+
+//        TextView emailtv = view.findViewById(R.id.email);
+//        String email = user.getEmail();
+//        if (email.isEmpty())
+//            emailtv.setText("Не зарегистрирован");
+//        else
+//            emailtv.setText(user.getEmail());
     }
 
     public void timerDropdown(View view) {

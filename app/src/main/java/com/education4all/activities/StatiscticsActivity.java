@@ -86,14 +86,9 @@ public class StatiscticsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //  LineChart chart = findViewById(R.id.chart);
-//        LinearLayout progressLL = findViewById(R.id.graphlayout);
-//        LinearLayout layout = findViewById(R.id.tourlayout);
-//        layout.removeAllViews();
-//        layout.addView(progressLL);
-        //    layout.addView(chart);
 
         //  try {
+        tours.clear();
         getUserStats(userID);
         // setUpChart();
         setupProgress(findViewById(R.id.toggle));
@@ -147,8 +142,12 @@ public class StatiscticsActivity extends AppCompatActivity {
     }
 
     public void oldFill(ArrayList<Tour> tours) {
-
+//        LineChart chart = findViewById(R.id.chart);
+        LinearLayout progressLL = findViewById(R.id.graphlayout);
         LinearLayout layout = findViewById(R.id.tourlayout);
+        layout.removeAllViews();
+        layout.addView(progressLL);
+//        layout.addView(chart);
 
         View bar = generateBar();
         layout.addView(bar);

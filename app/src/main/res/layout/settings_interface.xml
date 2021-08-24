@@ -119,37 +119,37 @@
             android:textColor="@color/main"
             android:textSize="@dimen/dimen4" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin">
+<!--        <LinearLayout-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:paddingLeft="@dimen/activity_horizontal_margin"-->
+        <!--            android:paddingTop="@dimen/activity_vertical_margin"-->
+        <!--            android:paddingRight="@dimen/activity_horizontal_margin"-->
+        <!--            android:paddingBottom="@dimen/activity_vertical_margin">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical|center_horizontal|center|start"
-                android:layout_weight="0"
-                android:gravity="left|center_vertical|center_horizontal|center|start"
-                android:text="E-mail"
-                android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
+        <!--            <TextView-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_gravity="left|center_vertical|center_horizontal|center|start"-->
+        <!--                android:layout_weight="0"-->
+        <!--                android:gravity="left|center_vertical|center_horizontal|center|start"-->
+        <!--                android:text="E-mail"-->
+        <!--                android:textColor="@color/main"-->
+        <!--                android:textSize="@dimen/dimen4" />-->
 
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical|center_horizontal|center|end"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical|center_horizontal|center|end"
-                android:tag="1"
-                android:text="example@gmail.com"
-                android:textColor="@color/shadowed"
-                android:textSize="@dimen/dimen4" />
-        </LinearLayout>
+        <!--            <TextView-->
+        <!--                android:id="@+id/email"-->
+        <!--                android:layout_width="100dp"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_gravity="right|center_vertical|center_horizontal|center|end"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:gravity="right|center_vertical|center_horizontal|center|end"-->
+        <!--                android:tag="1"-->
+        <!--                android:text="example@gmail.com"-->
+        <!--                android:textColor="@color/shadowed"-->
+        <!--                android:textSize="@dimen/dimen4" />-->
+        <!--        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
