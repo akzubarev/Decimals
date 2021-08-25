@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.education4all.BuildConfig;
 import com.education4all.R;
+import com.education4all.Utils;
 import com.education4all.mathCoachAlg.DataReader;
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tasks.Task;
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         String solvedText = "Сейчас 0, в среднем 0",
                 daysText = "Сейчас 0, в среднем 0";
         int secondstoday = 0,
-                goal = DataReader.GetValue("Goal", this) * 60;
+                goal = DataReader.GetInt(DataReader.GOAL, this) * 60;
 
         if (StatisticMaker.getTourCount(this) > 0) {
             int subsequentAnswers = 0, subsequentDays = 0;
@@ -147,19 +148,19 @@ public class MainActivity extends AppCompatActivity {
                 int seconds = (int) tour.getTourTime();
                 date = tour.date();
 
-                twodates relationOfDates = twodates.equal;
+                Utils.twodates relationOfDates = Utils.twodates.equal;
 
                 if (tourNumber > 0)
-                    relationOfDates = isSubsequent(prevdate, date);
+                    relationOfDates = Utils.isSubsequent(prevdate, date);
 
-                if (relationOfDates == twodates.equal)
+                if (relationOfDates == Utils.twodates.equal)
                     secondstoday += seconds;
                 else {
                     if (secondstoday >= goal)
                         subsequentDays++;
                     secondstoday = seconds;
 
-                    if (relationOfDates != twodates.subsequent && subsequentDays > 0) {
+                    if (relationOfDates != Utils.twodates.subsequent && subsequentDays > 0) {
                         streakDays.add(subsequentDays);
                         lastStreakEndDate = prevdate;
                         subsequentDays = 0;
@@ -200,10 +201,10 @@ public class MainActivity extends AppCompatActivity {
 
             String today = sdf.format(c.getTime());
             if (streakDays.size() > 0)
-                if (isSubsequent(lastStreakEndDate, today) != twodates.unrelated)
+                if (Utils.isSubsequent(lastStreakEndDate, today) != Utils.twodates.unrelated)
                     lastDayStreakIsvalid = true;
 
-            if (isSubsequent(date, today) != twodates.equal)
+            if (Utils.isSubsequent(date, today) != Utils.twodates.equal)
                 secondstoday = 0;
 
             int averageDays = 0, averageSolved = 0;
@@ -280,8 +281,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //        text += "\n";
         text += String.format("Длина раунда %d мин\n",
-                DataReader.GetValue("RoundTime", this));
-        int disapTime = DataReader.GetValue("DisapRoundTime", this);
+                DataReader.GetInt(DataReader.ROUND_TIME, this));
+        int disapTime = DataReader.GetInt(DataReader.DISAP_ROUND_TIME, this);
         text += disapTime != -1 ?
                 String.format("Условие исчезает через %d сек", disapTime)
                 : "Условие не исчезает";
@@ -296,28 +297,5 @@ public class MainActivity extends AppCompatActivity {
                 DateUtils.formatElapsedTime(goal)));
     }
 
-    enum twodates {
-        equal,
-        subsequent,
-        unrelated
-    }
 
-    private twodates isSubsequent(String prevdate, String date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        Calendar c1 = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
-        try {
-            c1.setTime(sdf.parse(prevdate));
-            c2.setTime(sdf.parse(date));
-            if (c1.equals(c2))
-                return twodates.equal;
-            c1.add(Calendar.DATE, 1);
-            if (c1.equals(c2))
-                return twodates.subsequent;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return twodates.unrelated;
-    }
 }

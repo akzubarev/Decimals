@@ -38,7 +38,7 @@ public class SettingsTaskTab extends Fragment {
         view = v;
         IndicatorSeekBar seekBar = view.findViewById(R.id.round_length_slider);
         seekBar.customTickTexts(new String[]{"1", "2", "3", "5", "10", "15", "20", "30", "45", "     60"});
-        switch (DataReader.GetValue("RoundTime", getContext())) {
+        switch (DataReader.GetInt("RoundTime", getContext())) {
             case 1:
                 seekBar.setProgress(0);
                 break;
@@ -81,7 +81,7 @@ public class SettingsTaskTab extends Fragment {
 //                Log.i(TAG, seekParams.thumbPosition);
 //                Log.i(TAG, seekParams.tickText);
                 String value = seekParams.tickText.trim();
-                DataReader.SaveValue(Integer.parseInt(value), "RoundTime", getContext());
+                DataReader.SaveInt(Integer.parseInt(value), DataReader.ROUND_TIME, getContext());
             }
 
             @Override
@@ -96,7 +96,7 @@ public class SettingsTaskTab extends Fragment {
 
         seekBar = view.findViewById(R.id.disappear_time_slider);
         seekBar.customTickTexts(new String[]{"1", "2", "3", "5", "10", "15", "20", "30", "45", "    ∞"});
-        switch (DataReader.GetValue("DisapRoundTime", getContext())) {
+        switch (DataReader.GetInt("DisapRoundTime", getContext())) {
             case 1:
                 seekBar.setProgress(0);
                 break;
@@ -144,7 +144,7 @@ public class SettingsTaskTab extends Fragment {
                     ivalue = -1;
                 else
                     ivalue = Integer.parseInt(value);
-                DataReader.SaveValue(ivalue, "DisapRoundTime", getContext());
+                DataReader.SaveInt(ivalue, DataReader.DISAP_ROUND_TIME, getContext());
             }
 
             @Override

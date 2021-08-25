@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TimePicker xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:amPmBackgroundColor="@color/additional"
+    android:amPmTextColor="@color/shadowed"
+    android:background="@color/color1"
+    android:headerBackground="@color/color2"
+    android:numbersBackgroundColor="@color/color2"
+    android:numbersInnerTextColor="@color/additional"
+    android:numbersSelectorColor="@color/additional"
+    android:numbersTextColor="@color/main"
+    android:timePickerMode="spinner"
+    tools:targetApi="m" />

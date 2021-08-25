@@ -5,26 +5,29 @@ import android.app.Application;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.education4all.mathCoachAlg.DataReader;
-import com.education4all.mathCoachAlg.StatisticMaker;
 
 public class ThemedApplication extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-       // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode());
+        // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode());
         //светлая и темная тема меняются местами для отображения темной в IDE
-        switch (DataReader.GetValue("Theme", getApplicationContext())) {
-            case 1:
+        Utils.Theme theme = Utils.Theme.convert(
+                DataReader.GetInt(DataReader.THEME, getApplicationContext())
+        );
+
+        switch (theme) {
+            case LIGHT:
                 //"Светлая"
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
-            case -1:
+            case DARK:
             default:
                 //"Темная";
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 break;
-            case 0:
+            case SYSTEM:
                 //"Системная";
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
                 break;

@@ -33,7 +33,7 @@ public class SettingsMainActivity extends AppCompatActivity {
         TabLayout tabs = findViewById(R.id.tab_layout);
         new TabLayoutMediator(tabs, viewPager,
                 (tab, position) -> {
-                    String name = position == 0 ? "Задания" : "Интерфейс";
+                    String name = position == 0 ? "Задания" : "Приложение";
                     int color = position == 0 ? getResources().getColor(R.color.main) :
                             getResources().getColor(R.color.shadowed);
 

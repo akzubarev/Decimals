@@ -3,6 +3,7 @@ package com.education4all.mathCoachAlg;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -11,16 +12,38 @@ import java.util.StringTokenizer;
 public class DataReader {
     public static final String COMPLEXITY_SETTINGS = "ComplexitySettings";
     public static final String ROUND_TIME_SETTINGS = "RoundTimeSettings";
-    private static final HashMap<String, Integer> defaultValues = new HashMap<>();
+
+    public static final String ROUND_TIME = "RoundTime";
+    public static final String DISAP_ROUND_TIME = "DisapRoundTime";
+    public static final String TIMER_STATE = "TimerState";
+    public static final String BUTTONS_PLACE = "ButtonsPlace";
+    public static final String LAYOUT_STATE = "LayoutState";
+    public static final String GOAL = "Goal";
+    public static final String THEME = "Theme";
+    public static final String REMINDER = "Reminder";
+    public static final String REMINDER_TIME = "ReminderTime";
+
+    private static final HashMap<String, Integer> defaultInts = new HashMap<>();
+    private static final HashMap<String, String> defaultStrings = new HashMap<>();
+    private static final HashMap<String, Boolean> defaultBooleans = new HashMap<>();
 
     static {
-        defaultValues.put("RoundTime", 1);
-        defaultValues.put("DisapRoundTime", -1);
-        defaultValues.put("TimerState", 1);
-        defaultValues.put("ButtonsPlace", 0);
-        defaultValues.put("LayoutState", 0);
-        defaultValues.put("Goal", 5);
-        defaultValues.put("Theme", -1);
+        //ints
+        defaultInts.put(ROUND_TIME, 1);
+        defaultInts.put(DISAP_ROUND_TIME, -1);
+        defaultInts.put(GOAL, 5);
+
+        //enums
+        defaultInts.put(TIMER_STATE, 1); // continious
+        defaultInts.put(BUTTONS_PLACE, 0); // right
+        defaultInts.put(LAYOUT_STATE, 0); // 789
+        defaultInts.put(THEME, -1); // dark
+
+        //booleans
+        defaultBooleans.put(REMINDER, false);
+
+        //strings
+        defaultStrings.put(REMINDER_TIME, "18:00");
     }
 
     public static int[] convertIntegers(ArrayList<Integer> integers) {
@@ -79,23 +102,52 @@ public class DataReader {
 
     static public boolean checkComplexity(int p_action, int p_complexity, Context p_context) {
         int[][] l_allowedTasks = DataReader.readAllowedTasks(p_context);
-        for (int i = 0; i < l_allowedTasks[p_action].length; ++i) {
-            if (l_allowedTasks[p_action][i] == p_complexity) {
+        for (int i = 0; i < l_allowedTasks[p_action].length; ++i)
+            if (l_allowedTasks[p_action][i] == p_complexity)
                 return true;
-            }
-        }
         return false;
     }
 
-    public static void SaveValue(int value, String name, Context p_context) {
+    public static void SaveInt(int value, String name, Context p_context) {
         SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
         editor.putInt(name, value);
         editor.commit();
     }
 
-    static public int GetValue(String name, Context p_context) {
+    static public int GetInt(String name, Context p_context) {
+        if (!defaultInts.containsKey(name))
+            throw new IllegalArgumentException();
+
         SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
-        return prefs.getInt(name, defaultValues.get(name));
+        return prefs.getInt(name, defaultInts.get(name));
+    }
+
+    public static void SaveString(String value, String name, Context p_context) {
+        SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
+        editor.putString(name, value);
+        editor.commit();
+    }
+
+    static public String GetString(String name, Context p_context) {
+        if (!defaultStrings.containsKey(name))
+            throw new IllegalArgumentException();
+
+        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
+        return prefs.getString(name, defaultStrings.get(name));
+    }
+
+    public static void SaveBoolean(Boolean value, String name, Context p_context) {
+        SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
+        editor.putBoolean(name, value);
+        editor.commit();
+    }
+
+    static public Boolean GetBoolean(String name, Context p_context) {
+        if (!defaultBooleans.containsKey(name))
+            throw new IllegalArgumentException();
+
+        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
+        return prefs.getBoolean(name, defaultBooleans.get(name));
     }
 
     public static void SaveQueue(String json, Context p_context) {

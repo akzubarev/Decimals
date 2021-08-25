@@ -43,6 +43,8 @@ import com.education4all.mathCoachAlg.tours.Tour;
 
 import java.util.Calendar;
 
+import com.education4all.Utils.TimerState;
+import com.education4all.Utils.ButtonsPlace;
 
 public class TaskActivity extends AppCompatActivity {
     final String tasktype = BuildConfig.FLAVOR; //тип заданий
@@ -89,6 +91,7 @@ public class TaskActivity extends AppCompatActivity {
         bottom
     }
 
+
     String[] fractionSyms = new String[]{"□⁄□", "■⁄□", "□⁄■"};
     SpannableString[] fractionSymsSpan = new SpannableString[3];
 
@@ -127,23 +130,30 @@ public class TaskActivity extends AppCompatActivity {
         allowedTasks = DataReader.readAllowedTasks(this);
         if (!Task.areTasks(allowedTasks)) {
             finish();
-            startActivity(new Intent(context, SettingsMainActivity.class).putExtra("FromTask", true));
+            startActivity(
+                    new Intent(context, SettingsMainActivity.class)
+                            .putExtra("FromTask", true)
+            );
         } else {
             tourStartTime = System.currentTimeMillis();
             prevTaskTime = tourStartTime;
             prevAnswerTime = tourStartTime;
             answer = "";
 
+            final TimerState timerstate = TimerState.convert(
+                    DataReader.GetInt(DataReader.TIMER_STATE, this));
+
+
             G_progressBar = findViewById(R.id.taskProgress);
             G_progressBar.setProgress(0);
-            final int timerstate = DataReader.GetValue("TimerState", this);//0 - continous 1 - discrete 2 - invisible
-            G_progressBar.setVisibility(timerstate == 2 ? View.INVISIBLE : View.VISIBLE);
-            RoundTime = DataReader.GetValue("RoundTime", this);
+            G_progressBar.setVisibility(timerstate == TimerState.INVISIBlE ?
+                    View.INVISIBLE : View.VISIBLE);
+            RoundTime = DataReader.GetInt(DataReader.ROUND_TIME, this);
             millis = (long) (RoundTime * 1000 * 60);
             new Thread(() -> {
                 while (progressStatus < 100) {
                     progressStatus += 1;
-                    if (timerstate == 0)
+                    if (timerstate == TimerState.CONTINIOUS)
                         progressBarHandler.post(() -> G_progressBar.setProgress(progressStatus));
                     try {
                         Thread.sleep((long) (RoundTime * 600));
@@ -155,15 +165,16 @@ public class TaskActivity extends AppCompatActivity {
 
 
             timerText = findViewById(R.id.timertext);
-            timerText.setVisibility(timerstate == 2 ? View.INVISIBLE : View.VISIBLE);
-            seconds = (int) RoundTime * 60;
+            timerText.setVisibility(timerstate == TimerState.INVISIBlE ?
+                    View.INVISIBLE : View.VISIBLE);
 
+            seconds = (int) RoundTime * 60;
             timerText.setText(timeString(count, seconds));
 
             new Thread(() -> {
                 while (count < seconds) {
                     count += 1;
-                    if (timerstate == 0)
+                    if (timerstate == TimerState.CONTINIOUS)
                         timerText.setText(timeString(count, seconds));
                     try {
                         Thread.sleep(1000);
@@ -173,7 +184,7 @@ public class TaskActivity extends AppCompatActivity {
                 }
             }).start();
 
-            disapTime = DataReader.GetValue("DisapRoundTime", this);
+            disapTime = DataReader.GetInt(DataReader.DISAP_ROUND_TIME, this);
             //roundTimeHandler.postDelayed(endRound, millis);
             showTaskSetTrueAndRestartDisappearTimer();
 
@@ -278,9 +289,17 @@ public class TaskActivity extends AppCompatActivity {
                 break;
         }
 
-        if (DataReader.GetValue("ButtonsPlace", this) == 1)
+        ButtonsPlace buttonsPlace = ButtonsPlace.convert(
+                DataReader.GetInt(DataReader.BUTTONS_PLACE, this)
+        );
+
+        Utils.LayoutState layoutState = Utils.LayoutState.convert(
+                DataReader.GetInt(DataReader.LAYOUT_STATE, this)
+        );
+
+        if (buttonsPlace == ButtonsPlace.LEFT)
             alterButtons();
-        if (DataReader.GetValue("LayoutState", this) == 0)
+        if (layoutState == Utils.LayoutState._123)
             alterLayout();
     }
 

@@ -27,7 +27,7 @@ public class SectionsPagerAdapter extends FragmentStateAdapter {
                 fragment = new SettingsTaskTab();
                 break;
             case 1:
-                fragment = new SettingsInterfaceTab();
+                fragment = new SettingsAppTab();
                 break;
         }
         return fragment;
