@@ -6,13 +6,11 @@ import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -24,45 +22,49 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+@RequiresApi(api = Build.VERSION_CODES.M)
 public class NotificationHelper {
 
-    private Context mContext;
+    private final Context context;
     private static final String NOTIFICATION_CHANNEL_ID = "10001";
 
+    public static final String CLOSE = "close";
+    public static final String DELAY = "delay";
+    public static final String MAKE = "make";
+    public static final String OPEN = "open";
+    public static final int NOTIFICATION_ID = 0;
+
+
     public NotificationHelper(Context context) {
-        mContext = context;
+        this.context = context;
     }
 
     void createNotification() {
-        PendingIntent pendingIntent = getPendingIntent();
-
-        NotificationCompat.Builder mBuilder = configureBuilder(pendingIntent);
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder = configureBuilder();
+        NotificationManager nm =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            postOreoOptions(mBuilder, mNotificationManager);
+            postOreoOptions(mBuilder, nm);
 
-        assert mNotificationManager != null;
-        mNotificationManager.notify(0, mBuilder.build());
+        assert nm != null;
+        nm.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
-    private NotificationCompat.Builder configureBuilder(PendingIntent pendingIntent) {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_ID)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("Напоминание")
-                        .setContentText("Цель на день еще не выполнена")
-                        .setAutoCancel(false)
-                        .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
-                        .setContentIntent(pendingIntent);
-
-        return mBuilder;
+    private NotificationCompat.Builder configureBuilder() {
+        return new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+//                        .setContentTitle("Напоминание")
+                .setContentText("Цель на день еще не выполнена")
+                .setAutoCancel(true)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                .setContentIntent(makeIntent(OPEN))
+                .addAction(R.drawable.ic_update, "Отложить на 10 мин.", makeIntent(DELAY))
+                .addAction(R.drawable.ic_trash, "Отменить", makeIntent(CLOSE));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void postOreoOptions(NotificationCompat.Builder mBuilder, NotificationManager mNotificationManager) {
+    private void postOreoOptions(NotificationCompat.Builder mBuilder, NotificationManager nm) {
         int importance = NotificationManager.IMPORTANCE_HIGH;
         NotificationChannel notificationChannel =
                 new NotificationChannel(NOTIFICATION_CHANNEL_ID,
@@ -72,13 +74,33 @@ public class NotificationHelper {
         notificationChannel.setLightColor(Color.RED);
         notificationChannel.enableVibration(true);
         notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-        assert mNotificationManager != null;
+        assert nm != null;
         mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
-        mNotificationManager.createNotificationChannel(notificationChannel);
+        nm.createNotificationChannel(notificationChannel);
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
+    public void setReminder(Calendar calendar, boolean byUser) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+
+        if (alarmManager != null) {
+            alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(),
+//                    AlarmManager.INTERVAL_DAY,
+                    makeIntent(MAKE));
+
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM");
+            if (byUser)
+                Toast.makeText(context,
+                        "Напомним " + sdf.format(calendar.getTime()),
+                        Toast.LENGTH_SHORT)
+                        .show();
+
+        }
+    }
+
     public void setReminder(int hour, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
@@ -88,46 +110,46 @@ public class NotificationHelper {
         if (calendar.getTime().compareTo(new Date()) < 0)
             calendar.add(Calendar.DAY_OF_MONTH, 1);
 
-        PendingIntent pendingIntent = getPendingIntent();
-        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
-
-        if (alarmManager != null) {
-            alarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    calendar.getTimeInMillis(),
-//                    AlarmManager.INTERVAL_DAY,
-                    pendingIntent);
-
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM");
-            Toast.makeText(mContext,
-                    "Напомним " + sdf.format(calendar.getTime()),
-                    Toast.LENGTH_SHORT)
-                    .show();
-
-        }
-
-
+        setReminder(calendar, true);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void repeat() {
         Calendar calendar = Calendar.getInstance();
-        setReminder(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        setReminder(calendar, false);
+    }
+
+    public void delay() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 10);
+        setReminder(calendar, true);
     }
 
     public void cancelReminder() {
-        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
-        alarmManager.cancel(getPendingIntent());
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(makeIntent(MAKE));
     }
 
-    public PendingIntent getPendingIntent() {
-        Intent intent = new Intent(mContext, NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                mContext,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        return pendingIntent;
+
+    public PendingIntent makeIntent(String name) {
+        if (name.equals(OPEN)) {
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setAction(name);
+            return PendingIntent.getActivity(context, 0, intent,
+                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            Intent intent = new Intent(context, NotificationReceiver.class);
+            intent.setAction(name);
+            return PendingIntent.getBroadcast(context, 1, intent,
+                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+    }
+
+    public void cancel(int notificationId) {
+        NotificationManager nm =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel(notificationId);
     }
 }
 

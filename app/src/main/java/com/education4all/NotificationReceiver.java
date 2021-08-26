@@ -7,27 +7,28 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.education4all.activities.MainActivity;
-import com.education4all.mathCoachAlg.DataReader;
-import com.education4all.mathCoachAlg.StatisticMaker;
-import com.education4all.mathCoachAlg.tasks.Task;
-import com.education4all.mathCoachAlg.tours.Tour;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
 public class NotificationReceiver extends BroadcastReceiver {
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onReceive(Context context, Intent intent) {
         NotificationHelper notificationHelper = new NotificationHelper(context);
 
-        if (!Utils.reachedGoal(context))
-            notificationHelper.createNotification();
-
+        String action = intent.getAction();
+        switch (action) {
+            case NotificationHelper.CLOSE:
+                notificationHelper.cancel(NotificationHelper.NOTIFICATION_ID);
+                break;
+            case NotificationHelper.DELAY:
+                notificationHelper.delay();
+                notificationHelper.cancel(NotificationHelper.NOTIFICATION_ID);
+                break;
+            case NotificationHelper.MAKE:
+                if (!Utils.reachedGoal(context))
+                    notificationHelper.createNotification();
+                break;
+        }
         notificationHelper.repeat();
     }
 }

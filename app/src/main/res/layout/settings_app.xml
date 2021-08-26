@@ -182,7 +182,7 @@
                 android:textIsSelectable="true"
                 android:text="exampleexampleexample"
                 android:textColor="@color/shadowed"
-                android:textSize="@dimen/dimen4" />
+                android:textSize="@dimen/dimen5" />
         </LinearLayout>
 
         <LinearLayout
