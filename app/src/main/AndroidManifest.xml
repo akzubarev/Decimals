@@ -29,6 +29,7 @@
         <activity
             android:name="com.education4all.activities.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
             android:label="@string/short_app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">

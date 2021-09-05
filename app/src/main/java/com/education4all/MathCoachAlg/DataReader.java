@@ -34,7 +34,7 @@ public class DataReader {
         defaultInts.put(GOAL, 5);
 
         //enums
-        defaultInts.put(TIMER_STATE, 1); // continious
+        defaultInts.put(TIMER_STATE, 1); // continuous
         defaultInts.put(BUTTONS_PLACE, 0); // right
         defaultInts.put(LAYOUT_STATE, 0); // 789
         defaultInts.put(THEME, -1); // dark
@@ -111,49 +111,52 @@ public class DataReader {
     public static void SaveInt(int value, String name, Context p_context) {
         SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
         editor.putInt(name, value);
-        editor.commit();
+        editor.apply();
     }
 
     static public int GetInt(String name, Context p_context) {
         if (!defaultInts.containsKey(name))
             throw new IllegalArgumentException();
-
-        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
-        return prefs.getInt(name, defaultInts.get(name));
+        else {
+            SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
+            return prefs.getInt(name, defaultInts.get(name));
+        }
     }
 
     public static void SaveString(String value, String name, Context p_context) {
         SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
         editor.putString(name, value);
-        editor.commit();
+        editor.apply();
     }
 
     static public String GetString(String name, Context p_context) {
         if (!defaultStrings.containsKey(name))
             throw new IllegalArgumentException();
-
-        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
-        return prefs.getString(name, defaultStrings.get(name));
+        else {
+            SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
+            return prefs.getString(name, defaultStrings.get(name));
+        }
     }
 
     public static void SaveBoolean(Boolean value, String name, Context p_context) {
         SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
         editor.putBoolean(name, value);
-        editor.commit();
+        editor.apply();
     }
 
     static public Boolean GetBoolean(String name, Context p_context) {
         if (!defaultBooleans.containsKey(name))
             throw new IllegalArgumentException();
-
-        SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
-        return prefs.getBoolean(name, defaultBooleans.get(name));
+        else {
+            SharedPreferences prefs = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE);
+            return prefs.getBoolean(name, defaultBooleans.get(name));
+        }
     }
 
     public static void SaveQueue(String json, Context p_context) {
         SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
         editor.putString("Queue", json);
-        editor.commit();
+        editor.apply();
     }
 
     static public String GetQueue(Context p_context) {
@@ -164,7 +167,7 @@ public class DataReader {
     public static void SaveStat(String json, Context p_context) {
         SharedPreferences.Editor editor = p_context.getSharedPreferences(ROUND_TIME_SETTINGS, Context.MODE_PRIVATE).edit();
         editor.putString("Stat", json);
-        editor.commit();
+        editor.apply();
     }
 
     static public String GetStat(Context p_context) {

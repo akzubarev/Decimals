@@ -33,18 +33,16 @@ import androidx.gridlayout.widget.GridLayout;
 
 import com.education4all.BuildConfig;
 import com.education4all.R;
-import com.education4all.Utils;
+import com.education4all.utils.Enums;
 import com.education4all.mathCoachAlg.DataReader;
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tours.TaskQueue;
 import com.education4all.mathCoachAlg.tasks.Fraction;
 import com.education4all.mathCoachAlg.tasks.Task;
 import com.education4all.mathCoachAlg.tours.Tour;
+import com.education4all.utils.Utils;
 
 import java.util.Calendar;
-
-import com.education4all.Utils.TimerState;
-import com.education4all.Utils.ButtonsPlace;
 
 public class TaskActivity extends AppCompatActivity {
     final String tasktype = BuildConfig.FLAVOR; //тип заданий
@@ -140,20 +138,20 @@ public class TaskActivity extends AppCompatActivity {
             prevAnswerTime = tourStartTime;
             answer = "";
 
-            final TimerState timerstate = TimerState.convert(
+            final Enums.TimerState timerstate = Enums.TimerState.convert(
                     DataReader.GetInt(DataReader.TIMER_STATE, this));
 
 
             G_progressBar = findViewById(R.id.taskProgress);
             G_progressBar.setProgress(0);
-            G_progressBar.setVisibility(timerstate == TimerState.INVISIBlE ?
+            G_progressBar.setVisibility(timerstate == Enums.TimerState.INVISIBlE ?
                     View.INVISIBLE : View.VISIBLE);
             RoundTime = DataReader.GetInt(DataReader.ROUND_TIME, this);
             millis = (long) (RoundTime * 1000 * 60);
             new Thread(() -> {
                 while (progressStatus < 100) {
                     progressStatus += 1;
-                    if (timerstate == TimerState.CONTINIOUS)
+                    if (timerstate == Enums.TimerState.CONTINIOUS)
                         progressBarHandler.post(() -> G_progressBar.setProgress(progressStatus));
                     try {
                         Thread.sleep((long) (RoundTime * 600));
@@ -165,7 +163,7 @@ public class TaskActivity extends AppCompatActivity {
 
 
             timerText = findViewById(R.id.timertext);
-            timerText.setVisibility(timerstate == TimerState.INVISIBlE ?
+            timerText.setVisibility(timerstate == Enums.TimerState.INVISIBlE ?
                     View.INVISIBLE : View.VISIBLE);
 
             seconds = (int) RoundTime * 60;
@@ -174,7 +172,7 @@ public class TaskActivity extends AppCompatActivity {
             new Thread(() -> {
                 while (count < seconds) {
                     count += 1;
-                    if (timerstate == TimerState.CONTINIOUS)
+                    if (timerstate == Enums.TimerState.CONTINIOUS)
                         timerText.setText(timeString(count, seconds));
                     try {
                         Thread.sleep(1000);
@@ -289,17 +287,17 @@ public class TaskActivity extends AppCompatActivity {
                 break;
         }
 
-        ButtonsPlace buttonsPlace = ButtonsPlace.convert(
+        Enums.ButtonsPlace buttonsPlace = Enums.ButtonsPlace.convert(
                 DataReader.GetInt(DataReader.BUTTONS_PLACE, this)
         );
 
-        Utils.LayoutState layoutState = Utils.LayoutState.convert(
+        Enums.LayoutState layoutState = Enums.LayoutState.convert(
                 DataReader.GetInt(DataReader.LAYOUT_STATE, this)
         );
 
-        if (buttonsPlace == ButtonsPlace.LEFT)
+        if (buttonsPlace == Enums.ButtonsPlace.LEFT)
             alterButtons();
-        if (layoutState == Utils.LayoutState._123)
+        if (layoutState == Enums.LayoutState._123)
             alterLayout();
     }
 

@@ -3,6 +3,7 @@ package com.education4all.mathCoachAlg;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.education4all.firebase.FireBaseUtils;
 import com.education4all.mathCoachAlg.tours.Tour;
 
 import java.util.ArrayList;
@@ -84,6 +85,7 @@ public class StatisticMaker {
         SharedPreferences.Editor editor = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
         editor.clear();
         editor.apply();
+        FireBaseUtils.deleteTours();
     }
 
     public static void removeTour(Context context, int tourNumber) {
@@ -122,5 +124,7 @@ public class StatisticMaker {
         String serializedTour = tour.serialize();
         editor.putString(TOURS + "_" + tourNumberString, serializedTour);
         editor.apply();
+
+        FireBaseUtils.uploadTour(tour);
     }
 }

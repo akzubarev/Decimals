@@ -3,9 +3,6 @@ package com.education4all.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,11 +12,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.education4all.R;
+import com.education4all.utils.Utils;
 import com.education4all.activities.tabs.SectionsPagerAdapter;
-import com.education4all.Utils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingsMainActivity extends AppCompatActivity {
 

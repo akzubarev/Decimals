@@ -5,6 +5,8 @@ import android.app.Application;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.education4all.mathCoachAlg.DataReader;
+import com.education4all.utils.Enums;
+import com.education4all.utils.Utils;
 
 public class ThemedApplication extends Application {
 
@@ -13,7 +15,7 @@ public class ThemedApplication extends Application {
         super.onCreate();
         // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode());
         //светлая и темная тема меняются местами для отображения темной в IDE
-        Utils.Theme theme = Utils.Theme.convert(
+        Enums.Theme theme = Enums.Theme.convert(
                 DataReader.GetInt(DataReader.THEME, getApplicationContext())
         );
 

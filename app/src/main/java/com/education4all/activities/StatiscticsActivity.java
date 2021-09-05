@@ -10,9 +10,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.InputType;
 import android.util.Log;
@@ -28,8 +25,9 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.education4all.R;
-import com.education4all.TourAdapter;
-import com.education4all.Utils;
+import com.education4all.utils.OldFormatHandler;
+import com.education4all.utils.Utils;
+import com.education4all.firebase.FireBaseUtils;
 import com.education4all.mathCoachAlg.StatisticMaker;
 
 import com.education4all.mathCoachAlg.tasks.Task;
@@ -42,12 +40,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class StatiscticsActivity extends AppCompatActivity {
     private final Context l_context = this;
@@ -55,10 +51,6 @@ public class StatiscticsActivity extends AppCompatActivity {
     ArrayList<Tour> tours = new ArrayList<>();
     int statistics = 0;
     int statsize = 10;
-
-    private FirebaseDatabase database;
-    private DatabaseReference usersDBR;
-    String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     public void tourClick(View v) {
         Intent i = new Intent(l_context, StatTourActivity.class);
@@ -79,66 +71,72 @@ public class StatiscticsActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        database = FirebaseDatabase.getInstance();
-        usersDBR = database.getReference().child("users");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        try {
+            fill();
+            FireBaseUtils.getUserStats();
+            setupProgress(findViewById(R.id.toggle));
+            // setUpChart();
+        } catch (
+                Exception e) {
+            Log.e("Old data format", e.getMessage());
+            oldFormat();
+        }
 
-        //  try {
-        tours.clear();
-        getUserStats(userID);
-        // setUpChart();
-        setupProgress(findViewById(R.id.toggle));
-//        } catch (Exception e) {
-////            chart = findViewById(R.id.chart);
-////            chart.setNoDataText("Обновите статистику, чтобы увидеть результаты");
-////            chart.setNoDataTextColor(Color.WHITE);
-////            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-////            chart.setLayoutParams(params);
-//
-//            Log.d("EXCEPTION", e.getMessage());
-//            AlertDialog dialog = new AlertDialog.Builder(this)
-//                    .setMessage("Обновите статистику, чтобы увидеть результаты")
-//                    .setCancelable(false)
-//                    .setPositiveButton("Обновить", (dialog1, which) -> {
-//                        Utils.updateStatistics(this);
-//                        startActivity(getIntent());
-//                    })
-//                    .setNegativeButton("Назад", (dialog1, which) -> finish()).create();
-//            dialog.show();
-//            Utils.FixDialog(dialog, getApplicationContext()); // почему-то нужно для планшетов
-//        }
     }
 
+    private void oldFormat() {
+//        LineChart chart = findViewById(R.id.chart);
+//        chart.setNoDataText("Обновите статистику, чтобы увидеть результаты");
+//        chart.setNoDataTextColor(Color.WHITE);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+//        chart.setLayoutParams(params);
+
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("Обновите статистику, чтобы увидеть результаты")
+                .setCancelable(false)
+                .setPositiveButton("Обновить", (dialog1, which) -> {
+                    OldFormatHandler.updateStatistics(this);
+                    startActivity(getIntent());
+                })
+                .setNegativeButton("Назад", (dialog1, which) -> finish()).create();
+        dialog.show();
+        Utils.FixDialog(dialog, getApplicationContext()); // почему-то нужно для планшетов
+    }
+
+    private boolean debugFirebase = false;
+
     public void fill() {
-        if (true) { //TODO get "else" branch to work as it should
+
 //            if (tours.isEmpty()) {
-            if (false) {
-                int tourCount = StatisticMaker.getTourCount(this);
-                for (int tourNumber = 0; tourNumber < tourCount; tourNumber++)
-                    tours.add(StatisticMaker.loadTour(this, tourNumber));
-            }
-            oldFill(tours);
-        } else {
-            RecyclerView tourlist = findViewById(R.id.tourlist);
-            tourlist.setHasFixedSize(true);
-            tourlist.addItemDecoration(new DividerItemDecoration(
-                    tourlist.getContext(), DividerItemDecoration.VERTICAL));
-            LinearLayoutManager userLayoutManager = new LinearLayoutManager(this);
-            TourAdapter tourAdapter = new TourAdapter(tours, this);
-
-            tourlist.setLayoutManager(userLayoutManager);
-            tourlist.setAdapter(tourAdapter);
-
-            tourAdapter.setOnUserClickListener(position -> {
-                Intent i = new Intent(l_context, StatTourActivity.class);
-                i.putExtra("Tour", position);
-                startActivity(i);
-            });
+        if (!debugFirebase) {
+            tours.clear();
+            int tourCount = StatisticMaker.getTourCount(this);
+            for (int tourNumber = 0; tourNumber < tourCount; tourNumber++)
+                tours.add(StatisticMaker.loadTour(this, tourNumber));
         }
+        oldFill(tours);
+
+//        RecyclerView tourlist = findViewById(R.id.tourlist);
+//        tourlist.setHasFixedSize(true);
+//        tourlist.addItemDecoration(new DividerItemDecoration(
+//                tourlist.getContext(), DividerItemDecoration.VERTICAL));
+//        LinearLayoutManager userLayoutManager = new LinearLayoutManager(this);
+//        TourAdapter tourAdapter = new TourAdapter(tours, this);
+//
+//        tourlist.setLayoutManager(userLayoutManager);
+//        tourlist.setAdapter(tourAdapter);
+//
+//        tourAdapter.setOnUserClickListener(position -> {
+//            Intent i = new Intent(l_context, StatTourActivity.class);
+//            i.putExtra("Tour", position);
+//            startActivity(i);
+//        });
     }
 
     public void oldFill(ArrayList<Tour> tours) {
@@ -223,20 +221,15 @@ public class StatiscticsActivity extends AppCompatActivity {
                     Utils.FixDialog(dialog, getApplicationContext()); // почему-то нужно для планшетов
                 }
                 return true;
-            case R.id.action_upload_stats:
-                if (tours.isEmpty()) {
-                    for (int tourNumber = StatisticMaker.getTourCount(this) - 1; tourNumber >= 0; --tourNumber)
-                        tours.add(StatisticMaker.loadTour(this, tourNumber));
-                    usersDBR.child(userID).child("statistics").setValue(tours);
-                    fill();
-                }
-                return true;
             case R.id.action_another_user:
                 final EditText input = new EditText(this);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Введите ID пользователя").setView(input).setPositiveButton("Ок", (dialog1, which) ->
-                                getUserStats(input.getText().toString())
+                                {
+                                    tours = FireBaseUtils.getUserStats(input.getText().toString());
+                                    fill();
+                                }
                         ).setNegativeButton("Отмена", (dialog1, which) -> {
                         })
                         .show();
@@ -248,20 +241,6 @@ public class StatiscticsActivity extends AppCompatActivity {
 
     }
 
-
-    private void getUserStats(String id) {
-        usersDBR.child(id).child("statistics").get().addOnCompleteListener(
-                (com.google.android.gms.tasks.Task<DataSnapshot> task) -> {
-                    tours.clear();
-                    for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
-                        Tour tour = postSnapshot.getValue(Tour.class);
-                        tours.add(tour);
-                    }
-                    fill();
-                }
-        );
-
-    }
 
     public void setupProgress(View v) {
         ToggleButton toggle = (ToggleButton) v;
@@ -281,22 +260,40 @@ public class StatiscticsActivity extends AppCompatActivity {
         }
     }
 
+//    void readProgressData() {
+//        int count = 0;
+//        statistics = 0;
+//        if (StatisticMaker.getTourCount(this) > 0) {
+//            for (int tourNumber = StatisticMaker.getTourCount(this) - 1; tourNumber >= 0; tourNumber--) {
+//                Tour tour = StatisticMaker.loadTour(this, tourNumber);
+//
+//                for (int i = tour.getTotalTasks() - 1; i >= 0; i--) {
+//                    Task task = tour.getTourTasks().get(i);
+//
+//                    statistics += task.correct() ? 1 : 0;
+//                    count++;
+//
+//                    if (count == statsize)
+//                        return;
+//                }
+//            }
+//        }
+//    }
+
     void readProgressData() {
         int count = 0;
         statistics = 0;
-        if (StatisticMaker.getTourCount(this) > 0) {
-            for (int tourNumber = StatisticMaker.getTourCount(this) - 1; tourNumber >= 0; tourNumber--) {
-                Tour tour = StatisticMaker.loadTour(this, tourNumber);
+        ArrayList<Tour> tours_reversed = new ArrayList<>(tours);
+        Collections.reverse(tours_reversed);
+        for (Tour tour : tours_reversed) {
+            for (int i = tour.getTotalTasks() - 1; i >= 0; i--) {
+                Task task = tour.getTourTasks().get(i);
 
-                for (int i = tour.getTotalTasks() - 1; i >= 0; i--) {
-                    Task task = tour.getTourTasks().get(i);
+                statistics += task.correct() ? 1 : 0;
+                count++;
 
-                    statistics += task.correct() ? 1 : 0;
-                    count++;
-
-                    if (count == statsize)
-                        return;
-                }
+                if (count == statsize)
+                    return;
             }
         }
     }

@@ -14,14 +14,14 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.education4all.BuildConfig;
 import com.education4all.R;
-import com.education4all.Utils;
+import com.education4all.utils.Enums;
+import com.education4all.utils.Utils;
+import com.education4all.firebase.FireBaseUtils;
 import com.education4all.mathCoachAlg.DataReader;
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tasks.Task;
 import com.education4all.mathCoachAlg.tours.Tour;
-import com.google.firebase.auth.FirebaseAuth;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,9 +40,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         Task.setType(tasktype);
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null)
-            auth.signInAnonymously();
+        FireBaseUtils.initFirebase(this);
     }
 
     @Override
@@ -55,17 +53,6 @@ public class MainActivity extends AppCompatActivity {
             statistics.setText("\nИзменен формат записи результатов\nПерейдите на экран результатов для обновления");
         }
         showSettings();
-
-//        TextView statistics = findViewById(R.id.statistics);
-//        SpannableString ss = new SpannableString("Разные шрифты");
-//
-//        Typeface font = Typeface.DEFAULT_BOLD,
-//                font2 = Typeface.MONOSPACE;
-//
-//        ss.setSpan(new CustomTypefaceSpan("", font2), 0, 6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-//        ss.setSpan(new CustomTypefaceSpan("", font), 6, ss.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-//        statistics.setText(ss);
-
     }
 
     @Override
@@ -148,19 +135,19 @@ public class MainActivity extends AppCompatActivity {
                 int seconds = (int) tour.getTourTime();
                 date = tour.date();
 
-                Utils.twodates relationOfDates = Utils.twodates.equal;
+                Enums.twodates relationOfDates = Enums.twodates.equal;
 
                 if (tourNumber > 0)
-                    relationOfDates = Utils.isSubsequent(prevdate, date);
+                    relationOfDates = Enums.isSubsequent(prevdate, date);
 
-                if (relationOfDates == Utils.twodates.equal)
+                if (relationOfDates == Enums.twodates.equal)
                     secondstoday += seconds;
                 else {
                     if (secondstoday >= goal)
                         subsequentDays++;
                     secondstoday = seconds;
 
-                    if (relationOfDates != Utils.twodates.subsequent && subsequentDays > 0) {
+                    if (relationOfDates != Enums.twodates.subsequent && subsequentDays > 0) {
                         streakDays.add(subsequentDays);
                         lastStreakEndDate = prevdate;
                         subsequentDays = 0;
@@ -201,10 +188,10 @@ public class MainActivity extends AppCompatActivity {
 
             String today = sdf.format(c.getTime());
             if (streakDays.size() > 0)
-                if (Utils.isSubsequent(lastStreakEndDate, today) != Utils.twodates.unrelated)
+                if (Enums.isSubsequent(lastStreakEndDate, today) != Enums.twodates.unrelated)
                     lastDayStreakIsvalid = true;
 
-            if (Utils.isSubsequent(date, today) != Utils.twodates.equal)
+            if (Enums.isSubsequent(date, today) != Enums.twodates.equal)
                 secondstoday = 0;
 
             int averageDays = 0, averageSolved = 0;

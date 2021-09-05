@@ -18,7 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.education4all.NotificationHelper;
 import com.education4all.R;
-import com.education4all.Utils;
+import com.education4all.utils.Utils;
 import com.education4all.mathCoachAlg.DataReader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +27,8 @@ import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import com.education4all.utils.Enums.*;
 
 public class SettingsAppTab extends Fragment {
     View view;
@@ -45,7 +47,7 @@ public class SettingsAppTab extends Fragment {
         String state = "";
 
         TextView timertv = view.findViewById(R.id.TimerState);
-        Utils.TimerState timerState = Utils.TimerState.convert(
+        TimerState timerState = TimerState.convert(
                 DataReader.GetInt(DataReader.TIMER_STATE, context)
         );
         switch (timerState) {
@@ -63,7 +65,7 @@ public class SettingsAppTab extends Fragment {
         timertv.setOnClickListener(this::timerDropdown);
 
         TextView numberstv = view.findViewById(R.id.numbersLayout);
-        Utils.LayoutState layoutState = Utils.LayoutState.convert(
+        LayoutState layoutState = LayoutState.convert(
                 DataReader.GetInt(DataReader.LAYOUT_STATE, context)
         );
         switch (layoutState) {
@@ -80,7 +82,7 @@ public class SettingsAppTab extends Fragment {
 
 
         TextView buttonstv = view.findViewById(R.id.buttonsPlace);
-        Utils.ButtonsPlace buttonsPlace = Utils.ButtonsPlace.convert(
+        ButtonsPlace buttonsPlace = ButtonsPlace.convert(
                 DataReader.GetInt(DataReader.BUTTONS_PLACE, context)
         );
 
@@ -102,7 +104,7 @@ public class SettingsAppTab extends Fragment {
         goal.setOnClickListener(this::goalDropdown);
 
 //        TextView themetv = view.findViewById(R.id.theme);
-//        Utils.Theme theme = Utils.Theme.convert(
+//        Theme theme = Theme.convert(
 //                DataReader.GetValue("Theme", context)
 //        );
 //        switch (theme) {
@@ -153,13 +155,13 @@ public class SettingsAppTab extends Fragment {
             timerStateText.setText(item.getTitle().toString());
             switch (item.getTitle().toString()) {
                 case "Непрерывный":
-                    state = Utils.TimerState.convert(Utils.TimerState.CONTINIOUS);
+                    state = TimerState.convert(TimerState.CONTINIOUS);
                     break;
                 case "По шагам":
-                    state = Utils.TimerState.convert(Utils.TimerState.DISCRETE);
+                    state = TimerState.convert(TimerState.DISCRETE);
                     break;
                 case "Нет":
-                    state = Utils.TimerState.convert(Utils.TimerState.INVISIBlE);
+                    state = TimerState.convert(TimerState.INVISIBlE);
                     break;
             }
             DataReader.SaveInt(state, DataReader.TIMER_STATE, context);
@@ -180,10 +182,10 @@ public class SettingsAppTab extends Fragment {
             switch (item.getTitle().toString()) {
                 case "1 2 3":
                 default:
-                    state = Utils.LayoutState.convert(Utils.LayoutState._123);
+                    state = LayoutState.convert(LayoutState._123);
                     break;
                 case "7 8 9":
-                    state = Utils.LayoutState.convert(Utils.LayoutState._789);
+                    state = LayoutState.convert(LayoutState._789);
                     break;
             }
             DataReader.SaveInt(state, DataReader.LAYOUT_STATE, context);
@@ -203,10 +205,10 @@ public class SettingsAppTab extends Fragment {
             switch (item.getTitle().toString()) {
                 case "Справа":
                 default:
-                    state = Utils.ButtonsPlace.convert(Utils.ButtonsPlace.RIGHT);
+                    state = ButtonsPlace.convert(ButtonsPlace.RIGHT);
                     break;
                 case "Слева":
-                    state = Utils.ButtonsPlace.convert(Utils.ButtonsPlace.LEFT);
+                    state = ButtonsPlace.convert(ButtonsPlace.LEFT);
                     break;
             }
             DataReader.SaveInt(state, DataReader.BUTTONS_PLACE, context);
@@ -275,7 +277,7 @@ public class SettingsAppTab extends Fragment {
         Utils.FixDialog(dialog, context); // почему-то нужно для планшетов
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void setAlarm(int hour, int minute) {
         TextView timetv = view.findViewById(R.id.remind_time);
 
@@ -304,15 +306,15 @@ public class SettingsAppTab extends Fragment {
 //            switch (item.getTitle().toString()) {
 //                case "Светлая":
 //                default:
-//                    state = Utils.Theme.convert(Utils.Theme.LIGHT);
+//                    state = Theme.convert(Theme.LIGHT);
 //                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 //                    break;
 //                case "Темная":
-//                    state = Utils.Theme.convert(Utils.Theme.DARK);
+//                    state = Theme.convert(Theme.DARK);
 //                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 //                    break;
 //                case "Системная":
-//                    state =Utils.Theme.convert(Utils.Theme.SYSTEM);
+//                    state =Theme.convert(Theme.SYSTEM);
 //                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 //                    break;
 //            }

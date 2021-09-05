@@ -10,14 +10,14 @@
         android:title="@string/action_delete_stats"
         app:iconTint="@color/additional"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/action_upload_stats"
-        android:icon="@drawable/ic_upload"
-        android:iconTint="@color/additional"
-        android:orderInCategory="100"
-        android:title="Загрузить статистику"
-        app:iconTint="@color/additional"
-        app:showAsAction="always" />
+<!--    <item-->
+<!--        android:id="@+id/action_upload_stats"-->
+<!--        android:icon="@drawable/ic_upload"-->
+<!--        android:iconTint="@color/additional"-->
+<!--        android:orderInCategory="100"-->
+<!--        android:title="Загрузить статистику"-->
+<!--        app:iconTint="@color/additional"-->
+<!--        app:showAsAction="always" />-->
     <item
         android:id="@+id/action_another_user"
         android:icon="@drawable/ic_people"

@@ -3,7 +3,7 @@ package com.education4all.mathCoachAlg.tasks;
 import android.util.Log;
 import android.util.Pair;
 
-import com.education4all.Utils;
+import com.education4all.utils.Utils;
 
 import java.util.ArrayList;
 
