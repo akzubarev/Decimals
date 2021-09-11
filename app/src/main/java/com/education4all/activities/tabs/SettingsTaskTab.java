@@ -38,7 +38,7 @@ public class SettingsTaskTab extends Fragment {
         view = v;
         IndicatorSeekBar seekBar = view.findViewById(R.id.round_length_slider);
         seekBar.customTickTexts(new String[]{"1", "2", "3", "5", "10", "15", "20", "30", "45", "     60"});
-        switch (DataReader.GetInt("RoundTime", getContext())) {
+        switch (DataReader.GetInt(DataReader.ROUND_TIME, getContext())) {
             case 1:
                 seekBar.setProgress(0);
                 break;
@@ -73,13 +73,6 @@ public class SettingsTaskTab extends Fragment {
         seekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
             public void onSeeking(SeekParams seekParams) {
-//                Log.i(TAG, seekParams.seekBar);
-//                Log.i(TAG, seekParams.progress);
-//                Log.i(TAG, seekParams.progressFloat);
-//                Log.i(TAG, seekParams.fromUser);
-//                //when tick count > 0
-//                Log.i(TAG, seekParams.thumbPosition);
-//                Log.i(TAG, seekParams.tickText);
                 String value = seekParams.tickText.trim();
                 DataReader.SaveInt(Integer.parseInt(value), DataReader.ROUND_TIME, getContext());
             }

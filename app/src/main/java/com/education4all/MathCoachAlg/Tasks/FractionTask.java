@@ -182,15 +182,10 @@ public class FractionTask extends Task {
                 rightborder = (int) border;
         }
 
-        if (leftborder < 1)
-            leftborder = 1;
-        if (rightborder > secondBottom - 1)
-            rightborder = secondBottom - 1;
 
-        if (rightborder < 1)
-            rightborder = 1;
-        if (leftborder > secondBottom - 1)
-            leftborder = secondBottom - 1;
+        leftborder = Math.max(Math.min(leftborder, secondBottom - 1), 1);
+        rightborder = Math.max(Math.min(rightborder, secondBottom - 1), 1);
+
 
         Fraction left = new Fraction(0, firstTop, firstBottom).simplify();
         boolean resultIsSimpl = false;
@@ -328,6 +323,7 @@ public class FractionTask extends Task {
 
         if (oneZero) {
             secondTop = 0;
+            secondInt = Math.max(1, secondInt);
         } else {
             int debugcount = 0;
             do {
@@ -342,12 +338,12 @@ public class FractionTask extends Task {
                 secondTop = secondTop("+", secondBottom, firstTop, firstBottom, canbedividable, simplifiable);
             } while (secondTop == -1);
         }
-        if (!canbedividable || rnd.nextBoolean())
+        if (complexity != 0 && (!canbedividable || rnd.nextBoolean()))
             left = new Fraction(firstInt, firstTop, firstBottom).simplify();
         else
             left = new Fraction(firstInt, firstTop, firstBottom).remove_integer_part();
 
-        if (!canbedividable || rnd.nextBoolean())
+        if (complexity != 0 && (!canbedividable || rnd.nextBoolean()))
             right = new Fraction(secondInt, secondTop, secondBottom).simplify();
         else
             right = new Fraction(secondInt, secondTop, secondBottom).remove_integer_part();
@@ -395,6 +391,7 @@ public class FractionTask extends Task {
 
         if (oneZero) {
             secondTop = 0;
+            secondInt = Math.max(1, secondInt);
         } else {
             int debugcount = 0;
             do {
@@ -410,7 +407,7 @@ public class FractionTask extends Task {
             } while (secondTop == -1);
         }
 
-        if (!canbedividable || !rnd.nextBoolean())
+        if (complexity != 0 && (!canbedividable || rnd.nextBoolean()))
             right = new Fraction(secondInt, secondTop, secondBottom).simplify();
         else
             right = new Fraction(secondInt, secondTop, secondBottom).remove_integer_part();
@@ -418,11 +415,11 @@ public class FractionTask extends Task {
 
         firstInt = integer_part(right, firstTop, firstBottom);
 
-        if (!canbedividable || !rnd.nextBoolean()) {
+        if (complexity != 0 && (!canbedividable || rnd.nextBoolean()))
             left = new Fraction(firstInt, firstTop, firstBottom).simplify();
-        } else {
+        else
             left = new Fraction(firstInt, firstTop, firstBottom).remove_integer_part();
-        }
+
 
         expression = left + operations[1] + right;
         answer = left.minus(right).toString();

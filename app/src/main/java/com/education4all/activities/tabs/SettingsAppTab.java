@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -18,17 +19,16 @@ import androidx.fragment.app.Fragment;
 
 import com.education4all.NotificationHelper;
 import com.education4all.R;
-import com.education4all.utils.Utils;
 import com.education4all.mathCoachAlg.DataReader;
+import com.education4all.utils.Enums.ButtonsPlace;
+import com.education4all.utils.Enums.LayoutState;
+import com.education4all.utils.Enums.TimerState;
+import com.education4all.utils.Utils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import android.widget.Toast;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import com.education4all.utils.Enums.*;
 
 public class SettingsAppTab extends Fragment {
     View view;
@@ -133,6 +133,13 @@ public class SettingsAppTab extends Fragment {
 //        else
 //            emailtv.setText(user.getEmail());
 
+        SwitchCompat queue = view.findViewById(R.id.queue);
+        boolean queueEnabled = DataReader.GetBoolean(DataReader.QUEUE, context);
+        queue.setChecked(queueEnabled);
+        if (queueEnabled)
+            toggleQueue(v);
+        queue.setOnClickListener(this::toggleQueue);
+
         SwitchCompat reminder = view.findViewById(R.id.remind);
         boolean remind = DataReader.GetBoolean(DataReader.REMINDER, context);
         reminder.setChecked(remind);
@@ -143,6 +150,11 @@ public class SettingsAppTab extends Fragment {
         TextView reminder_time = view.findViewById(R.id.remind_time);
         reminder_time.setText(DataReader.GetString(DataReader.REMINDER_TIME, context));
         reminder_time.setOnClickListener(this::reminderDropDown);
+    }
+
+    private void toggleQueue(View v) {
+        boolean on = ((SwitchCompat) view.findViewById(R.id.queue)).isChecked();
+        DataReader.SaveBoolean(on, DataReader.QUEUE, context);
     }
 
     public void timerDropdown(View v) {

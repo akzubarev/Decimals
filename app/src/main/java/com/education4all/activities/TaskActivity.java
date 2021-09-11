@@ -1,5 +1,6 @@
 package com.education4all.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,70 +19,61 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.gridlayout.widget.GridLayout;
 
 import com.education4all.BuildConfig;
 import com.education4all.R;
-import com.education4all.utils.Enums;
 import com.education4all.mathCoachAlg.DataReader;
 import com.education4all.mathCoachAlg.StatisticMaker;
-import com.education4all.mathCoachAlg.tours.TaskQueue;
 import com.education4all.mathCoachAlg.tasks.Fraction;
 import com.education4all.mathCoachAlg.tasks.Task;
+import com.education4all.mathCoachAlg.tours.TaskQueue;
 import com.education4all.mathCoachAlg.tours.Tour;
+import com.education4all.utils.Enums;
 import com.education4all.utils.Utils;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class TaskActivity extends AppCompatActivity {
-    final String tasktype = BuildConfig.FLAVOR; //тип заданий
-    private final Tour currentTour = new Tour(); // элемент класса Tour - текущий тур
-    private Handler roundTimeHandler = new Handler(); // хэндлер для времени раунда
-    private final Handler progressBarHandler = new Handler(); // хэндлер для прогресс бара
-    private final Handler taskDisapHandler = new Handler(); // хэндлер для времени исчезновения
-    private Task task; // текущее задание
-    private String answer = "", // текущий ответ
+    final String tasktype = BuildConfig.FLAVOR;
+    Mode mode = Mode.integer;
+
+    private final Handler progressBarHandler = new Handler(),
+            taskDisapHandler = new Handler();
+
+    private final Tour currentTour = new Tour();
+    private Task task, correctionwork = null;
+    TaskQueue taskQueue;
+
+    private String answer = "",
             answerI = "", // текущая целая часть ответа
             answerT = "", // текущий числитель ответа
             answerB = "", // текущий знаменатель ответа
             answerF = ""; // текущая дробь ответа
-    //  SpannableString answerF = new SpannableString(""); // текущая дробь ответа
-    private float RoundTime; // время раунда
-    private TextView timerText; //текстовый таймер
-    private ProgressBar G_progressBar; // прогресс бар
-    private int progressStatus = 0; //позиция прогресс бара
-    private final Context context = this; // переменная контекста, нужна чтобы передавть её в другие классы
-    private boolean answerShown = false; // показан ли ответ
-    private boolean showTask = true; // показано ли задание
-    private float disapTime; // время изсчезновения задания
-    private int[][] allowedTasks; // массив разрешённых заданий
-    private ListView mDrawerList; // шторка внутренности
-    private DrawerLayout mDrawerLayout; // сама шторка
-    private ArrayAdapter<String> mAdapter; // адаптер для фоматирования строк
-    long prevTaskTime;
-    long prevAnswerTime;
-    long tourStartTime; //время начала раунда
-    long millis; //время раунда в миллисекундах
-    int seconds; //время раунда в секундах
-    int count; //текущее время раунда
-    int solved = 0; //сколько заданий решено
-    int shown = 1; //сколько заданий показано
-    boolean answerWasShown = false; //был ли уже показан ответ
-    final String id = BuildConfig.APPLICATION_ID;
-    Mode mode = Mode.integer;
-    Task correctionwork = null;
-    TaskQueue taskQueue;
+
+    private TextView timerText;
+    private ProgressBar progressBar;
+    private int progressStatus = 0;
+    private final Context context = this;
+    private boolean answerShown = false, showTask = true;
+
+    private float disapTime;
+    long prevTaskTime, prevAnswerTime, tourStartTime;
+    int tourLenght, secondsFromStart;
+    private Thread progressthread, timerthread;
+
+    int solved = 0, shown = 1;
+    boolean answerWasShown = false;
+
 
     enum Mode {
         integer,
@@ -96,7 +88,15 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.task);
+        //заполняем GridLayout
+        GridLayout gl = findViewById(R.id.buttonsLayout);
+        fillView(gl);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         int size = (int) getResources().getDimension(R.dimen.dimen0) / 3;
         for (int i = 0; i < fractionSyms.length; i++) {
 
@@ -108,24 +108,10 @@ public class TaskActivity extends AppCompatActivity {
             fractionSymsSpan[i].setSpan(new AbsoluteSizeSpan(size), 2, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
 
-        setContentView(R.layout.task);
-
-
-        //заполняем GridLayout
-        GridLayout gl = findViewById(R.id.buttonsLayout);
-        ViewTreeObserver vto = gl.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                GridLayout gl = findViewById(R.id.buttonsLayout);
-                fillView(gl);
-                ViewTreeObserver obs = gl.getViewTreeObserver();
-                obs.removeGlobalOnLayoutListener(this);
-            }
-        });
 
         //обнуляем переменные и инициализируем элементы layout
-        allowedTasks = DataReader.readAllowedTasks(this);
+        // массив разрешённых заданий
+        int[][] allowedTasks = DataReader.readAllowedTasks(this);
         if (!Task.areTasks(allowedTasks)) {
             finish();
             startActivity(
@@ -133,150 +119,105 @@ public class TaskActivity extends AppCompatActivity {
                             .putExtra("FromTask", true)
             );
         } else {
-            tourStartTime = System.currentTimeMillis();
-            prevTaskTime = tourStartTime;
-            prevAnswerTime = tourStartTime;
             answer = "";
-
-            final Enums.TimerState timerstate = Enums.TimerState.convert(
-                    DataReader.GetInt(DataReader.TIMER_STATE, this));
-
-
-            G_progressBar = findViewById(R.id.taskProgress);
-            G_progressBar.setProgress(0);
-            G_progressBar.setVisibility(timerstate == Enums.TimerState.INVISIBlE ?
-                    View.INVISIBLE : View.VISIBLE);
-            RoundTime = DataReader.GetInt(DataReader.ROUND_TIME, this);
-            millis = (long) (RoundTime * 1000 * 60);
-            new Thread(() -> {
-                while (progressStatus < 100) {
-                    progressStatus += 1;
-                    if (timerstate == Enums.TimerState.CONTINIOUS)
-                        progressBarHandler.post(() -> G_progressBar.setProgress(progressStatus));
-                    try {
-                        Thread.sleep((long) (RoundTime * 600));
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-
-
-            timerText = findViewById(R.id.timertext);
-            timerText.setVisibility(timerstate == Enums.TimerState.INVISIBlE ?
-                    View.INVISIBLE : View.VISIBLE);
-
-            seconds = (int) RoundTime * 60;
-            timerText.setText(timeString(count, seconds));
-
-            new Thread(() -> {
-                while (count < seconds) {
-                    count += 1;
-                    if (timerstate == Enums.TimerState.CONTINIOUS)
-                        timerText.setText(timeString(count, seconds));
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-
-            disapTime = DataReader.GetInt(DataReader.DISAP_ROUND_TIME, this);
-            //roundTimeHandler.postDelayed(endRound, millis);
-            showTaskSetTrueAndRestartDisappearTimer();
+            handleTime();
 
             taskQueue = new TaskQueue(allowedTasks, context);
+            if (!DataReader.GetBoolean(DataReader.QUEUE, context))
+                taskQueue.setEnabled(false);
+
             Task.setAllowedTasks(allowedTasks);
             task = taskQueue.newTask();
+
             textViewUpdate();
+        }
+    }
 
-            findViewById(R.id.But_Del).setOnLongClickListener(v -> {
-                answer = "";
-                textViewUpdate();
-                return true;
-            });
+    private void handleTime() {
 
-            GridLayout parent = findViewById(R.id.buttonsLayout);
-            for (int i = 0; i < parent.getChildCount(); i++) {
-                View child = parent.getChildAt(i);
-                if (child.getClass() == AppCompatButton.class && !child.getTag().equals("empty")) {
+        tourStartTime = System.currentTimeMillis();
+        prevTaskTime = tourStartTime;
+        prevAnswerTime = tourStartTime;
+        tourLenght = DataReader.GetInt(DataReader.ROUND_TIME, this) * 60;
 
-                    final String childtag = child.getTag().toString();
-                    child.setOnLongClickListener(v -> {
-                        numberPress(child);
-                        return true;
-                    });
+        Enums.TimerState timerstate = Enums.TimerState.convert(
+                DataReader.GetInt(DataReader.TIMER_STATE, this));
 
-                    boolean islinesym = childtag.equals("/") || childtag.equals(",");
-                    child.setOnTouchListener((v, event) -> {
-                        int resID = getResources().getIdentifier(!islinesym ? "line" + childtag : "linesym",
-                                "id", id);
-                        View line = findViewById(resID);
-                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                            case MotionEvent.ACTION_DOWN:
-                                line.setBackgroundColor(getResources().getColor(R.color.main));
-                                break;
-                            case MotionEvent.ACTION_UP:
-                                line.setBackgroundColor(getResources().getColor(R.color.shadowed));
-                                v.performClick();
-                                break;
-                            default:
-                                break;
+        progressBar = findViewById(R.id.taskProgress);
+        progressBar.setProgress(0);
+        progressBar.setVisibility(timerstate == Enums.TimerState.INVISIBlE ?
+                View.INVISIBLE : View.VISIBLE);
 
-                        }
-
-                        return true;
-                    });
+        progressthread = new Thread(() -> {
+            while (progressStatus < 100) {
+                progressStatus += 1;
+                progressBarHandler.post(() -> progressBar.setProgress(progressStatus));
+                try {
+                    Thread.sleep((tourLenght * 10L));
+                } catch (InterruptedException e) {
+                    return;
                 }
             }
+        });
+
+
+        timerText = findViewById(R.id.timertext);
+        timerText.setVisibility(timerstate == Enums.TimerState.INVISIBlE ?
+                View.INVISIBLE : View.VISIBLE);
+        timerText.setText(timeString(secondsFromStart, tourLenght));
+
+        timerthread = new Thread(() -> {
+            while (secondsFromStart < tourLenght) {
+                secondsFromStart += 1;
+                progressBarHandler.post(() -> timerText.setText(timeString(secondsFromStart, tourLenght)));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        });
+
+        if (timerstate == Enums.TimerState.CONTINIOUS) {
+            timerthread.start();
+            progressthread.start();
         }
 
+        disapTime = DataReader.GetInt(DataReader.DISAP_ROUND_TIME, this);
+        resetDissapearing();
     }
 
     // формирует вывод о прошедшем времени
     private String timeString(int count, int max) {
-        return String.format("%s/%s", DateUtils.formatElapsedTime(count), DateUtils.formatElapsedTime(max));
+        return String.format(Locale.getDefault(), "%s/%s",
+                DateUtils.formatElapsedTime(count),
+                DateUtils.formatElapsedTime(max));
     }
 
     //обновляет текстовый и визуальный таймеры
     void updateTimers() {
-        G_progressBar.setProgress(progressStatus);
-        timerText.setText(timeString(count, seconds));
+        progressBar.setProgress(progressStatus);
+        timerText.setText(timeString(secondsFromStart, tourLenght));
     }
 
     //делаем все кнопки одинакового размера внутри GridLayout
+    @SuppressLint("ClickableViewAccessibility")
     public void fillView(GridLayout parent) {
         //Button child;
-        View child;
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            child = parent.getChildAt(i);
-            if (child.getClass() != View.class) {
-                GridLayout.LayoutParams params = (GridLayout.LayoutParams) child.getLayoutParams();
-                int margin = -8;
-                if (child.getClass() == AppCompatButton.class)//|| child.getClass() == ImageButton.class)
-                    params.setMargins(margin, margin, margin, margin);
-
-                params.width = (parent.getWidth() / parent.getColumnCount()) - params.rightMargin - params.leftMargin;
-                params.height = (parent.getHeight() / parent.getRowCount()) - params.bottomMargin - params.topMargin;
-
-                child.setLayoutParams(params);
-            }
-        }
-
         Button sym;
         switch (tasktype) {
             case "integers":
-                sym = findViewById(R.id.But_sym);
+                sym = findViewById(R.id.Button_sym);
                 sym.setText("");
                 sym.setTag("empty");
                 sym.setOnClickListener(null);
+                sym.setOnLongClickListener(null);
                 sym.setOnTouchListener(null);
-                View linesym = findViewById(R.id.linesym);
+                View linesym = findViewById(R.id.Line_sym);
                 linesym.setBackgroundColor(Color.TRANSPARENT);
                 break;
             case "fractions":
-                sym = findViewById(R.id.But_sym);
+                sym = findViewById(R.id.Button_sym);
                 sym.setTag("/");
                 setModeSym();
                 break;
@@ -286,6 +227,40 @@ public class TaskActivity extends AppCompatActivity {
 //                sym.Tag = ",";
                 break;
         }
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            RelativeLayout childLayout = (RelativeLayout) parent.getChildAt(i);
+            View child = childLayout.getChildAt(0);
+            View line = childLayout.getChildAt(1);
+            if (child.getClass() == AppCompatButton.class && !child.getTag().equals("empty")) {
+                if (child.getTag().equals("del"))
+                    child.setOnLongClickListener(v -> {
+                        answer = "";
+                        textViewUpdate();
+                        return true;
+                    });
+                else
+                    child.setOnLongClickListener(v -> {
+                        numberPress(v);
+                        return true;
+                    });
+
+                child.setOnTouchListener((v, event) -> {
+                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                        case MotionEvent.ACTION_DOWN:
+                            line.setBackgroundColor(getResources().getColor(R.color.main));
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            line.setBackgroundColor(getResources().getColor(R.color.shadowed));
+                            v.performClick();
+                            break;
+                        default:
+                            break;
+                    }
+                    return true;
+                });
+            }
+        }
+
 
         Enums.ButtonsPlace buttonsPlace = Enums.ButtonsPlace.convert(
                 DataReader.GetInt(DataReader.BUTTONS_PLACE, this)
@@ -296,36 +271,19 @@ public class TaskActivity extends AppCompatActivity {
         );
 
         if (buttonsPlace == Enums.ButtonsPlace.LEFT)
-            alterButtons();
+            alterActionSides();
         if (layoutState == Enums.LayoutState._123)
             alterLayout();
     }
 
     //меняет раскладку с 789 на 123
     void alterLayout() {
-        Button b1 = findViewById(R.id.But_7);
-        Button b2 = findViewById(R.id.But_1);
-        switchPlaces(b1, b2);
-        b1 = findViewById(R.id.But_8);
-        b2 = findViewById(R.id.But_2);
-        switchPlaces(b1, b2);
-        b1 = findViewById(R.id.But_9);
-        b2 = findViewById(R.id.But_3);
-        switchPlaces(b1, b2);
-
-
-        View v1 = findViewById(R.id.line7);
-        View v2 = findViewById(R.id.line1);
-        switchPlaces(v1, v2);
-
-        v1 = findViewById(R.id.line8);
-        v2 = findViewById(R.id.line2);
-        switchPlaces(v1, v2);
-
-        v1 = findViewById(R.id.line9);
-        v2 = findViewById(R.id.line3);
-        switchPlaces(v1, v2);
-
+        switchPlaces(findViewById(R.id.Layout_7),
+                findViewById(R.id.Layout_1));
+        switchPlaces(findViewById(R.id.Layout_8),
+                findViewById(R.id.Layout_2));
+        switchPlaces(findViewById(R.id.Layout_9),
+                findViewById(R.id.Layout_3));
     }
 
     //меняет местами два объекта
@@ -336,91 +294,26 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     //перемещает кнопки-значки в левую сторону экрана
-    void alterButtons() {
-        View b1 = findViewById(R.id.But_7);
-        View b2 = findViewById(R.id.But_8);
-        View b3 = findViewById(R.id.But_9);
-        View b4 = findViewById(R.id.But_Del);
-        switchPlaces(b1, b4);
-        switchPlaces(b2, b1);
-        switchPlaces(b3, b2);
+    void alterActionSides() {
+        View imagebutton = findViewById(R.id.Layout_Del);
+        switchPlaces(findViewById(R.id.Layout_9), imagebutton);
+        switchPlaces(findViewById(R.id.Layout_8), imagebutton);
+        switchPlaces(findViewById(R.id.Layout_7), imagebutton);
 
-        b1 = findViewById(R.id.But_4);
-        b2 = findViewById(R.id.But_5);
-        b3 = findViewById(R.id.But_6);
-        b4 = findViewById(R.id.But_Skip);
-        switchPlaces(b1, b4);
-        switchPlaces(b2, b1);
-        switchPlaces(b3, b2);
+        imagebutton = findViewById(R.id.Layout_skip);
+        switchPlaces(findViewById(R.id.Layout_6), imagebutton);
+        switchPlaces(findViewById(R.id.Layout_5), imagebutton);
+        switchPlaces(findViewById(R.id.Layout_4), imagebutton);
 
-        b1 = findViewById(R.id.But_1);
-        b2 = findViewById(R.id.But_2);
-        b3 = findViewById(R.id.But_3);
-        b4 = findViewById(R.id.But_Help);
-        switchPlaces(b1, b4);
-        switchPlaces(b2, b1);
-        switchPlaces(b3, b2);
+        imagebutton = findViewById(R.id.Layout_help);
+        switchPlaces(findViewById(R.id.Layout_3), imagebutton);
+        switchPlaces(findViewById(R.id.Layout_2), imagebutton);
+        switchPlaces(findViewById(R.id.Layout_1), imagebutton);
 
-        b1 = findViewById(R.id.But_empty);
-        b2 = findViewById(R.id.But_0);
-        b3 = findViewById(R.id.But_sym);
-        b4 = findViewById(R.id.But_Check);
-        switchPlaces(b1, b4);
-        switchPlaces(b2, b1);
-        switchPlaces(b3, b2);
-
-        TextView text = findViewById(R.id.deletetext);
-        GridLayout.LayoutParams params = (GridLayout.LayoutParams) text.getLayoutParams();
-        params.columnSpec = GridLayout.spec(0);
-        text.setLayoutParams(params);
-
-        text = findViewById(R.id.skiptext);
-        params = (GridLayout.LayoutParams) text.getLayoutParams();
-        params.columnSpec = GridLayout.spec(0);
-        text.setLayoutParams(params);
-
-        text = findViewById(R.id.helptext);
-        params = (GridLayout.LayoutParams) text.getLayoutParams();
-        params.columnSpec = GridLayout.spec(0);
-        text.setLayoutParams(params);
-
-        text = findViewById(R.id.checktext);
-        params = (GridLayout.LayoutParams) text.getLayoutParams();
-        params.columnSpec = GridLayout.spec(0);
-        text.setLayoutParams(params);
-
-        b1 = findViewById(R.id.line7);
-        b2 = findViewById(R.id.line8);
-        b3 = findViewById(R.id.line9);
-        b4 = findViewById(R.id.linedel);
-        switchPlaces(b1, b4);
-        switchPlaces(b2, b1);
-        switchPlaces(b3, b2);
-
-        b1 = findViewById(R.id.line4);
-        b2 = findViewById(R.id.line5);
-        b3 = findViewById(R.id.line6);
-        b4 = findViewById(R.id.lineskip);
-        switchPlaces(b1, b4);
-        switchPlaces(b2, b1);
-        switchPlaces(b3, b2);
-
-        b1 = findViewById(R.id.line1);
-        b2 = findViewById(R.id.line2);
-        b3 = findViewById(R.id.line3);
-        b4 = findViewById(R.id.linehelp);
-        switchPlaces(b1, b4);
-        switchPlaces(b2, b1);
-        switchPlaces(b3, b2);
-
-        b1 = findViewById(R.id.lineempty);
-        b2 = findViewById(R.id.line0);
-        b3 = findViewById(R.id.linesym);
-        b4 = findViewById(R.id.linecheck);
-        switchPlaces(b1, b4);
-        switchPlaces(b2, b1);
-        switchPlaces(b3, b2);
-
+        imagebutton = findViewById(R.id.Layout_check);
+        switchPlaces(findViewById(R.id.Layout_sym), imagebutton);
+        switchPlaces(findViewById(R.id.Layout_0), imagebutton);
+        switchPlaces(findViewById(R.id.Layout_empty), imagebutton);
     }
 
     @Override
@@ -452,7 +345,7 @@ public class TaskActivity extends AppCompatActivity {
         if (answer.equals(""))
             return;
 
-        showTaskSetTrueAndRestartDisappearTimer();
+        resetDissapearing();
         updateTimers();
 
         if (answerShown) {
@@ -492,15 +385,15 @@ public class TaskActivity extends AppCompatActivity {
         if (!line.isEmpty()) {
             String[] answers = line.split(", ");
             for (String s : answers)
-                text.append(String.format("<strike>%s</strike>, ", s));
+                text.append(String.format(Locale.getDefault(), "<strike>%s</strike>, ", s));
         }
-        text.append(String.format("<strike>%s</strike>", answer));
+        text.append(String.format(Locale.getDefault(), "<strike>%s</strike>", answer));
         wrongAnswers.setText(Html.fromHtml(text.toString()));
     }
 
     //пропуск задания
     public void skipTask(View view) {
-        showTaskSetTrueAndRestartDisappearTimer();
+        resetDissapearing();
         if (answerShown) {
             answer = "?";
         } else {
@@ -514,6 +407,7 @@ public class TaskActivity extends AppCompatActivity {
     private void startNewTask() {
         saveTaskStatistic(true);
         task = taskQueue.newTask();
+
 
         correctionwork = null;
         answerShown = false;
@@ -531,7 +425,7 @@ public class TaskActivity extends AppCompatActivity {
 
         updateTimers();
 
-        if (Calendar.getInstance().getTimeInMillis() - tourStartTime >= millis)
+        if ((Calendar.getInstance().getTimeInMillis() - tourStartTime) / 1000 >= tourLenght)
             endRound();
         else
             textViewUpdate();
@@ -549,7 +443,8 @@ public class TaskActivity extends AppCompatActivity {
             solved++;
 
         TextView statistics = findViewById(R.id.statistics);
-        statistics.setText(String.format("Решено %d/%d (%d%%)", solved, shown - 1, solved * 100 / (shown - 1)));
+        statistics.setText(String.format(Locale.getDefault(), "Решено %d/%d (%d%%)",
+                solved, shown - 1, solved * 100 / (shown - 1)));
     }
 
     //завершение раунда
@@ -564,8 +459,10 @@ public class TaskActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)//, R.style.AlertDialogTheme)
                 .setTitle("Раунд завершён")
-                .setMessage(String.format("Решено заданий: %d/%d (%d%%)",
-                        currentTour.getRightTasks(), currentTour.getTotalTasks(), 100 * currentTour.getRightTasks() / currentTour.getTotalTasks()))
+                .setMessage(String.format(Locale.getDefault(), "Решено заданий: %d/%d (%d%%)",
+                        currentTour.getRightTasks(),
+                        currentTour.getTotalTasks(),
+                        100 * currentTour.getRightTasks() / currentTour.getTotalTasks()))
                 .setCancelable(false);
 
         LayoutInflater inflater = getLayoutInflater();
@@ -657,8 +554,7 @@ public class TaskActivity extends AppCompatActivity {
         if (answer.equals("0") && !symbol.equals(",")) {
             answer = "";
             textViewUpdate();
-        } else if ((answer.isEmpty() && symbol.equals(",")) ||
-                (answer.contains(",") && symbol.equals(",")))
+        } else if (symbol.equals(",") && (answer.contains(",") || answer.isEmpty()))
             return;
 
         if (symbol.equals("/")) {
@@ -718,7 +614,9 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void setModeSym() {
-        ((Button) findViewById(R.id.But_sym)).setText(fractionSymsSpan[mode.ordinal()], TextView.BufferType.SPANNABLE);
+        ((Button) findViewById(R.id.Button_sym)).
+                setText(fractionSymsSpan[mode.ordinal()],
+                        TextView.BufferType.SPANNABLE);
     }
 
     void resetMode() {
@@ -797,7 +695,7 @@ public class TaskActivity extends AppCompatActivity {
     //1) При первичной инициализации, 2) при нажатии на ОК, 3) при нажатии на пропуск задания, 4) при нажатии на showTask.
     //Не перезапускается при цифровых кнопках, DEL, показывании ответа
     //При перезапуске таймера необходимо показать задание. Это нужно делать перед textViewUpdate.
-    private void showTaskSetTrueAndRestartDisappearTimer() {
+    private void resetDissapearing() {
         showTask = true;
         TextView pressToShowTaskTV = findViewById(R.id.pressToShowTaskTV);
         //pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
@@ -813,7 +711,7 @@ public class TaskActivity extends AppCompatActivity {
 
     //просмотр задания, если оно исчезло
     public void showTask(View view) {
-        showTaskSetTrueAndRestartDisappearTimer();
+        resetDissapearing();
         TextView pressToShowTaskTV = findViewById(R.id.pressToShowTaskTV);
         //pressToShowTaskTV.setText("");
         pressToShowTaskTV.setVisibility(View.INVISIBLE);
@@ -824,6 +722,8 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         taskDisapHandler.removeCallbacks(disapTask);
+        progressthread.interrupt();
+        timerthread.interrupt();
         super.onDestroy();
     }
 }

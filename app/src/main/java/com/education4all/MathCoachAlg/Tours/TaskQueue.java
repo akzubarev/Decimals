@@ -18,6 +18,7 @@ public class TaskQueue {
     ArrayList<QueueItem> items = new ArrayList<>();
     ArrayList<QueueItem> activeitems = new ArrayList<>();
     ArrayList<QueueItem> readyitems = new ArrayList<>();
+    Boolean enabled = true;
 
     public TaskQueue(int[][] allowedTasks, Context context) {
         this.context = context;
@@ -28,6 +29,9 @@ public class TaskQueue {
     }
 
     public void Add(Task task) {
+        if (!enabled)
+            return;
+
         int idx = IndexOf(task);
 
         if (idx != -1)
@@ -47,6 +51,8 @@ public class TaskQueue {
     }
 
     public void save() {
+        if (!enabled)
+            return;
         try {
             String json = objectMapper.writeValueAsString(items);
             DataReader.SaveQueue(json, context);
@@ -56,6 +62,8 @@ public class TaskQueue {
     }
 
     public void load() {
+        if (!enabled)
+            return;
         String json = DataReader.GetQueue(context);
         if (!json.isEmpty()) {
             try {
@@ -68,6 +76,8 @@ public class TaskQueue {
     }
 
     public void activateTasks(int[][] allowedTasks) {
+        if (!enabled)
+            return;
         for (int operation = 0; operation < allowedTasks.length; operation++) {
             if (allowedTasks[operation].length > 0)
                 for (int complexity : allowedTasks[operation])
@@ -76,24 +86,27 @@ public class TaskQueue {
     }
 
     void activate(int operation, int complexity) {
+        if (!enabled)
+            return;
         for (QueueItem item : items)
             if (item.validForTour(operation, complexity))
                 activeitems.add(item);
     }
 
-    void checkReady() {
+    private void checkReady() {
         for (QueueItem item : activeitems)
             if (item.isReady() && !readyitems.contains(item))
                 readyitems.add(item);
     }
 
-    void decreaseDelay() {
+    private void decreaseDelay() {
         for (QueueItem item : activeitems)
             item.decreaseDelay();
     }
 
     public Task newTask() {
-
+        if (!enabled)
+            return Task.makeTask();
         checkReady();
 
         if (readyitems.size() == 0) {
@@ -103,7 +116,7 @@ public class TaskQueue {
             return getReadyTask();
     }
 
-    Task getReadyTask() {
+    private Task getReadyTask() {
         QueueItem item = readyitems.get(0);
         Task out = item.show();
 
@@ -116,4 +129,7 @@ public class TaskQueue {
         return out;
     }
 
+    public void setEnabled(boolean isEnabled) {
+        enabled = isEnabled;
+    }
 }

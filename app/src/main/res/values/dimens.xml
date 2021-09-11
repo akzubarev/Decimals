@@ -12,8 +12,8 @@
     <dimen name="dimen6">15sp</dimen>
 
     <dimen name="bptop">30dp</dimen>
-    <dimen name="bpbottom">30dp</dimen>
-    <dimen name="bpleft">30dp</dimen>
+    <dimen name="bpbottom">20dp</dimen>
+    <dimen name="bpleft">20dp</dimen>
     <dimen name="bpright">30dp</dimen>
 
     <dimen name="tmargin">10dp</dimen>

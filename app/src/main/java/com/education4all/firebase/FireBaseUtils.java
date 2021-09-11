@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tours.Tour;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,14 +20,7 @@ public class FireBaseUtils {
     private static DatabaseReference usersDBR;
     private static DatabaseReference statisticsDBR;
 
-    public static void initFirebase(Context context) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        if (user == null) {
-            auth.signInAnonymously();
-            user = auth.getCurrentUser();
-        }
-
+    private static void initFirebase(Context context) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         usersDBR = database.getReference().child("users");
         statisticsDBR = usersDBR.child(user.getUid()).child("statistics");
@@ -38,11 +33,25 @@ public class FireBaseUtils {
         }
     }
 
+    public static void login(Context context) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
+        if (user == null)
+            auth.signInAnonymously().addOnCompleteListener((Task<AuthResult> task) ->
+            {
+                user = task.getResult().getUser();
+                initFirebase(context);
+            });
+        else
+            initFirebase(context);
+    }
+
 
     public static ArrayList<Tour> getUserStats(String id) {
         ArrayList<Tour> tours = new ArrayList<>();
         usersDBR.child(id).child("statistics").get().addOnCompleteListener(
-                (com.google.android.gms.tasks.Task<DataSnapshot> task) -> {
+                (Task<DataSnapshot> task) -> {
                     for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
                         Tour tour = postSnapshot.getValue(Tour.class);
                         tours.add(tour);
@@ -57,7 +66,7 @@ public class FireBaseUtils {
     }
 
     public static void uploadTours(ArrayList<Tour> tours) {
-       statisticsDBR.setValue(tours);
+        statisticsDBR.setValue(tours);
     }
 
     public static void uploadTour(Tour tour) {

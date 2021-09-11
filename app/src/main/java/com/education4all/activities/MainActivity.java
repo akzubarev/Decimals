@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         Task.setType(tasktype);
 
-        FireBaseUtils.initFirebase(this);
+        FireBaseUtils.login(this);
     }
 
     @Override

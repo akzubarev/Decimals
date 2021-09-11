@@ -22,10 +22,12 @@ public class DataReader {
     public static final String THEME = "Theme";
     public static final String REMINDER = "Reminder";
     public static final String REMINDER_TIME = "ReminderTime";
+    public static final String QUEUE = "QueueEnabled";
 
     private static final HashMap<String, Integer> defaultInts = new HashMap<>();
     private static final HashMap<String, String> defaultStrings = new HashMap<>();
     private static final HashMap<String, Boolean> defaultBooleans = new HashMap<>();
+
 
     static {
         //ints
@@ -41,6 +43,7 @@ public class DataReader {
 
         //booleans
         defaultBooleans.put(REMINDER, false);
+        defaultBooleans.put(QUEUE, false);
 
         //strings
         defaultStrings.put(REMINDER_TIME, "18:00");
