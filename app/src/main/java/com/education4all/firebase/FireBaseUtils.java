@@ -47,6 +47,9 @@ public class FireBaseUtils {
             initFirebase(context);
     }
 
+    public static FirebaseUser getUser() {
+        return user;
+    }
 
     public static ArrayList<Tour> getUserStats(String id) {
         ArrayList<Tour> tours = new ArrayList<>();

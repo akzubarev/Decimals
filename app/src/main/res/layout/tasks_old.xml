@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#444444"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.7">
+
+        <TextView
+            android:id="@+id/expTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/color2"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="showTask"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen0" />
+
+        <TextView
+            android:id="@+id/wrongAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:ellipsize="start"
+            android:gravity="top"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingTop="12dp"
+            android:paddingRight="40dp"
+            android:singleLine="true"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4"
+            android:textStyle="" />
+
+        <TextView
+            android:id="@+id/statistics"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:ellipsize="start"
+            android:gravity="bottom|start"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingBottom="25dp"
+            android:singleLine="true"
+            android:text="Решено 0"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen6"
+            android:textStyle="" />
+
+        <TextView
+            android:id="@+id/timertext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:ellipsize="start"
+            android:gravity="bottom|end"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="25dp"
+            android:singleLine="true"
+            android:text="00:48/5:00"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen6"
+            android:textStyle="" />
+
+        <TextView
+            android:id="@+id/pressToShowTaskTV"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@android:color/transparent"
+            android:gravity="center|bottom"
+            android:onClick="showTask"
+            android:text="\Нажмите, чтобы показать задание"
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen6" />
+
+        <TextView
+            android:id="@+id/progressIcons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:ellipsize="start"
+            android:gravity="left|bottom"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/main"
+            android:textSize="@dimen/dimen4" />
+
+        <ImageButton
+            android:id="@+id/cross"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:includeFontPadding="false"
+            android:onClick="crossClick"
+            android:scaleType="fitCenter"
+            android:src="@drawable/cross"
+            android:text="\u2715"
+            android:textColor="@color/additional"
+            android:textSize="30sp"
+            android:tint="@color/additional" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/taskProgress"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"
+        android:progress="50"
+        android:progressDrawable="@drawable/progress_bar" />
+
+    <LinearLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"
+        android:orientation="horizontal">
+
+        <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/buttonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color3">
+
+            <View
+                android:id="@+id/line7"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="0"
+                app:layout_gravity="center|bottom"
+                app:layout_row="0" />
+
+            <View
+                android:id="@+id/line8"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="1"
+                app:layout_gravity="center|bottom"
+                app:layout_row="0" />
+
+            <View
+                android:id="@+id/line9"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="2"
+                app:layout_gravity="center|bottom"
+                app:layout_row="0" />
+
+            <View
+                android:id="@+id/linedel"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@android:color/transparent"
+                app:layout_column="3"
+                app:layout_gravity="center|bottom"
+                app:layout_row="0" />
+
+            <View
+                android:id="@+id/lineskip"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@android:color/transparent"
+                app:layout_column="3"
+                app:layout_gravity="center|bottom"
+                app:layout_row="1" />
+
+
+            <View
+                android:id="@+id/linehelp"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@android:color/transparent"
+                app:layout_column="3"
+                app:layout_gravity="center|bottom"
+                app:layout_row="2" />
+
+            <View
+                android:id="@+id/linecheck"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@android:color/transparent"
+                app:layout_column="3"
+                app:layout_gravity="center|bottom"
+                app:layout_row="3" />
+
+            <View
+                android:id="@+id/lineempty"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@android:color/transparent"
+                app:layout_column="0"
+                app:layout_gravity="center|bottom"
+                app:layout_row="3" />
+
+            <View
+                android:id="@+id/line4"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="0"
+                app:layout_gravity="center|bottom"
+                app:layout_row="1" />
+
+            <View
+                android:id="@+id/line5"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="1"
+                app:layout_gravity="center|bottom"
+                app:layout_row="1" />
+
+            <View
+                android:id="@+id/line6"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="2"
+                app:layout_gravity="center|bottom"
+                app:layout_row="1" />
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="0"
+                app:layout_gravity="center|bottom"
+                app:layout_row="2" />
+
+
+            <View
+                android:id="@+id/line2"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="1"
+                app:layout_gravity="center|bottom"
+                app:layout_row="2" />
+
+
+            <View
+                android:id="@+id/line3"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="2"
+                app:layout_gravity="center|bottom"
+                app:layout_row="2" />
+
+
+            <View
+                android:id="@+id/line0"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="1"
+                app:layout_gravity="center|bottom"
+                app:layout_row="3" />
+
+            <View
+                android:id="@+id/linesym"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="@dimen/linemargin"
+                android:background="@color/shadowed"
+                app:layout_column="2"
+                app:layout_gravity="center|bottom"
+                app:layout_row="3" />
+
+            <TextView
+                android:id="@+id/checktext"
+                android:layout_marginBottom="@dimen/tmargin"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center|bottom"
+                android:text="Проверить"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen6"
+                app:layout_column="3"
+                app:layout_gravity="center|bottom"
+                app:layout_row="3"
+                app:layout_rowSpan="1" />
+
+            <Button
+                android:id="@+id/But_5"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag="5"
+                android:text="5"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="1"
+                app:layout_columnWeight="0"
+                app:layout_row="1"
+                app:layout_rowWeight="0" />
+
+            <ImageButton
+                android:id="@+id/But_Skip"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:onClick="skipTask"
+                android:paddingLeft="@dimen/bpleft"
+                android:paddingTop="@dimen/bptop"
+                android:paddingRight="@dimen/bpright"
+                android:paddingBottom="@dimen/bpbottom"
+                android:scaleType="fitCenter"
+                android:src="@drawable/skip"
+                android:text="\u2192"
+                android:textColor="@color/main"
+                android:textSize="60sp"
+                android:tint="@color/additional"
+                app:layout_column="3"
+                app:layout_columnWeight="0"
+                app:layout_gravity="fill"
+                app:layout_row="1"
+                app:layout_rowWeight="0" />
+
+            <TextView
+                android:id="@+id/skiptext"
+                android:layout_marginBottom="@dimen/tmargin"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center|bottom"
+                android:text="Пропуск"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen6"
+                app:layout_column="3"
+                app:layout_gravity="center|bottom"
+                app:layout_row="1"
+                app:layout_rowSpan="1" />
+
+            <Button
+                android:id="@+id/But_7"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag="7"
+                android:text="7"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="0"
+                app:layout_columnWeight="0"
+                app:layout_row="0"
+                app:layout_rowWeight="0" />
+
+            <Button
+                android:id="@+id/But_8"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag="8"
+                android:text="8"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="1"
+                app:layout_columnWeight="0"
+                app:layout_row="0"
+                app:layout_rowWeight="0" />
+
+            <Button
+                android:id="@+id/But_9"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag="9"
+                android:text="9"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="2"
+                app:layout_columnWeight="0"
+                app:layout_row="0"
+                app:layout_rowWeight="0" />
+
+            <Button
+                android:id="@+id/But_1"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag="1"
+                android:text="1"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="0"
+                app:layout_columnWeight="0"
+                app:layout_row="2"
+                app:layout_rowWeight="0" />
+
+            <Button
+                android:id="@+id/But_0"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag="0"
+                android:text="0"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="1"
+                app:layout_columnWeight="0"
+                app:layout_row="3"
+                app:layout_rowWeight="0" />
+
+            <Button
+                android:id="@+id/But_sym"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag=","
+                android:text=","
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="2"
+                app:layout_columnWeight="0"
+                app:layout_row="3"
+                app:layout_rowWeight="0" />
+
+
+            <!--                android:id="@+id/But_empty"-->
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:tag="empty"
+                android:text=""
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="0"
+                app:layout_columnWeight="0"
+                app:layout_row="3"
+                app:layout_rowWeight="0" />
+
+            <Button
+                android:id="@+id/But_3"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag="3"
+                android:text="3"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="2"
+                app:layout_columnWeight="0"
+                app:layout_row="2"
+                app:layout_rowWeight="0" />
+
+            <Button
+                android:id="@+id/But_2"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag="2"
+                android:text="2"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="1"
+                app:layout_columnWeight="0"
+                app:layout_row="2"
+                app:layout_rowWeight="0" />
+
+            <ImageButton
+                android:id="@+id/But_Help"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:onClick="showAnswer"
+                android:paddingLeft="@dimen/bpleft"
+                android:paddingTop="@dimen/bptop"
+                android:paddingRight="@dimen/bpright"
+                android:paddingBottom="@dimen/bpbottom"
+                android:scaleType="fitCenter"
+                android:src="@drawable/help"
+                android:text="=?"
+                android:textColor="@color/additional"
+                android:textSize="@dimen/dimen0"
+                android:tint="@color/additional"
+                app:layout_column="3"
+                app:layout_columnWeight="0"
+                app:layout_gravity="fill"
+                app:layout_row="2"
+                app:layout_rowWeight="0" />
+
+            <TextView
+                android:id="@+id/helptext"
+                android:layout_marginBottom="@dimen/tmargin"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center|bottom"
+                android:text="Подсказка"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen6"
+                app:layout_column="3"
+                app:layout_gravity="center|bottom"
+                app:layout_row="2" />
+
+            <ImageButton
+                android:id="@+id/But_Del"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:onClick="charDelete"
+                android:paddingLeft="@dimen/bpleft"
+                android:paddingTop="@dimen/bptop"
+                android:paddingRight="@dimen/bpright"
+                android:paddingBottom="@dimen/bpbottom"
+                android:scaleType="fitCenter"
+                android:src="@drawable/delete"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                android:tint="@color/additional"
+                app:layout_column="3"
+                app:layout_columnWeight="1"
+                app:layout_gravity="fill"
+                app:layout_row="0"
+                app:layout_rowWeight="0" />
+
+
+            <TextView
+                android:id="@+id/deletetext"
+                android:layout_marginBottom="@dimen/tmargin"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:gravity="center|bottom"
+                android:text="Удалить"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen6"
+                app:layout_column="3"
+                app:layout_gravity="center|bottom"
+                app:layout_row="0" />
+
+            <Button
+                android:id="@+id/But_6"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag="6"
+                android:text="6"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="2"
+                app:layout_columnWeight="0"
+                app:layout_row="1"
+                app:layout_rowWeight="0" />
+
+            <Button
+                android:id="@+id/But_4"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="-8dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:includeFontPadding="false"
+                android:onClick="numberPress"
+                android:tag="4"
+                android:text="4"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                app:layout_column="0"
+                app:layout_columnWeight="0"
+                app:layout_row="1"
+                app:layout_rowWeight="0" />
+
+            <ImageButton
+                android:id="@+id/But_Check"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:background="@android:color/transparent"
+                android:onClick="okButtonClick"
+                android:paddingLeft="@dimen/bpleft"
+                android:paddingTop="@dimen/bptop"
+                android:paddingRight="@dimen/bpright"
+                android:paddingBottom="@dimen/bpbottom"
+                android:scaleType="fitCenter"
+                android:src="@drawable/check"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen0"
+                android:tint="@color/additional"
+                app:layout_column="3"
+                app:layout_columnWeight="0"
+                app:layout_gravity="fill"
+                app:layout_row="3"
+                app:layout_rowWeight="0" />
+
+        </androidx.gridlayout.widget.GridLayout>
+
+    </LinearLayout>
+</LinearLayout>

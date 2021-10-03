@@ -53,9 +53,12 @@ public class Utils {
     public static boolean reachedGoal(Context context) {
         int secondstoday = 0;
 
-        if (StatisticMaker.getTourCount(context) > 0) {
-            String date = null, prevdate = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        String today = sdf.format(c.getTime());
 
+        if (StatisticMaker.getTourCount(context) > 0) {
             for (int tourNumber = 0; tourNumber < StatisticMaker.getTourCount(context); tourNumber++) {
 
                 Tour tour = StatisticMaker.loadTour(context, tourNumber);
@@ -63,28 +66,10 @@ public class Utils {
                     return false;
 
                 int seconds = (int) tour.getTourTime();
-                date = tour.date();
-
-                Enums.twodates relationOfDates = Enums.twodates.equal;
-
-                if (tourNumber > 0)
-                    relationOfDates = Enums.isSubsequent(prevdate, date);
-
-                if (relationOfDates == Enums.twodates.equal)
+                String date = tour.date();
+                if (Enums.isSubsequent(date, today) == Enums.twodates.equal)
                     secondstoday += seconds;
-                else
-                    secondstoday = seconds;
-
-                prevdate = date;
             }
-
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-            Calendar c = Calendar.getInstance();
-            c.setTime(new Date());
-            String today = sdf.format(c.getTime());
-
-            if (Enums.isSubsequent(date, today) != Enums.twodates.equal)
-                return false;
 
             int goal = DataReader.GetInt(DataReader.GOAL, context) * 60;
             return secondstoday > goal;

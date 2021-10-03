@@ -722,8 +722,10 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         taskDisapHandler.removeCallbacks(disapTask);
-        progressthread.interrupt();
-        timerthread.interrupt();
+        if (progressthread != null)
+            progressthread.interrupt();
+        if (timerthread != null)
+            timerthread.interrupt();
         super.onDestroy();
     }
 }

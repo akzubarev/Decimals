@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.education4all.NotificationHelper;
 import com.education4all.R;
+import com.education4all.firebase.FireBaseUtils;
 import com.education4all.mathCoachAlg.DataReader;
 import com.education4all.utils.Enums.ButtonsPlace;
 import com.education4all.utils.Enums.LayoutState;
@@ -122,9 +123,8 @@ public class SettingsAppTab extends Fragment {
 //        themetv.setText(state);
 //        themetv.setOnClickListener(this::themeDropdown);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         TextView id = view.findViewById(R.id.id);
-        id.setText(user.getUid());
+        id.setText(FireBaseUtils.getUser().getUid());
 
 //        TextView emailtv = view.findViewById(R.id.email);
 //        String email = user.getEmail();
