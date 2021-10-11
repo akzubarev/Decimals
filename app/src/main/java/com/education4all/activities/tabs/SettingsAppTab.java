@@ -17,6 +17,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
+import com.education4all.BuildConfig;
 import com.education4all.NotificationHelper;
 import com.education4all.R;
 import com.education4all.firebase.FireBaseUtils;
@@ -25,8 +26,8 @@ import com.education4all.utils.Enums.ButtonsPlace;
 import com.education4all.utils.Enums.LayoutState;
 import com.education4all.utils.Enums.TimerState;
 import com.education4all.utils.Utils;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -150,6 +151,21 @@ public class SettingsAppTab extends Fragment {
         TextView reminder_time = view.findViewById(R.id.remind_time);
         reminder_time.setText(DataReader.GetString(DataReader.REMINDER_TIME, context));
         reminder_time.setOnClickListener(this::reminderDropDown);
+
+        if (BuildConfig.FLAVOR.equals("decimals") && BuildConfig.BUILD_TYPE.equals("debug")) {
+            TextView account = view.findViewById(R.id.account_text);
+            account.setVisibility(View.GONE);
+            LinearLayout layout = view.findViewById(R.id.id_layout);
+            layout.setVisibility(View.GONE);
+            layout = view.findViewById(R.id.queue_layout);
+            layout.setVisibility(View.GONE);
+            layout = view.findViewById(R.id.goal_layout);
+            layout.setVisibility(View.GONE);
+            layout = view.findViewById(R.id.reminder_layout);
+            layout.setVisibility(View.GONE);
+            layout = view.findViewById(R.id.remind_time_layout);
+            layout.setVisibility(View.GONE);
+        }
     }
 
     private void toggleQueue(View v) {
@@ -302,7 +318,7 @@ public class SettingsAppTab extends Fragment {
         timetv.setText(timetext);
         DataReader.SaveString(timetext, DataReader.REMINDER_TIME, context);
 
-        new NotificationHelper(context).setReminder(hour, minute);
+        new NotificationHelper(context).setReminder(hour, minute, NotificationHelper.MAKE);
     }
 
 

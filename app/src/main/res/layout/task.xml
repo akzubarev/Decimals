@@ -417,7 +417,7 @@
             android:id="@+id/Layout_empty"
             style="@style/TaskRL"
             app:layout_column="0"
-
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             app:layout_row="3">
 
             <Button
@@ -439,6 +439,7 @@
             style="@style/TaskRL"
             app:layout_column="1"
 
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             app:layout_row="3">
 
             <Button
@@ -460,6 +461,7 @@
             style="@style/TaskRL"
             app:layout_column="2"
 
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             app:layout_row="3">
 
             <Button
@@ -481,6 +483,7 @@
             style="@style/TaskRL"
             app:layout_column="3"
 
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
 
             app:layout_row="3">
 

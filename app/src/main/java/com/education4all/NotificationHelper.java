@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.education4all.activities.MainActivity;
+import com.education4all.mathCoachAlg.DataReader;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -31,6 +32,7 @@ public class NotificationHelper {
     public static final String CLOSE = "close";
     public static final String DELAY = "delay";
     public static final String MAKE = "make";
+    public static final String MAKEDELAYED = "makedelayed";
     public static final String OPEN = "open";
     public static final int NOTIFICATION_ID = 0;
 
@@ -81,7 +83,7 @@ public class NotificationHelper {
     }
 
 
-    public void setReminder(Calendar calendar, boolean byUser) {
+    public void setReminder(Calendar calendar, boolean byUser, String intentName) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
         if (alarmManager != null) {
@@ -89,7 +91,7 @@ public class NotificationHelper {
                     AlarmManager.RTC_WAKEUP,
                     calendar.getTimeInMillis(),
 //                    AlarmManager.INTERVAL_DAY,
-                    makeIntent(MAKE));
+                    makeIntent(intentName));
 
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd.MM");
             if (byUser)
@@ -101,7 +103,7 @@ public class NotificationHelper {
         }
     }
 
-    public void setReminder(int hour, int minute) {
+    public void setReminder(int hour, int minute, String intentName) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
@@ -110,19 +112,26 @@ public class NotificationHelper {
         if (calendar.getTime().compareTo(new Date()) < 0)
             calendar.add(Calendar.DAY_OF_MONTH, 1);
 
-        setReminder(calendar, true);
+        setReminder(calendar, true, intentName);
     }
 
     public void repeat() {
+        String[] time = DataReader.GetString(DataReader.REMINDER_TIME, context).split(":");
+        int hour = Integer.parseInt(time[0]);
+        int minute = Integer.parseInt(time[0]);
+
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 1);
-        setReminder(calendar, false);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        setReminder(calendar, false, MAKE);
     }
 
     public void delay() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 10);
-        setReminder(calendar, true);
+        setReminder(calendar, true, MAKEDELAYED);
     }
 
     public void cancelReminder() {
