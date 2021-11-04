@@ -26,6 +26,9 @@ import com.education4all.utils.Enums.ButtonsPlace;
 import com.education4all.utils.Enums.LayoutState;
 import com.education4all.utils.Enums.TimerState;
 import com.education4all.utils.Utils;
+import com.warkiz.widget.IndicatorSeekBar;
+import com.warkiz.widget.OnSeekChangeListener;
+import com.warkiz.widget.SeekParams;
 
 import org.w3c.dom.Text;
 
@@ -35,6 +38,7 @@ import java.util.Calendar;
 public class SettingsAppTab extends Fragment {
     View view;
     Context context;
+    private final String NODISAPEARCHAR = "∞"; //DecimalFormatSymbols.getInstance().getInfinity()
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,6 +104,120 @@ public class SettingsAppTab extends Fragment {
         buttonstv.setText(state);
         buttonstv.setOnClickListener(this::buttonsDropdown);
 
+        view = v;
+        IndicatorSeekBar seekBar = view.findViewById(R.id.round_length_slider);
+        seekBar.customTickTexts(new String[]{"1", "2", "3", "5", "10", "15", "20", "30", "45", "     60"});
+        switch (DataReader.GetInt(DataReader.ROUND_TIME, getContext())) {
+            case 1:
+                seekBar.setProgress(0);
+                break;
+            case 2:
+                seekBar.setProgress(11);
+                break;
+            case 3:
+                seekBar.setProgress(22);
+                break;
+            case 5:
+                seekBar.setProgress(33);
+                break;
+            case 10:
+                seekBar.setProgress(44);
+                break;
+            case 15:
+                seekBar.setProgress(55);
+                break;
+            case 20:
+                seekBar.setProgress(66);
+                break;
+            case 30:
+                seekBar.setProgress(77);
+                break;
+            case 45:
+                seekBar.setProgress(88);
+                break;
+            case 60:
+                seekBar.setProgress(100);
+                break;
+        }
+        seekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
+            @Override
+            public void onSeeking(SeekParams seekParams) {
+                String value = seekParams.tickText.trim();
+                DataReader.SaveInt(Integer.parseInt(value), DataReader.ROUND_TIME, getContext());
+            }
+
+            @Override
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+            }
+        });
+
+
+        seekBar = view.findViewById(R.id.disappear_time_slider);
+        seekBar.customTickTexts(new String[]{"1", "2", "3", "5", "10", "15", "20", "30", "45", "    ∞"});
+        switch (DataReader.GetInt("DisapRoundTime", getContext())) {
+            case 1:
+                seekBar.setProgress(0);
+                break;
+            case 2:
+                seekBar.setProgress(11);
+                break;
+            case 3:
+                seekBar.setProgress(22);
+                break;
+            case 5:
+                seekBar.setProgress(33);
+                break;
+            case 10:
+                seekBar.setProgress(44);
+                break;
+            case 15:
+                seekBar.setProgress(55);
+                break;
+            case 20:
+                seekBar.setProgress(66);
+                break;
+            case 30:
+                seekBar.setProgress(77);
+                break;
+            case 45:
+                seekBar.setProgress(88);
+                break;
+            case -1:
+                seekBar.setProgress(100);
+                break;
+        }
+        seekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
+            @Override
+            public void onSeeking(SeekParams seekParams) {
+//                Log.i(TAG, seekParams.seekBar);
+//                Log.i(TAG, seekParams.progress);
+//                Log.i(TAG, seekParams.progressFloat);
+//                Log.i(TAG, seekParams.fromUser);
+//                //when tick count > 0
+//                Log.i(TAG, seekParams.thumbPosition);
+//                Log.i(TAG, seekParams.tickText);
+                String value = seekParams.tickText.trim();
+                int ivalue = 0;
+                if (value.equals(NODISAPEARCHAR))
+                    ivalue = -1;
+                else
+                    ivalue = Integer.parseInt(value);
+                DataReader.SaveInt(ivalue, DataReader.DISAP_ROUND_TIME, getContext());
+            }
+
+            @Override
+            public void onStartTrackingTouch(IndicatorSeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(IndicatorSeekBar seekBar) {
+            }
+        });
+
         TextView goal = view.findViewById(R.id.goal);
         state = DataReader.GetInt(DataReader.GOAL, context) + " мин";
         goal.setText(state);
@@ -150,22 +268,24 @@ public class SettingsAppTab extends Fragment {
 
         TextView reminder_time = view.findViewById(R.id.remind_time);
         reminder_time.setText(DataReader.GetString(DataReader.REMINDER_TIME, context));
-        reminder_time.setOnClickListener(this::reminderDropDown);
 
-        if (BuildConfig.FLAVOR.equals("decimals") && BuildConfig.BUILD_TYPE.equals("debug")) {
+        if (BuildConfig.FLAVOR.equals("decimals") &&
+                BuildConfig.BUILD_TYPE.equals("debug") &&
+                BuildConfig.VERSION_NAME == "0.9.0") {
             TextView account = view.findViewById(R.id.account_text);
             account.setVisibility(View.GONE);
-            LinearLayout layout = view.findViewById(R.id.id_layout);
-            layout.setVisibility(View.GONE);
-            layout = view.findViewById(R.id.queue_layout);
-            layout.setVisibility(View.GONE);
-            layout = view.findViewById(R.id.goal_layout);
-            layout.setVisibility(View.GONE);
-            layout = view.findViewById(R.id.reminder_layout);
-            layout.setVisibility(View.GONE);
-            layout = view.findViewById(R.id.remind_time_layout);
-            layout.setVisibility(View.GONE);
+            view.findViewById(R.id.id_layout).setVisibility(View.GONE);
+            view.findViewById(R.id.queue_layout).setVisibility(View.GONE);
+//            view.findViewById(R.id.goal_layout).setVisibility(View.GONE);
+            view.findViewById(R.id.reminder_layout).setVisibility(View.GONE);
+            view.findViewById(R.id.remind_time_layout).setVisibility(View.GONE);
         }
+
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
+            view.findViewById(R.id.reminder_layout).setVisibility(View.GONE);
+            view.findViewById(R.id.remind_time_layout).setVisibility(View.GONE);
+        } else
+            reminder_time.setOnClickListener(this::reminderDropDown);
     }
 
     private void toggleQueue(View v) {

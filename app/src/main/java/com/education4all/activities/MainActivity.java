@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             statistics.setText("\nИзменен формат записи результатов\nПерейдите на экран результатов для обновления");
         }
         showSettings();
+        disableButtons(true);
     }
 
     @Override
@@ -92,17 +94,26 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void disableButtons(boolean enabled) {
+        findViewById(R.id.stat_button).setEnabled(enabled);
+        findViewById(R.id.settings_button).setEnabled(enabled);
+        findViewById(R.id.start_button).setEnabled(enabled);
+    }
+
     public void startTasks(View view) {
+        disableButtons(false);
         Intent intent = new Intent(this, TaskActivity.class);
         startActivity(intent);
     }
 
     public void startSettings(View view) {
+        disableButtons(false);
         Intent intent = new Intent(this, SettingsMainActivity.class);
         startActivity(intent);
     }
 
     public void startStatistic(View view) {
+        disableButtons(false);
         Intent intent = new Intent(this, StatiscticsActivity.class);
         // Intent intent = new Intent(this, MultiLineChartActivity.class);
         startActivity(intent);

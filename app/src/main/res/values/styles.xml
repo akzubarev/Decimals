@@ -121,12 +121,12 @@
     </style>
 
     <style name="TaskImageButtons" parent="TaskButtons">
-        <item name="android:layout_marginTop">10dp</item>
+<!--        <item name="android:layout_marginTop">10dp</item>-->
         <item name="android:paddingLeft">@dimen/bpleft</item>
         <item name="android:paddingTop">@dimen/bptop</item>
         <item name="android:paddingRight">@dimen/bpright</item>
         <item name="android:paddingBottom">@dimen/bpbottom</item>
-        <item name="android:scaleType">fitCenter</item>
+        <item name="android:scaleType">centerCrop</item>
         <item name="android:tint">@color/additional</item>
     </style>
 

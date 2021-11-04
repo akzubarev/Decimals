@@ -201,8 +201,6 @@
             android:id="@+id/Layout_Del"
             style="@style/TaskRL"
             app:layout_column="3"
-
-
             app:layout_row="0">
 
             <ImageButton
@@ -395,7 +393,7 @@
                 style="@style/TaskImageButtons"
                 android:adjustViewBounds="true"
                 android:onClick="showAnswer"
-                android:src="@drawable/help"
+                android:src="@drawable/help1"
                 android:text="=?"
                 app:layout_gravity="fill" />
 
@@ -482,9 +480,7 @@
             android:id="@+id/Layout_check"
             style="@style/TaskRL"
             app:layout_column="3"
-
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-
             app:layout_row="3">
 
             <ImageButton

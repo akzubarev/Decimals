@@ -13,7 +13,6 @@ import android.os.Build;
 import android.provider.Settings;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.education4all.activities.MainActivity;
@@ -23,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-@RequiresApi(api = Build.VERSION_CODES.M)
 public class NotificationHelper {
 
     private final Context context;
@@ -65,21 +63,21 @@ public class NotificationHelper {
                 .addAction(R.drawable.ic_trash, "Отменить", makeIntent(CLOSE));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void postOreoOptions(NotificationCompat.Builder mBuilder, NotificationManager nm) {
-        int importance = NotificationManager.IMPORTANCE_HIGH;
-        NotificationChannel notificationChannel =
-                new NotificationChannel(NOTIFICATION_CHANNEL_ID,
-                        "NOTIFICATION_CHANNEL_NAME",
-                        importance);
-        notificationChannel.enableLights(true);
-        notificationChannel.setLightColor(Color.RED);
-        notificationChannel.enableVibration(true);
-        notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-        assert nm != null;
-        mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
-        nm.createNotificationChannel(notificationChannel);
-
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel =
+                    new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+                            "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(
+                    new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            assert nm != null;
+            mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
+            nm.createNotificationChannel(notificationChannel);
+        }
     }
 
 

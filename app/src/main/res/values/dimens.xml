@@ -1,7 +1,7 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">10dp</dimen>
 
     <dimen name="dimen0">40sp</dimen>
     <dimen name="dimen1">30sp</dimen>
@@ -12,8 +12,8 @@
     <dimen name="dimen6">15sp</dimen>
 
     <dimen name="bptop">30dp</dimen>
-    <dimen name="bpbottom">20dp</dimen>
-    <dimen name="bpleft">20dp</dimen>
+    <dimen name="bpbottom">10dp</dimen>
+    <dimen name="bpleft">30dp</dimen>
     <dimen name="bpright">30dp</dimen>
 
     <dimen name="tmargin">10dp</dimen>
@@ -23,6 +23,7 @@
 
     <dimen name="arrowsidepadding">30dp</dimen>
 
+    <dimen name="tableRowMargin">-15dp</dimen>
 
 
 </resources>

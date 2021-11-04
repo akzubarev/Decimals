@@ -22,8 +22,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.education4all.BuildConfig;
 import com.education4all.R;
 import com.education4all.utils.OldFormatHandler;
 import com.education4all.utils.Utils;
@@ -52,6 +54,12 @@ public class StatiscticsActivity extends AppCompatActivity {
     int statistics = 0;
     int statsize = 10;
 
+    FireBaseUtils.StatisticsCallback callback = loaded_tours -> {
+        tours = loaded_tours;
+//        fill();
+        oldFill(tours);
+    };
+
     public void tourClick(View v) {
         Intent i = new Intent(l_context, StatTourActivity.class);
         i.putExtra("Tour", (Integer) (v.getTag()));
@@ -70,7 +78,6 @@ public class StatiscticsActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override
@@ -78,7 +85,7 @@ public class StatiscticsActivity extends AppCompatActivity {
         super.onResume();
         try {
             fill();
-            FireBaseUtils.getUserStats();
+            FireBaseUtils.getUserStats(callback);
             setupProgress(findViewById(R.id.toggle));
             // setUpChart();
         } catch (
@@ -86,7 +93,6 @@ public class StatiscticsActivity extends AppCompatActivity {
             Log.e("Old data format", e.getMessage());
             oldFormat();
         }
-
     }
 
     private void oldFormat() {
@@ -109,11 +115,10 @@ public class StatiscticsActivity extends AppCompatActivity {
         Utils.FixDialog(dialog, getApplicationContext()); // почему-то нужно для планшетов
     }
 
-    private boolean debugFirebase = false;
-
     public void fill() {
 
 //            if (tours.isEmpty()) {
+        boolean debugFirebase = false;
         if (!debugFirebase) {
             tours.clear();
             int tourCount = StatisticMaker.getTourCount(this);
@@ -188,6 +193,12 @@ public class StatiscticsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_statisctics, menu);
+        if (BuildConfig.FLAVOR.equals("decimals") &&
+                BuildConfig.BUILD_TYPE.equals("debug") &&
+                BuildConfig.VERSION_NAME == "0.9.0") {
+            MenuItem another_user = menu.findItem(R.id.action_another_user);
+            another_user.setVisible(false);
+        }
         return true;
     }
 
@@ -226,10 +237,7 @@ public class StatiscticsActivity extends AppCompatActivity {
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Введите ID пользователя").setView(input).setPositiveButton("Ок", (dialog1, which) ->
-                                {
-                                    tours = FireBaseUtils.getUserStats(input.getText().toString());
-                                    fill();
-                                }
+                                FireBaseUtils.getUserStats(input.getText().toString(), callback)
                         ).setNegativeButton("Отмена", (dialog1, which) -> {
                         })
                         .show();
