@@ -8,7 +8,7 @@
     android:background="@color/color2"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="com.education4all.decimals.com.education4all.AuthorsActivity">
+    tools:context="com.education4all.activities.AuthorsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -50,6 +50,16 @@
             android:textSize="@dimen/dimen5" />
 
         <TextView
+            android:id="@+id/version"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Версия: x.x.x"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/shadowed"
+            android:textSize="@dimen/dimen5" />
+
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -82,7 +92,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Александр Умнов\nАлексей Зубарев\nАртём Казанович"
+            android:text="Алексей Зубарев\nАлександр Умнов\nАртём Казанович"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen5" />
