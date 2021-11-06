@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/color2"
     android:orientation="vertical"
-    tools:context="com.education4all.AuthorsActivity">
+    tools:context="com.education4all.activities.AuthorsActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"

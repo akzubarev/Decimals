@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.education4all.BuildConfig;
 import com.education4all.mathCoachAlg.DataReader;
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tours.Tour;
@@ -77,7 +78,13 @@ public class Utils {
             return false;
     }
 
-
+    public static String versioningTool() {
+        String version = "other";
+        if (BuildConfig.FLAVOR.equals("decimals") &&
+                BuildConfig.VERSION_CODE == 2)
+            version = "decimalsBeta";
+        return version;
+    }
 //        TextView statistics = findViewById(R.id.statistics);
 //        SpannableString ss = new SpannableString("Разные шрифты");
 //

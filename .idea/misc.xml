@@ -6,7 +6,11 @@
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/integers/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3223684210526316" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/integers/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3223684210526316" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/activity_authors.xml" value="0.30085470085470084" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/complexity.xml" value="0.25" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/dialog_endround.xml" value="0.30085470085470084" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/main.xml" value="0.14638157894736842" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/main_alt.xml" value="0.30085470085470084" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/no_internet.xml" value="0.22509057971014493" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_app.xml" value="0.22" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_interface.xml" value="0.25" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_main.xml" value="0.22552083333333334" />
@@ -14,17 +18,25 @@
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/sign_in.xml" value="0.33" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/stat_tour.xml" value="0.2838541666666667" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/stat_tour_block.xml" value="0.3423913043478261" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/stat_tour_block_fractions.xml" value="0.30085470085470084" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/statisctics.xml" value="0.24139492753623187" />
-        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/task.xml" value="0.2" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/tab.xml" value="0.30085470085470084" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/task.xml" value="0.25" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/task_fractions.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/tasks_old.xml" value="0.25" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/time_selector.xml" value="0.3029891304347826" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/tourbar.xml" value="0.22552083333333334" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/tourblock.xml" value="0.24139492753623187" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/web.xml" value="0.30085470085470084" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/menu/dropdown_div.xml" value="0.30085470085470084" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/menu/menu_main.xml" value="0.2838541666666667" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/menu/menu_settings.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/menu/menu_stat_tour.xml" value="0.36666666666666664" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/menu/menu_statisctics.xml" value="0.36666666666666664" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/menu/settings_buttonsplace.xml" value="0.30085470085470084" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/menu/settings_goal.xml" value="0.30085470085470084" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/menu/settings_layout.xml" value="0.30085470085470084" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/menu/settings_theme.xml" value="0.30085470085470084" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/menu/settings_timer.xml" value="0.2838541666666667" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3223684210526316" />
       </map>

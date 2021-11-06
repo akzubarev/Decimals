@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="com.education4all.MainActivity">
+    tools:context="com.education4all.activities.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -82,7 +82,7 @@
                 android:layout_marginTop="20dp"
                 android:elevation="10dp"
                 android:gravity="center"
-                android:text="Решено подряд:\nСейчас 0, в среднем 0\nДней подряд:\nСейчас 0, в среднем 0"
+                android:text="@string/main_stat_placeholder"
                 android:textAlignment="center"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen6" />
@@ -119,7 +119,7 @@
                 android:layout_marginTop="20dp"
                 android:elevation="10dp"
                 android:gravity="center"
-                android:text="+ 1, 3-4 - 2, 3 : 4\nДлина раунда N мин\nУсловие исчезает через K сек"
+                android:text="@string/main_settings_placeholder"
                 android:textAlignment="center"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen6" />
@@ -155,7 +155,7 @@
                 android:layout_marginTop="20dp"
                 android:elevation="10dp"
                 android:gravity="center"
-                android:text="Цель: 0:00/5:00"
+                android:text="@string/main_goal_placeholder"
                 android:textAlignment="center"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen6" />

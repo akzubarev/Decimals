@@ -3,10 +3,10 @@
 
     <item
         android:id="@+id/right"
-        android:title="Справа" />
+        android:title="@string/dropdown_buttons_right" />
 
     <item
         android:id="@+id/left"
-        android:title="Слева" />
+        android:title="@string/dropdown_buttons_left" />
 
 </menu>

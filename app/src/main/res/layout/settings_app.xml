@@ -15,10 +15,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="0"
                 android:gravity="center_vertical|start"
-                android:text="Таймер"
+                android:text="@string/settings_timer"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen4" />
 
@@ -39,7 +39,7 @@
                 android:gravity="center_vertical|end"
                 android:onClick="timerDropdown"
                 android:tag="1"
-                android:text="Непрерывный"
+                android:text="@string/settings_timerOptions_first"
                 android:textColor="@color/additional"
                 android:textSize="@dimen/dimen4" />
         </LinearLayout>
@@ -47,10 +47,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="0"
                 android:gravity="center_vertical|start"
-                android:text="Клавиатура"
+                android:text="@string/settings_keyboard"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen4" />
 
@@ -71,7 +71,7 @@
                 android:gravity="center_vertical|end"
                 android:onClick="layoutDropdown"
                 android:tag="1"
-                android:text="789"
+                android:text="@string/settings_keyboard_789"
                 android:textColor="@color/additional"
                 android:textSize="@dimen/dimen4" />
         </LinearLayout>
@@ -79,10 +79,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -90,7 +90,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="0"
                 android:gravity="center_vertical|start"
-                android:text="Кнопки команд"
+                android:text="@string/settings_command_buttons"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen4" />
 
@@ -103,7 +103,40 @@
                 android:gravity="center_vertical|end"
                 android:onClick="buttonsDropdown"
                 android:tag="1"
-                android:text="Справа"
+                android:text="@string/settings_command_buttons_right"
+                android:textColor="@color/additional"
+                android:textSize="@dimen/dimen4" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/goal_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:layout_weight="0"
+                android:gravity="center_vertical|start"
+                android:text="@string/settings_goal"
+                android:textColor="@color/main"
+                android:textSize="@dimen/dimen4" />
+
+            <TextView
+                android:id="@+id/goal"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_weight="1"
+                android:gravity="center_vertical|end"
+                android:onClick="goalDropdown"
+                android:tag="1"
+                android:text="@string/settings_goal_5min"
                 android:textColor="@color/additional"
                 android:textSize="@dimen/dimen4" />
         </LinearLayout>
@@ -111,10 +144,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:orientation="vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
             tools:context="com.education4all.decimals.com.education4all.SettingsTaskTab">
 
             <TextView
@@ -124,7 +157,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="Длина раунда (мин.)"
+                android:text="@string/settings_round_length"
                 android:textAlignment="textStart"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/main"
@@ -179,7 +212,7 @@
                 android:layout_marginTop="@dimen/default_gap"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="Условие исчезнет через (сек.)"
+                android:text="@string/settings_disappear_timer"
                 android:textAlignment="textStart"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/main"
@@ -229,7 +262,7 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:text="Аккаунт"
+            android:text="@string/settings_account"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen4" />
 
@@ -280,7 +313,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="0"
                 android:gravity="center_vertical|start"
-                android:text="ID"
+                android:text="@string/settings_id"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen4" />
 
@@ -292,7 +325,7 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical|end"
                 android:tag="1"
-                android:text="exampleexampleexample"
+                android:text="@string/settings_id_placeholder"
                 android:textColor="@color/shadowed"
                 android:textIsSelectable="true"
                 android:textSize="@dimen/dimen5" />
@@ -318,14 +351,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Работа над ошибками"
+                    android:text="@string/settings_correction_work"
                     android:textColor="@color/main"
                     android:textSize="@dimen/dimen4" />
 
                 <TextView
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:text="Если включено, неправильно решенные задания будут появляться снова"
+                    android:text="@string/settings_corrction_work_info"
                     android:textColor="@color/shadowed"
                     android:textSize="@dimen/dimen6" />
 
@@ -340,45 +373,13 @@
                 android:checked="false"
                 android:gravity="center_vertical|end"
                 android:onClick="toggleQueue"
-                android:textOff="⨯"
-                android:textOn="✓"
+                android:textOff="@string/settings_cross"
+                android:textOn="@string/settings_check"
                 app:showText="true"
                 app:thumbTint="@color/additional"
                 app:trackTint="@color/shadowed" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/goal_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingBottom="@dimen/activity_vertical_margin">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|start"
-                android:layout_weight="0"
-                android:gravity="center_vertical|start"
-                android:text="Цель на день"
-                android:textColor="@color/main"
-                android:textSize="@dimen/dimen4" />
-
-            <TextView
-                android:id="@+id/goal"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_weight="1"
-                android:gravity="center_vertical|end"
-                android:onClick="goalDropdown"
-                android:tag="1"
-                android:text="5 мин"
-                android:textColor="@color/additional"
-                android:textSize="@dimen/dimen4" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/reminder_layout"
@@ -395,7 +396,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
-                android:text="Напоминать"
+                android:text="@string/settings_reminder"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen4" />
 
@@ -408,8 +409,8 @@
                 android:checked="false"
                 android:gravity="center_vertical|end"
                 android:onClick="toggleReminder"
-                android:textOff="⨯"
-                android:textOn="✓"
+                android:textOff="@string/settings_cross"
+                android:textOn="@string/settings_check"
                 app:showText="true"
                 app:thumbTint="@color/additional"
                 app:trackTint="@color/shadowed" />
@@ -432,7 +433,7 @@
                 android:layout_gravity="center_vertical|start"
                 android:layout_weight="1"
                 android:gravity="center_vertical|start"
-                android:text="Время напоминания"
+                android:text="@string/settings_reminderTime"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen4" />
 
@@ -445,7 +446,7 @@
                 android:gravity="center_vertical|end"
                 android:onClick="reminderDropdown"
                 android:tag="1"
-                android:text="18:00"
+                android:text="@string/settings_reminderTime_placeholder"
                 android:textColor="@color/additional"
                 android:textSize="@dimen/dimen4" />
         </LinearLayout>

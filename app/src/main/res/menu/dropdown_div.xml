@@ -4,11 +4,11 @@
     <item
         android:id="@+id/one"
         android:checkable="true"
-        android:title="275:5" />
+        android:title="@string/dropdownDiv_first" />
 
     <item
         android:id="@+id/two"
         android:checkable="true"
-        android:title="275:55" />
+        android:title="@string/dropdownDiv_second" />
 
 </menu>

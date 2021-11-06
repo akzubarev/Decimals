@@ -44,6 +44,18 @@ public class FireBaseUtils {
 //
 //    }
 
+    public static void updateTours(Context context)
+    {
+        getUserStats(loaded_tours -> {
+            if (loaded_tours.size() != StatisticMaker.getTourCount(context)) {
+                ArrayList<Tour> tours = new ArrayList<>();
+                for (int tourNumber = StatisticMaker.getTourCount(context) - 1; tourNumber >= 0; --tourNumber)
+                    tours.add(StatisticMaker.loadTour(context, tourNumber));
+                uploadTours(tours);
+            }
+        });
+    }
+
     private static void initFirebase(Context context) {
         try {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -99,22 +111,15 @@ public class FireBaseUtils {
 
     public static void getUserStats(String id, StatisticsCallback callback) {
         ArrayList<Tour> tours = new ArrayList<>();
-        if (online)
-            usersDBR.child(id).child("statistics").get().addOnCompleteListener(
-                    (Task<DataSnapshot> task) -> {
-                        if (task.isSuccessful()) {
-                            for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
-                                Tour tour = postSnapshot.getValue(Tour.class);
-                                tours.add(tour);
-                            }
-                            callback.onCallback(tours);
-                        } else
-                            online = false;
+        usersDBR.child(id).child("statistics").get().addOnCompleteListener(
+                (Task<DataSnapshot> task) -> {
+                    for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
+                        Tour tour = postSnapshot.getValue(Tour.class);
+                        tours.add(tour);
                     }
-            ).addOnFailureListener((Exception e) -> {
-                online = false;
-                reportException(e);
-            });
+                    callback.onCallback(tours);
+                }
+        ).addOnFailureListener(FireBaseUtils::reportException);
     }
 
     public static void getUserStats(StatisticsCallback callback) {
@@ -129,29 +134,26 @@ public class FireBaseUtils {
     }
 
     public static void uploadTours(ArrayList<Tour> tours) {
-        if (online)
-            try {
-                statisticsDBR.setValue(tours);
-            } catch (Exception e) {
-                reportException(e);
-            }
+        try {
+            statisticsDBR.setValue(tours);
+        } catch (Exception e) {
+            reportException(e);
+        }
     }
 
     public static void uploadTour(Tour tour) {
-        if (online)
-            try {
-                statisticsDBR.push().setValue(tour);
-            } catch (Exception e) {
-                reportException(e);
-            }
+        try {
+            statisticsDBR.push().setValue(tour);
+        } catch (Exception e) {
+            reportException(e);
+        }
     }
 
     public static void deleteTours() {
-        if (online)
-            try {
-                statisticsDBR.child("statistics").removeValue();
-            } catch (Exception e) {
-                reportException(e);
-            }
+        try {
+            statisticsDBR.removeValue();
+        } catch (Exception e) {
+            reportException(e);
+        }
     }
 }

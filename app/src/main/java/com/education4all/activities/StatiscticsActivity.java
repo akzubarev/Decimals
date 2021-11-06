@@ -1,5 +1,7 @@
 package com.education4all.activities;
 
+import static com.education4all.utils.Utils.versioningTool;
+
 import androidx.appcompat.app.AlertDialog;
 
 import android.content.Context;
@@ -78,6 +80,9 @@ public class StatiscticsActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (versioningTool().equals("decimalsBeta"))
+            findViewById(R.id.graphlayout).setVisibility(View.GONE);
     }
 
     @Override
@@ -85,7 +90,7 @@ public class StatiscticsActivity extends AppCompatActivity {
         super.onResume();
         try {
             fill();
-            FireBaseUtils.getUserStats(callback);
+            FireBaseUtils.getUserStats(tours->{ });
             setupProgress(findViewById(R.id.toggle));
             // setUpChart();
         } catch (
@@ -126,7 +131,6 @@ public class StatiscticsActivity extends AppCompatActivity {
                 tours.add(StatisticMaker.loadTour(this, tourNumber));
         }
         oldFill(tours);
-
 //        RecyclerView tourlist = findViewById(R.id.tourlist);
 //        tourlist.setHasFixedSize(true);
 //        tourlist.addItemDecoration(new DividerItemDecoration(
@@ -193,9 +197,7 @@ public class StatiscticsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_statisctics, menu);
-        if (BuildConfig.FLAVOR.equals("decimals") &&
-                BuildConfig.BUILD_TYPE.equals("debug") &&
-                BuildConfig.VERSION_NAME == "0.9.0") {
+        if (versioningTool().equals("decimalsBeta")) {
             MenuItem another_user = menu.findItem(R.id.action_another_user);
             another_user.setVisible(false);
         }
@@ -208,10 +210,9 @@ public class StatiscticsActivity extends AppCompatActivity {
     }
 
     public void DeleteStatistics() {
-        finish();
         StatisticMaker.removeStatistics(this);
-        Intent intent = getIntent();
-        startActivity(intent);
+        tours.clear();
+        oldFill(tours);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.education4all.activities;
 
+import static com.education4all.firebase.FireBaseUtils.updateTours;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -85,6 +87,7 @@ public class StatTourActivity extends AppCompatActivity {
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         finish();
+        updateTours(getApplicationContext());
         //startActivity(intent);
     }
 

@@ -3,14 +3,14 @@
 
     <item
         android:id="@+id/five"
-        android:title="5 мин" />
+        android:title="@string/dropdown_goal_5min" />
 
     <item
         android:id="@+id/ten"
-        android:title="10 мин" />
+        android:title="@string/dropdown_goal_10min" />
 
     <item
         android:id="@+id/fifteen"
-        android:title="15 мин" />
+        android:title="@string/dropdown_goal_15min" />
 
 </menu>

@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="Непрерывный"
+        android:title="@string/dropdown_timer_continuous"
         />
 
     <item
-        android:title="По шагам" />
+        android:title="@string/dropdown_timer_discrete" />
 
     <item
-        android:title="Нет" />
+        android:title="@string/dropdown_timer_none" />
 </menu>

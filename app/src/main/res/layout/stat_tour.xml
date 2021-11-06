@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/color2"
     android:orientation="vertical"
-    tools:context="com.education4all.StatTourActivity">
+    tools:context="com.education4all.activities.StatTourActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -19,10 +19,10 @@
 
 
     <ScrollView
-        android:layout_margin="@dimen/activity_horizontal_margin"
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin">
 
         <LinearLayout
             android:id="@+id/linear"

@@ -23,7 +23,7 @@
         android:icon="@drawable/ic_people"
         android:iconTint="@color/additional"
         android:orderInCategory="100"
-        android:title="Посмотреть чужие результаты"
+        android:title="@string/menu_show_other_results"
         app:iconTint="@color/additional"
         app:showAsAction="always" />
 </menu>

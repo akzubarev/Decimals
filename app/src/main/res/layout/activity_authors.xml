@@ -35,7 +35,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Десятичные дроби"
+            android:text="@string/Info_app_name"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen4" />
@@ -44,7 +44,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="(тренажёр устного счёта)"
+            android:text="@string/info_app_description"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen5" />
@@ -54,7 +54,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Версия: x.x.x"
+            android:text="@string/info_version"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/shadowed"
             android:textSize="@dimen/dimen5" />
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:gravity="center"
-            android:text="Идея"
+            android:text="@string/info_idea"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen4" />
@@ -73,7 +73,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Артём Казанович"
+            android:text="@string/info_owner"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen5" />
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:gravity="center"
-            android:text="Программирование"
+            android:text="@string/info_programming"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen4" />
@@ -92,7 +92,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Алексей Зубарев\nАлександр Умнов\nАртём Казанович"
+            android:text="@string/info_programmers"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen5" />

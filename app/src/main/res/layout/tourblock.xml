@@ -8,13 +8,13 @@
     android:layout_marginBottom="@dimen/default_gap"
     android:background="@color/color2"
     android:onClick="tourClick"
-    tools:context="com.education4all.StatiscticsActivity">
+    tools:context="com.education4all.activities.StatiscticsActivity">
 
     <TextView
         android:id="@+id/tourdatetime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="22.03.2021, 17:40. 1 мин."
+        android:text="@string/statistics_datetime_placeholder"
         android:textColor="@color/main"
         android:textSize="@dimen/dimen5"
         android:onClick="tourClick"
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tourdatetime"
-        android:text="Решено 0.4 (0%)"
+        android:text="@string/statistics_solve_placeholder"
         android:textColor="@color/main"
         android:textSize="@dimen/dimen4"
         android:onClick="tourClick"

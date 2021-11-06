@@ -151,7 +151,8 @@ public class TaskActivity extends AppCompatActivity {
         progressthread = new Thread(() -> {
             while (progressStatus < 100) {
                 progressStatus += 1;
-                progressBarHandler.post(() -> progressBar.setProgress(progressStatus));
+                if (timerstate == Enums.TimerState.CONTINIOUS)
+                    progressBarHandler.post(() -> progressBar.setProgress(progressStatus));
                 try {
                     Thread.sleep((tourLenght * 10L));
                 } catch (InterruptedException e) {
@@ -169,7 +170,8 @@ public class TaskActivity extends AppCompatActivity {
         timerthread = new Thread(() -> {
             while (secondsFromStart < tourLenght) {
                 secondsFromStart += 1;
-                progressBarHandler.post(() -> timerText.setText(timeString(secondsFromStart, tourLenght)));
+                if (timerstate == Enums.TimerState.CONTINIOUS)
+                    progressBarHandler.post(() -> timerText.setText(timeString(secondsFromStart, tourLenght)));
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -178,10 +180,10 @@ public class TaskActivity extends AppCompatActivity {
             }
         });
 
-        if (timerstate == Enums.TimerState.CONTINIOUS) {
-            timerthread.start();
-            progressthread.start();
-        }
+//        if (timerstate == Enums.TimerState.CONTINIOUS) {
+        timerthread.start();
+        progressthread.start();
+//        }
 
         disapTime = DataReader.GetInt(DataReader.DISAP_ROUND_TIME, this);
         resetDissapearing();
@@ -394,6 +396,7 @@ public class TaskActivity extends AppCompatActivity {
     //пропуск задания
     public void skipTask(View view) {
         resetDissapearing();
+        updateTimers();
         if (answerShown) {
             answer = "?";
         } else {

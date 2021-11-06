@@ -3,14 +3,14 @@
 
     <item
         android:id="@+id/light"
-        android:title="Светлая" />
+        android:title="@string/dropdown_theme_light" />
 
     <item
         android:id="@+id/dark"
-        android:title="Темная" />
+        android:title="@string/dropdown_theme_dark" />
 
     <item
         android:id="@+id/system"
-        android:title="Системная" />
+        android:title="@string/dropdown_theme_system" />
 
 </menu>

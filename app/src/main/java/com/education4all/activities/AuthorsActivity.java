@@ -1,5 +1,7 @@
 package com.education4all.activities;
 
+import static com.education4all.utils.Utils.versioningTool;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -35,7 +37,7 @@ public class AuthorsActivity extends AppCompatActivity {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             TextView versionTV = findViewById(R.id.version);
             String versionTag = "";
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
+            if (BuildConfig.BUILD_TYPE.equals("debug") || versioningTool().equals("decimalsBeta"))
                 versionTag = " (beta)";
             String versionText = String.format("Версия: %s%s", versionName, versionTag).trim();
             versionTV.setText(versionText);

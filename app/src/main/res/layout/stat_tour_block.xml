@@ -7,7 +7,7 @@
     android:layout_marginTop="@dimen/default_gap"
     android:layout_marginBottom="@dimen/default_gap"
     android:background="@color/color2"
-    tools:context="com.education4all.StatTourActivity">
+    tools:context="com.education4all.activities.StatTourActivity">
 
     <TextView
         android:id="@+id/task"

@@ -24,7 +24,7 @@
             <TextView
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="Вид и сложность заданий"
+                android:text="@string/settings_taskTypes"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen3" />
 
@@ -33,7 +33,7 @@
                     android:layout_gravity="center_vertical|start"
                     android:layout_marginRight="10dp"
                     android:gravity="center_vertical|start"
-                    android:text="Сложение"
+                    android:text="@string/settings_addition"
                     android:textColor="@color/main"
                     android:textSize="@dimen/dimen4" />
 
@@ -98,7 +98,7 @@
                     android:layout_gravity="center_vertical|start"
                     android:layout_marginRight="10dp"
                     android:gravity="center_vertical|start"
-                    android:text="Вычитание"
+                    android:text="@string/settings_subtraction"
                     android:textColor="@color/main"
                     android:textSize="@dimen/dimen4" />
 
@@ -162,7 +162,7 @@
                     android:layout_gravity="center_vertical|start"
                     android:layout_marginRight="10dp"
                     android:gravity="center_vertical|start"
-                    android:text="Умножение"
+                    android:text="@string/settings_multiplication"
                     android:textColor="@color/main"
                     android:textSize="@dimen/dimen4" />
 
@@ -226,7 +226,7 @@
                     android:layout_gravity="center_vertical|start"
                     android:layout_marginRight="10dp"
                     android:gravity="center_vertical|start"
-                    android:text="Деление"
+                    android:text="@string/settings_division"
                     android:textColor="@color/main"
                     android:textSize="@dimen/dimen4" />
 

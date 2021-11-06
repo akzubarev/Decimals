@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.education4all.activities.StatTourActivity">
     <item android:id="@+id/action_logout"
-        android:title="Выйти из аккаунта"
+        android:title="@string/menu_logout"
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/ic_logout"

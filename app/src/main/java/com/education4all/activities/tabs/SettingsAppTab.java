@@ -1,5 +1,7 @@
 package com.education4all.activities.tabs;
 
+import static com.education4all.utils.Utils.versioningTool;
+
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -269,9 +271,7 @@ public class SettingsAppTab extends Fragment {
         TextView reminder_time = view.findViewById(R.id.remind_time);
         reminder_time.setText(DataReader.GetString(DataReader.REMINDER_TIME, context));
 
-        if (BuildConfig.FLAVOR.equals("decimals") &&
-                BuildConfig.BUILD_TYPE.equals("debug") &&
-                BuildConfig.VERSION_NAME == "0.9.0") {
+        if (versioningTool().equals("decimalsBeta")) {
             TextView account = view.findViewById(R.id.account_text);
             account.setVisibility(View.GONE);
             view.findViewById(R.id.id_layout).setVisibility(View.GONE);
@@ -281,11 +281,7 @@ public class SettingsAppTab extends Fragment {
             view.findViewById(R.id.remind_time_layout).setVisibility(View.GONE);
         }
 
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.M) {
-            view.findViewById(R.id.reminder_layout).setVisibility(View.GONE);
-            view.findViewById(R.id.remind_time_layout).setVisibility(View.GONE);
-        } else
-            reminder_time.setOnClickListener(this::reminderDropDown);
+        reminder_time.setOnClickListener(this::reminderDropDown);
     }
 
     private void toggleQueue(View v) {

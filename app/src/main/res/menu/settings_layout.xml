@@ -3,10 +3,10 @@
 
     <item
         android:id="@+id/layout123"
-        android:title="1 2 3" />
+        android:title="@string/dropdown_layout_123" />
 
     <item
         android:id="@+id/layout789"
-        android:title="7 8 9" />
+        android:title="@string/dropdown_layout_789" />
 
 </menu>

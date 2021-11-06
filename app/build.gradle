@@ -24,8 +24,8 @@ android {
         }
         decimals {
             applicationId "com.education4all.decimals"
-            versionName '0.9.0'
-            versionCode 1
+            versionName '0.9.5'
+            versionCode 2
         }
         fractions {
             applicationId "com.education4all.fractions"

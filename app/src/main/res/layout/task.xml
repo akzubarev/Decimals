@@ -53,7 +53,7 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingBottom="25dp"
             android:singleLine="true"
-            android:text="Решено 0"
+            android:text="@string/task_solved_placeholder"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen6"
             android:textStyle="" />
@@ -68,7 +68,7 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingBottom="25dp"
             android:singleLine="true"
-            android:text="00:48/5:00"
+            android:text="@string/task_time_placeholder"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen6"
             android:textStyle="" />
@@ -80,7 +80,7 @@
             android:background="@android:color/transparent"
             android:gravity="center|bottom"
             android:onClick="showTask"
-            android:text="\Нажмите, чтобы показать задание"
+            android:text="@string/task_showTask"
             android:textColor="@color/main"
             android:textSize="@dimen/dimen6" />
 
@@ -219,7 +219,7 @@
                 android:id="@+id/Text_Del"
                 style="@style/TaskText"
                 android:layout_below="@id/Button_Del"
-                android:text="Удалить" />
+                android:text="@string/task_delete" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -314,7 +314,7 @@
                 android:id="@+id/skiptext"
                 style="@style/TaskText"
                 android:layout_below="@id/Button_Skip"
-                android:text="Пропуск" />
+                android:text="@string/task_skip" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -408,7 +408,7 @@
                 android:id="@+id/helptext"
                 style="@style/TaskText"
                 android:layout_below="@id/Button_Help"
-                android:text="Подсказка" />
+                android:text="@string/task_help" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -501,7 +501,7 @@
                 android:id="@+id/checktext"
                 style="@style/TaskText"
                 android:layout_below="@id/Button_Check"
-                android:text="Проверить" />
+                android:text="@string/task_check" />
         </RelativeLayout>
 
     </androidx.gridlayout.widget.GridLayout>
