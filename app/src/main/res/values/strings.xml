@@ -35,6 +35,28 @@
         <item>Показать ответ</item>>
     </string-array>
 
+    <string-array name="timer_dropdown">
+        <item>@string/dropdown_timer_continuous</item>
+        <item>@string/dropdown_timer_discrete</item>
+        <item>@string/dropdown_timer_none</item>>
+    </string-array>
+
+    <string-array name="layout_dropdown">
+        <item>@string/dropdown_layout_123</item>
+        <item>@string/dropdown_layout_789</item>
+    </string-array>
+
+    <string-array name="buttons_dropdown">
+        <item>@string/dropdown_buttons_right</item>
+        <item>@string/dropdown_buttons_left</item>
+    </string-array>
+
+    <string-array name="goal_dropdown">
+        <item>@string/dropdown_goal_5min</item>
+        <item>@string/dropdown_goal_10min</item>
+        <item>@string/dropdown_goal_15min</item>
+    </string-array>
+
     <string name="title_activity_authors">О приложении</string>
     <string name="Arrow"><![CDATA[›]]></string>
     <string name="no_internet">Кажется, ваше устройство сейчас не подключено к интернету.\n

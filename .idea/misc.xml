@@ -11,11 +11,15 @@
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/main.xml" value="0.14638157894736842" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/main_alt.xml" value="0.30085470085470084" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/no_internet.xml" value="0.22509057971014493" />
-        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_app.xml" value="0.22" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_app.xml" value="0.33" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_app_old.xml" value="0.30085470085470084" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_interface.xml" value="0.25" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_main.xml" value="0.22552083333333334" />
-        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_tasks.xml" value="0.23867753623188406" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_tasks.xml" value="0.5067817509247842" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/settings_tasks_old.xml" value="0.25" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/sign_in.xml" value="0.33" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/spinner_row.xml" value="0.30085470085470084" />
+        <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/spinner_row_unfolded.xml" value="0.1683760683760684" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/stat_tour.xml" value="0.2838541666666667" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/stat_tour_block.xml" value="0.3423913043478261" />
         <entry key="..\:/se/AndroidStudioProjects/MathTrainer/app/src/main/res/layout/stat_tour_block_fractions.xml" value="0.30085470085470084" />

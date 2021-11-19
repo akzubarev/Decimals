@@ -5,10 +5,15 @@ import static com.education4all.utils.Utils.versioningTool;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -24,6 +29,7 @@ import com.education4all.NotificationHelper;
 import com.education4all.R;
 import com.education4all.firebase.FireBaseUtils;
 import com.education4all.mathCoachAlg.DataReader;
+import com.education4all.mathCoachAlg.tours.Tour;
 import com.education4all.utils.Enums.ButtonsPlace;
 import com.education4all.utils.Enums.LayoutState;
 import com.education4all.utils.Enums.TimerState;
@@ -35,7 +41,9 @@ import com.warkiz.widget.SeekParams;
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class SettingsAppTab extends Fragment {
     View view;
@@ -52,100 +60,54 @@ public class SettingsAppTab extends Fragment {
     public void onViewCreated(View v, Bundle savedInstanceState) {
         context = getContext();
         view = v;
-        String state = "";
+        configureSpinner(R.id.timer_spinner, R.array.timer_dropdown, (int choice) -> {
+            TimerState[] options = new TimerState[]{TimerState.CONTINIOUS, TimerState.DISCRETE, TimerState.INVISIBlE};
+            int timer_state = TimerState.convert(options[choice]);
+            DataReader.SaveInt(timer_state, DataReader.TIMER_STATE, context);
+        }, DataReader.GetInt(DataReader.TIMER_STATE, context));
 
-        TextView timertv = view.findViewById(R.id.TimerState);
-        TimerState timerState = TimerState.convert(
-                DataReader.GetInt(DataReader.TIMER_STATE, context)
-        );
-        switch (timerState) {
-            case CONTINIOUS:
-                state = "Непрерывный";
-                break;
-            case DISCRETE:
-                state = "По шагам";
-                break;
-            case INVISIBlE:
-                state = "Нет";
-                break;
-        }
-        timertv.setText(state);
-        timertv.setOnClickListener(this::timerDropdown);
+        configureSpinner(R.id.layout_spinner, R.array.layout_dropdown, (int choice) -> {
+            LayoutState[] options = new LayoutState[]{LayoutState._123, LayoutState._789};
+            int layout_state = LayoutState.convert(options[choice]);
+            DataReader.SaveInt(layout_state, DataReader.LAYOUT_STATE, context);
+        }, DataReader.GetInt(DataReader.LAYOUT_STATE, context));
 
-        TextView numberstv = view.findViewById(R.id.numbersLayout);
-        LayoutState layoutState = LayoutState.convert(
-                DataReader.GetInt(DataReader.LAYOUT_STATE, context)
-        );
-        switch (layoutState) {
-            case _123:
-            default:
-                state = "1 2 3";
-                break;
-            case _789:
-                state = "7 8 9";
-                break;
-        }
-        numberstv.setText(state);
-        numberstv.setOnClickListener(this::layoutDropdown);
+        configureSpinner(R.id.buttons_spinner, R.array.buttons_dropdown, (int choice) -> {
+            ButtonsPlace[] options = new ButtonsPlace[]{ButtonsPlace.RIGHT, ButtonsPlace.LEFT};
+            int buttons_place = ButtonsPlace.convert(options[choice]);
+            DataReader.SaveInt(buttons_place, DataReader.BUTTONS_PLACE, context);
+        }, DataReader.GetInt(DataReader.BUTTONS_PLACE, context));
 
+        configureSpinner(R.id.goal_spinner, R.array.goal_dropdown, (int choice) -> {
+            int[] options = new int[]{5, 10, 15};
+            int goal_minutes = options[choice];
+            DataReader.SaveInt(goal_minutes, DataReader.GOAL, context);
+        }, DataReader.GetInt(DataReader.GOAL, context) / 5 - 1);
 
-        TextView buttonstv = view.findViewById(R.id.buttonsPlace);
-        ButtonsPlace buttonsPlace = ButtonsPlace.convert(
-                DataReader.GetInt(DataReader.BUTTONS_PLACE, context)
-        );
+        HashMap<Integer, Integer> valueToPercentage = new HashMap<>();
+        valueToPercentage.put(1, 0);
+        valueToPercentage.put(2, 11);
+        valueToPercentage.put(3, 22);
+        valueToPercentage.put(5, 33);
+        valueToPercentage.put(10, 44);
+        valueToPercentage.put(15, 55);
+        valueToPercentage.put(20, 66);
+        valueToPercentage.put(30, 77);
+        valueToPercentage.put(45, 88);
+        valueToPercentage.put(60, 100);
+        valueToPercentage.put(-1, 100);
 
-        switch (buttonsPlace) {
-            case RIGHT:
-            default:
-                state = "Справа";
-                break;
-            case LEFT:
-                state = "Слева";
-                break;
-        }
-        buttonstv.setText(state);
-        buttonstv.setOnClickListener(this::buttonsDropdown);
-
-        view = v;
         IndicatorSeekBar seekBar = view.findViewById(R.id.round_length_slider);
         seekBar.customTickTexts(new String[]{"1", "2", "3", "5", "10", "15", "20", "30", "45", "     60"});
-        switch (DataReader.GetInt(DataReader.ROUND_TIME, getContext())) {
-            case 1:
-                seekBar.setProgress(0);
-                break;
-            case 2:
-                seekBar.setProgress(11);
-                break;
-            case 3:
-                seekBar.setProgress(22);
-                break;
-            case 5:
-                seekBar.setProgress(33);
-                break;
-            case 10:
-                seekBar.setProgress(44);
-                break;
-            case 15:
-                seekBar.setProgress(55);
-                break;
-            case 20:
-                seekBar.setProgress(66);
-                break;
-            case 30:
-                seekBar.setProgress(77);
-                break;
-            case 45:
-                seekBar.setProgress(88);
-                break;
-            case 60:
-                seekBar.setProgress(100);
-                break;
-        }
+        int roundTime = DataReader.GetInt(DataReader.ROUND_TIME, context);
+        if (valueToPercentage.containsKey(roundTime))
+            seekBar.setProgress(valueToPercentage.get(roundTime));
+
         seekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
             public void onSeeking(SeekParams seekParams) {
                 String value = seekParams.tickText.trim();
-                DataReader.SaveInt(Integer.parseInt(value), DataReader.ROUND_TIME, getContext());
+                DataReader.SaveInt(Integer.parseInt(value), DataReader.ROUND_TIME, context);
             }
 
             @Override
@@ -160,55 +122,20 @@ public class SettingsAppTab extends Fragment {
 
         seekBar = view.findViewById(R.id.disappear_time_slider);
         seekBar.customTickTexts(new String[]{"1", "2", "3", "5", "10", "15", "20", "30", "45", "    ∞"});
-        switch (DataReader.GetInt("DisapRoundTime", getContext())) {
-            case 1:
-                seekBar.setProgress(0);
-                break;
-            case 2:
-                seekBar.setProgress(11);
-                break;
-            case 3:
-                seekBar.setProgress(22);
-                break;
-            case 5:
-                seekBar.setProgress(33);
-                break;
-            case 10:
-                seekBar.setProgress(44);
-                break;
-            case 15:
-                seekBar.setProgress(55);
-                break;
-            case 20:
-                seekBar.setProgress(66);
-                break;
-            case 30:
-                seekBar.setProgress(77);
-                break;
-            case 45:
-                seekBar.setProgress(88);
-                break;
-            case -1:
-                seekBar.setProgress(100);
-                break;
-        }
+        int disapearTime = DataReader.GetInt("DisapRoundTime", context);
+        if (valueToPercentage.containsKey(disapearTime))
+            seekBar.setProgress(valueToPercentage.get(disapearTime));
+
         seekBar.setOnSeekChangeListener(new OnSeekChangeListener() {
             @Override
             public void onSeeking(SeekParams seekParams) {
-//                Log.i(TAG, seekParams.seekBar);
-//                Log.i(TAG, seekParams.progress);
-//                Log.i(TAG, seekParams.progressFloat);
-//                Log.i(TAG, seekParams.fromUser);
-//                //when tick count > 0
-//                Log.i(TAG, seekParams.thumbPosition);
-//                Log.i(TAG, seekParams.tickText);
                 String value = seekParams.tickText.trim();
                 int ivalue = 0;
                 if (value.equals(NODISAPEARCHAR))
                     ivalue = -1;
                 else
                     ivalue = Integer.parseInt(value);
-                DataReader.SaveInt(ivalue, DataReader.DISAP_ROUND_TIME, getContext());
+                DataReader.SaveInt(ivalue, DataReader.DISAP_ROUND_TIME, context);
             }
 
             @Override
@@ -220,39 +147,11 @@ public class SettingsAppTab extends Fragment {
             }
         });
 
-        TextView goal = view.findViewById(R.id.goal);
-        state = DataReader.GetInt(DataReader.GOAL, context) + " мин";
-        goal.setText(state);
-        goal.setOnClickListener(this::goalDropdown);
-
-//        TextView themetv = view.findViewById(R.id.theme);
-//        Theme theme = Theme.convert(
-//                DataReader.GetValue("Theme", context)
-//        );
-//        switch (theme) {
-//            case LIGHT:
-//                state = "Светлая";
-//                break;
-//            case DARK:
-//            default:
-//                state = "Темная";
-//                break;
-//            case SYSTEM:
-//                state = "Системная";
-//                break;
-//        }
-//        themetv.setText(state);
-//        themetv.setOnClickListener(this::themeDropdown);
-
         TextView id = view.findViewById(R.id.id);
-        id.setText(FireBaseUtils.getUser().getUid());
-
-//        TextView emailtv = view.findViewById(R.id.email);
-//        String email = user.getEmail();
-//        if (email.isEmpty())
-//            emailtv.setText("Не зарегистрирован");
-//        else
-//            emailtv.setText(user.getEmail());
+        if (FireBaseUtils.getUser() != null)
+            id.setText(FireBaseUtils.getUser().getUid());
+        else
+            FireBaseUtils.login(context, id::setText);
 
         SwitchCompat queue = view.findViewById(R.id.queue);
         boolean queueEnabled = DataReader.GetBoolean(DataReader.QUEUE, context);
@@ -270,6 +169,7 @@ public class SettingsAppTab extends Fragment {
 
         TextView reminder_time = view.findViewById(R.id.remind_time);
         reminder_time.setText(DataReader.GetString(DataReader.REMINDER_TIME, context));
+        reminder_time.setOnClickListener(this::reminderDropDown);
 
         if (versioningTool().equals("decimalsBeta")) {
             TextView account = view.findViewById(R.id.account_text);
@@ -280,8 +180,38 @@ public class SettingsAppTab extends Fragment {
             view.findViewById(R.id.reminder_layout).setVisibility(View.GONE);
             view.findViewById(R.id.remind_time_layout).setVisibility(View.GONE);
         }
+    }
 
-        reminder_time.setOnClickListener(this::reminderDropDown);
+
+    public interface SpinnerCallback {
+        void onCallback(int choice);
+    }
+
+    private void configureSpinner(int spinnerId, int arrayID, SpinnerCallback callback, int choice_index) {
+        Spinner spinner = view.findViewById(spinnerId);
+        String[] state = getResources().getStringArray(arrayID);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+                R.layout.spinner_row, R.id.spinner_row_text, state);
+        spinner.setGravity(Gravity.END);
+        adapter.setDropDownViewResource(R.layout.spinner_row_unfolded);
+
+        spinner.setAdapter(adapter);
+        spinner.setSelection(choice_index);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent,
+                                       View itemSelected,
+                                       int selectedItemPosition,
+                                       long selectedId) {
+                callback.onCallback(selectedItemPosition);
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        int offset = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, -80, getResources().getDisplayMetrics());
+        spinner.setDropDownHorizontalOffset(offset);
+
     }
 
     private void toggleQueue(View v) {
@@ -289,103 +219,6 @@ public class SettingsAppTab extends Fragment {
         DataReader.SaveBoolean(on, DataReader.QUEUE, context);
     }
 
-    public void timerDropdown(View v) {
-        final TextView timerStateText = view.findViewById(R.id.TimerState);
-        final PopupMenu popup = new PopupMenu(context, timerStateText);
-
-        popup.getMenuInflater().inflate(R.menu.settings_timer, popup.getMenu());
-        popup.setOnMenuItemClickListener(item -> {
-            int state = 0;
-            timerStateText.setText(item.getTitle().toString());
-            switch (item.getTitle().toString()) {
-                case "Непрерывный":
-                    state = TimerState.convert(TimerState.CONTINIOUS);
-                    break;
-                case "По шагам":
-                    state = TimerState.convert(TimerState.DISCRETE);
-                    break;
-                case "Нет":
-                    state = TimerState.convert(TimerState.INVISIBlE);
-                    break;
-            }
-            DataReader.SaveInt(state, DataReader.TIMER_STATE, context);
-            return true;
-        });
-
-        popup.show();
-    }
-
-    public void layoutDropdown(View v) {
-        final TextView numbersLayout = view.findViewById(R.id.numbersLayout);
-        final PopupMenu popup = new PopupMenu(context, numbersLayout);
-
-        popup.getMenuInflater().inflate(R.menu.settings_layout, popup.getMenu());
-        popup.setOnMenuItemClickListener(item -> {
-            int state = 0;
-            numbersLayout.setText(item.getTitle().toString());
-            switch (item.getTitle().toString()) {
-                case "1 2 3":
-                default:
-                    state = LayoutState.convert(LayoutState._123);
-                    break;
-                case "7 8 9":
-                    state = LayoutState.convert(LayoutState._789);
-                    break;
-            }
-            DataReader.SaveInt(state, DataReader.LAYOUT_STATE, context);
-            return true;
-        });
-        popup.show();
-    }
-
-    public void buttonsDropdown(View v) {
-        final TextView buttonsplace = view.findViewById(R.id.buttonsPlace);
-        final PopupMenu popup = new PopupMenu(context, buttonsplace);
-
-        popup.getMenuInflater().inflate(R.menu.settings_buttonsplace, popup.getMenu());
-        popup.setOnMenuItemClickListener(item -> {
-            int state = 0;
-            buttonsplace.setText(item.getTitle().toString());
-            switch (item.getTitle().toString()) {
-                case "Справа":
-                default:
-                    state = ButtonsPlace.convert(ButtonsPlace.RIGHT);
-                    break;
-                case "Слева":
-                    state = ButtonsPlace.convert(ButtonsPlace.LEFT);
-                    break;
-            }
-            DataReader.SaveInt(state, DataReader.BUTTONS_PLACE, context);
-            return true;
-        });
-        popup.show();
-    }
-
-    public void goalDropdown(View v) {
-        final TextView goal = view.findViewById(R.id.goal);
-        final PopupMenu popup = new PopupMenu(context, goal);
-
-        popup.getMenuInflater().inflate(R.menu.settings_goal, popup.getMenu());
-        popup.setOnMenuItemClickListener(item -> {
-            int minutes = 0;
-            goal.setText(item.getTitle().toString());
-            switch (item.getTitle().toString()) {
-                case "5 мин":
-                default:
-                    minutes = 5;
-                    break;
-                case "10 мин":
-                    minutes = 10;
-                    break;
-                case "15 мин":
-                    minutes = 15;
-                    break;
-            }
-            DataReader.SaveInt(minutes, DataReader.GOAL, context);
-            return true;
-        });
-        popup.show();
-    }
 
     public void toggleReminder(View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

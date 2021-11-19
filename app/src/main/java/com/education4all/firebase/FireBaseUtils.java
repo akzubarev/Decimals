@@ -44,8 +44,7 @@ public class FireBaseUtils {
 //
 //    }
 
-    public static void updateTours(Context context)
-    {
+    public static void updateTours(Context context) {
         getUserStats(loaded_tours -> {
             if (loaded_tours.size() != StatisticMaker.getTourCount(context)) {
                 ArrayList<Tour> tours = new ArrayList<>();
@@ -100,6 +99,35 @@ public class FireBaseUtils {
         }
     }
 
+    public interface SettingsCallback {
+        void onCallback(String id_text);
+    }
+
+    public static void login(Context context, SettingsCallback callback) {
+        try {
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            user = auth.getCurrentUser();
+
+            if (user == null)
+                auth.signInAnonymously().addOnCompleteListener((Task<AuthResult> task) ->
+                {
+                    if (task.isSuccessful()) {
+                        user = task.getResult().getUser();
+                        initFirebase(context);
+                        callback.onCallback(user.getUid());
+                    } else
+                        online = false;
+                }).addOnFailureListener((Exception e) -> {
+                    online = false;
+                    reportException(e);
+                });
+            else
+                initFirebase(context);
+        } catch (Exception e) {
+            reportException(e);
+        }
+    }
+
     public static FirebaseUser getUser() {
         return user;
     }
@@ -113,10 +141,11 @@ public class FireBaseUtils {
         ArrayList<Tour> tours = new ArrayList<>();
         usersDBR.child(id).child("statistics").get().addOnCompleteListener(
                 (Task<DataSnapshot> task) -> {
-                    for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
-                        Tour tour = postSnapshot.getValue(Tour.class);
-                        tours.add(tour);
-                    }
+                    if (task.getResult() != null && task.getResult().hasChildren())
+                        for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
+                            Tour tour = postSnapshot.getValue(Tour.class);
+                            tours.add(tour);
+                        }
                     callback.onCallback(tours);
                 }
         ).addOnFailureListener(FireBaseUtils::reportException);

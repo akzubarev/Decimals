@@ -81,7 +81,7 @@ public class Utils {
     public static String versioningTool() {
         String version = "other";
         if (BuildConfig.FLAVOR.equals("decimals") &&
-                BuildConfig.VERSION_CODE == 2)
+                BuildConfig.VERSION_CODE <= 3)
             version = "decimalsBeta";
         return version;
     }

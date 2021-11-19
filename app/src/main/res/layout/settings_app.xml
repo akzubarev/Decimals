@@ -30,18 +30,16 @@
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen4" />
 
-            <TextView
-                android:id="@+id/TimerState"
-                android:layout_width="100dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_weight="1"
-                android:gravity="center_vertical|end"
-                android:onClick="timerDropdown"
-                android:tag="1"
-                android:text="@string/settings_timerOptions_first"
-                android:textColor="@color/additional"
-                android:textSize="@dimen/dimen4" />
+                android:gravity="center_vertical|end">
+
+                <Spinner
+                    android:id="@+id/timer_spinner"
+                    android:entries="@array/timer_dropdown"
+                    style="@style/Spinner" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -62,18 +60,16 @@
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen4" />
 
-            <TextView
-                android:id="@+id/numbersLayout"
-                android:layout_width="100dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_weight="1"
-                android:gravity="center_vertical|end"
-                android:onClick="layoutDropdown"
-                android:tag="1"
-                android:text="@string/settings_keyboard_789"
-                android:textColor="@color/additional"
-                android:textSize="@dimen/dimen4" />
+                android:gravity="center_vertical|end">
+
+                <Spinner
+                    android:id="@+id/layout_spinner"
+                    android:entries="@array/layout_dropdown"
+                    style="@style/Spinner" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -94,18 +90,16 @@
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen4" />
 
-            <TextView
-                android:id="@+id/buttonsPlace"
-                android:layout_width="100dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_weight="1"
-                android:gravity="center_vertical|end"
-                android:onClick="buttonsDropdown"
-                android:tag="1"
-                android:text="@string/settings_command_buttons_right"
-                android:textColor="@color/additional"
-                android:textSize="@dimen/dimen4" />
+                android:gravity="center_vertical|end">
+
+                <Spinner
+                    android:id="@+id/buttons_spinner"
+                    android:entries="@array/buttons_dropdown"
+                    style="@style/Spinner"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -127,18 +121,17 @@
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen4" />
 
-            <TextView
-                android:id="@+id/goal"
-                android:layout_width="100dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_weight="1"
-                android:gravity="center_vertical|end"
-                android:onClick="goalDropdown"
-                android:tag="1"
-                android:text="@string/settings_goal_5min"
-                android:textColor="@color/additional"
-                android:textSize="@dimen/dimen4" />
+                android:gravity="center_vertical|end">
+
+                <Spinner
+                    android:id="@+id/goal_spinner"
+                    android:entries="@array/goal_dropdown"
+                    style="@style/Spinner"
+                    />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -162,15 +155,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/main"
                 android:textSize="@dimen/dimen3" />
-
-
-            <View
-                android:id="@+id/line1"
-                android:layout_width="match_parent"
-                android:layout_height="10dip"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:padding="2dip" />
 
 
             <com.warkiz.widget.IndicatorSeekBar

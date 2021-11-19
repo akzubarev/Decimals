@@ -92,11 +92,7 @@ public class TaskActivity extends AppCompatActivity {
         //заполняем GridLayout
         GridLayout gl = findViewById(R.id.buttonsLayout);
         fillView(gl);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         int size = (int) getResources().getDimension(R.dimen.dimen0) / 3;
         for (int i = 0; i < fractionSyms.length; i++) {
 
@@ -428,7 +424,7 @@ public class TaskActivity extends AppCompatActivity {
 
         updateTimers();
 
-        if ((Calendar.getInstance().getTimeInMillis() - tourStartTime) / 1000 >= tourLenght)
+        if ((System.currentTimeMillis() - tourStartTime) / 1000 >= tourLenght)
             endRound();
         else
             textViewUpdate();

@@ -53,6 +53,40 @@
         <item name="colorControlActivated">@color/additional</item>
     </style>
 
+    <style name="SettingsCheckBox" parent="MyCheckBox">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:theme">@style/MyCheckBox</item>
+    </style>
+
+    <style name="SettingsText">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">30dp</item>
+        <item name="android:layout_gravity">center_vertical|start</item>
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:textColor">@color/main</item>
+        <item name="android:textSize">@dimen/dimen4</item>
+    </style>
+
+    <style name="SettingsButtons" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_gravity">end</item>
+        <item name="android:gravity">bottom|end</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingRight">@dimen/arrowsidepadding</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:text">@string/Arrow</item>
+        <item name="android:textSize">@dimen/dimen1</item>
+        <item name="android:textColor">@color/additional</item>
+
+    </style>
+
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
         <item name="android:background">@color/color3</item>
         <item name="android:itemBackground">@color/color3</item>
@@ -102,7 +136,7 @@
     <style name="TaskRL" parent="Widget.AppCompat.Button">
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">60dp</item>
-<!--                <item name="android:layout_margin">-8dp</item>-->
+        <!--                <item name="android:layout_margin">-8dp</item>-->
         <item name="layout_columnWeight">1</item>
         <item name="layout_rowWeight">1</item>
         <item name="android:background">@android:color/transparent</item>
@@ -121,7 +155,7 @@
     </style>
 
     <style name="TaskImageButtons" parent="TaskButtons">
-<!--        <item name="android:layout_marginTop">10dp</item>-->
+        <!--        <item name="android:layout_marginTop">10dp</item>-->
         <item name="android:paddingLeft">@dimen/bpleft</item>
         <item name="android:paddingTop">@dimen/bptop</item>
         <item name="android:paddingRight">@dimen/bpright</item>
@@ -146,5 +180,16 @@
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:textColor">@color/main</item>
         <item name="android:textSize">@dimen/dimen6</item>
+    </style>
+
+    <style name="Spinner">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:gravity">center_horizontal|end</item>
+        <item name="android:layout_gravity">center_horizontal|end</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/additional</item>
+        <!--        <item name="android:dropDownHorizontalOffset">-200dp</item>--> <!-- set programmatically -->
+        <item name="android:dropDownVerticalOffset">30dp</item>
     </style>
 </resources>
