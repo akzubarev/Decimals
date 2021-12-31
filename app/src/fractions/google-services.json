@@ -84,7 +84,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:813854005216:android:e7ee796fad31be14247d85",
         "android_client_info": {
-          "package_name": "com.education4all.mathcoach"
+          "package_name": "com.education4all.integers"
         }
       },
       "oauth_client": [
@@ -92,7 +92,7 @@
           "client_id": "813854005216-74oa3rt40b4gjo9sgh7et5q05q0epo6t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.education4all.mathcoach",
+            "package_name": "com.education4all.integers",
             "certificate_hash": "9c69c73296a08e8a6469062a7cf9bec628b24857"
           }
         },

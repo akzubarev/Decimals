@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.education4all.BuildConfig;
 import com.education4all.R;
+import com.education4all.utils.Utils;
 
 public class AuthorsActivity extends AppCompatActivity {
 
@@ -37,7 +38,7 @@ public class AuthorsActivity extends AppCompatActivity {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             TextView versionTV = findViewById(R.id.version);
             String versionTag = "";
-            if (BuildConfig.BUILD_TYPE.equals("debug") || versioningTool().equals("decimalsBeta"))
+            if (BuildConfig.BUILD_TYPE.equals("debug") || versioningTool().equals(Utils.VERSIONING_REMOVEFIREBASE))
                 versionTag = " (beta)";
             String versionText = String.format("Версия: %s%s", versionName, versionTag).trim();
             versionTV.setText(versionText);

@@ -5,6 +5,7 @@ import static com.education4all.utils.Utils.versioningTool;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -171,7 +172,8 @@ public class SettingsAppTab extends Fragment {
         reminder_time.setText(DataReader.GetString(DataReader.REMINDER_TIME, context));
         reminder_time.setOnClickListener(this::reminderDropDown);
 
-        if (versioningTool().equals("decimalsBeta")) {
+        Log.d("dddddddddddddd", versioningTool());
+        if (versioningTool().equals(Utils.VERSIONING_REMOVEFIREBASE)) {
             TextView account = view.findViewById(R.id.account_text);
             account.setVisibility(View.GONE);
             view.findViewById(R.id.id_layout).setVisibility(View.GONE);

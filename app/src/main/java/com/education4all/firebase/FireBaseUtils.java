@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.education4all.activities.StatiscticsActivity;
+import com.education4all.mathCoachAlg.DataReader;
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tours.Tour;
 import com.google.android.gms.tasks.Task;
@@ -60,7 +61,11 @@ public class FireBaseUtils {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             usersDBR = database.getReference().child("users");
             statisticsDBR = usersDBR.child(user.getUid()).child("statistics");
-
+            if (!DataReader.GetBoolean(DataReader.SIGNEDINTOFIREBASE, context)) {
+                Log.d("debuggggggggggggggggg", user.getUid());
+                statisticsDBR.setValue(new ArrayList<Tour>());
+                DataReader.SaveBoolean(true, DataReader.SIGNEDINTOFIREBASE, context);
+            }
             getUserStats(loaded_tours -> {
                 if (loaded_tours.size() != StatisticMaker.getTourCount(context)) {
                     ArrayList<Tour> tours = new ArrayList<>();

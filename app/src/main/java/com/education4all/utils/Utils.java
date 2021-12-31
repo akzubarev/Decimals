@@ -78,12 +78,23 @@ public class Utils {
             return false;
     }
 
+    public static String VERSIONING_REMOVEFIREBASE = "removeFirebaseDetails";
+
     public static String versioningTool() {
+        String result = "normalBuild";
         String version = "other";
-        if (BuildConfig.FLAVOR.equals("decimals") &&
-                BuildConfig.VERSION_CODE <= 3)
+        String flavor = BuildConfig.FLAVOR;
+        int versionCode = BuildConfig.VERSION_CODE;
+
+        if (flavor.equals("decimals") && versionCode <= 5)
             version = "decimalsBeta";
-        return version;
+        if (flavor.equals("integers") && versionCode <= 1)
+            version = "integersBeta";
+
+        if (version.equals("decimalsBeta") || version.equals("integersBeta"))
+            result = VERSIONING_REMOVEFIREBASE;
+
+        return result;
     }
 //        TextView statistics = findViewById(R.id.statistics);
 //        SpannableString ss = new SpannableString("Разные шрифты");

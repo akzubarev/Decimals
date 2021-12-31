@@ -4,7 +4,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     flavorDimensions 'tasktypes'
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.education4all.mathtrainer"
         minSdkVersion 23
@@ -18,14 +18,14 @@ android {
     }
     productFlavors {
         integers {
-            applicationId "com.education4all.mathcoach"
-            versionName '2.0.0'
-            versionCode 6
+            applicationId "com.education4all.integers"
+            versionName '0.9.0'
+            versionCode 1
         }
         decimals {
             applicationId "com.education4all.decimals"
-            versionName '0.9.6'
-            versionCode 3
+            versionName '1.0.0'
+            versionCode 5
         }
         fractions {
             applicationId "com.education4all.fractions"
@@ -49,10 +49,10 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.6.3'

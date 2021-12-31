@@ -39,7 +39,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                >
 
                 <TextView
                     style="@style/SettingsText"
@@ -48,35 +49,24 @@
                 <CheckBox
                     android:id="@+id/checkBoxAdd1"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="1" />
 
                 <CheckBox
                     android:id="@+id/checkBoxAdd2"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="1" />
 
                 <CheckBox
                     android:id="@+id/checkBoxAdd3"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="1" />
 
                 <CheckBox
                     android:id="@+id/checkBoxAdd4"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="1" />
 
@@ -100,36 +90,24 @@
                 <CheckBox
                     android:id="@+id/checkBoxSub1"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="2" />
 
                 <CheckBox
                     android:id="@+id/checkBoxSub2"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="2" />
 
                 <CheckBox
                     android:id="@+id/checkBoxSub3"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="2" />
 
                 <CheckBox
                     android:id="@+id/checkBoxSub4"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="2" />
 
@@ -153,36 +131,24 @@
                 <CheckBox
                     android:id="@+id/checkBoxMul1"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="3" />
 
                 <CheckBox
                     android:id="@+id/checkBoxMul2"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="3" />
 
                 <CheckBox
                     android:id="@+id/checkBoxMul3"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="3" />
 
                 <CheckBox
                     android:id="@+id/checkBoxMul4"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="3" />
 
@@ -206,36 +172,24 @@
                 <CheckBox
                     android:id="@+id/checkBoxDiv1"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="4" />
 
                 <CheckBox
                     android:id="@+id/checkBoxDiv2"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="4" />
 
                 <CheckBox
                     android:id="@+id/checkBoxDiv3"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="4" />
 
                 <CheckBox
                     android:id="@+id/checkBoxDiv4"
                     style="@style/SettingsCheckBox"
-                    android:layout_gravity="center"
-
-                    android:gravity="center_vertical|start"
                     android:onClick="onCheckBoxClick"
                     android:tag="4" />
 

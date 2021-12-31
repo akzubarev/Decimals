@@ -81,7 +81,7 @@ public class StatiscticsActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (versioningTool().equals("decimalsBeta"))
+        if (versioningTool().equals(Utils.VERSIONING_REMOVEFIREBASE))
             findViewById(R.id.graphlayout).setVisibility(View.GONE);
     }
 
@@ -90,7 +90,8 @@ public class StatiscticsActivity extends AppCompatActivity {
         super.onResume();
         try {
             fill();
-            FireBaseUtils.getUserStats(tours->{ });
+            FireBaseUtils.getUserStats(tours -> {
+            });
             setupProgress(findViewById(R.id.toggle));
             // setUpChart();
         } catch (
@@ -197,7 +198,7 @@ public class StatiscticsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_statisctics, menu);
-        if (versioningTool().equals("decimalsBeta")) {
+        if (versioningTool().equals(Utils.VERSIONING_REMOVEFIREBASE)) {
             MenuItem another_user = menu.findItem(R.id.action_another_user);
             another_user.setVisible(false);
         }

@@ -58,14 +58,16 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">5dp</item>
         <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
+        <item name="android:gravity">center_vertical|end</item>
         <item name="android:theme">@style/MyCheckBox</item>
     </style>
 
     <style name="SettingsText">
         <item name="android:layout_width">120dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginEnd">30dp</item>
-        <item name="android:layout_gravity">center_vertical|start</item>
+        <item name="android:layout_marginEnd">0dp</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
         <item name="android:gravity">center_vertical|start</item>
         <item name="android:textColor">@color/main</item>
         <item name="android:textSize">@dimen/dimen4</item>
@@ -74,11 +76,11 @@
     <style name="SettingsButtons" parent="Widget.AppCompat.Button">
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">40dp</item>
-        <item name="android:layout_gravity">end</item>
         <item name="android:gravity">bottom|end</item>
         <item name="android:layout_marginStart">5dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
         <item name="android:paddingRight">@dimen/arrowsidepadding</item>
         <item name="android:paddingBottom">2dp</item>
         <item name="android:text">@string/Arrow</item>

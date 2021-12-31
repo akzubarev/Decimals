@@ -22,4 +22,6 @@
 
     <dimen name="actionbaricon">120dp</dimen>
     <dimen name="arrowsidepadding">60dp</dimen>
+
+    <dimen name="settingsCheckboxMargin">30dp</dimen>
 </resources>
