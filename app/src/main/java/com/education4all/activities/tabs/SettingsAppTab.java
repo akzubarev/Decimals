@@ -3,7 +3,6 @@ package com.education4all.activities.tabs;
 import static com.education4all.utils.Utils.versioningTool;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -17,32 +16,25 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
-import com.education4all.BuildConfig;
 import com.education4all.NotificationHelper;
 import com.education4all.R;
-import com.education4all.firebase.FireBaseUtils;
 import com.education4all.mathCoachAlg.DataReader;
-import com.education4all.mathCoachAlg.tours.Tour;
 import com.education4all.utils.Enums.ButtonsPlace;
 import com.education4all.utils.Enums.LayoutState;
 import com.education4all.utils.Enums.TimerState;
 import com.education4all.utils.Utils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.warkiz.widget.IndicatorSeekBar;
 import com.warkiz.widget.OnSeekChangeListener;
 import com.warkiz.widget.SeekParams;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -68,7 +60,7 @@ public class SettingsAppTab extends Fragment {
         }, DataReader.GetInt(DataReader.TIMER_STATE, context));
 
         configureSpinner(R.id.layout_spinner, R.array.layout_dropdown, (int choice) -> {
-            LayoutState[] options = new LayoutState[]{LayoutState._123, LayoutState._789};
+            LayoutState[] options = new LayoutState[]{LayoutState._789, LayoutState._123,};
             int layout_state = LayoutState.convert(options[choice]);
             DataReader.SaveInt(layout_state, DataReader.LAYOUT_STATE, context);
         }, DataReader.GetInt(DataReader.LAYOUT_STATE, context));
@@ -149,10 +141,9 @@ public class SettingsAppTab extends Fragment {
         });
 
         TextView id = view.findViewById(R.id.id);
-        if (FireBaseUtils.getUser() != null)
-            id.setText(FireBaseUtils.getUser().getUid());
-        else
-            FireBaseUtils.login(context, id::setText);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null)
+            id.setText(user.getUid());
 
         SwitchCompat queue = view.findViewById(R.id.queue);
         boolean queueEnabled = DataReader.GetBoolean(DataReader.QUEUE, context);
@@ -223,23 +214,16 @@ public class SettingsAppTab extends Fragment {
 
 
     public void toggleReminder(View v) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            boolean on = ((SwitchCompat) view.findViewById(R.id.remind)).isChecked();
-            if (!on)
-                new NotificationHelper(context).cancelReminder();
+        boolean on = ((SwitchCompat) view.findViewById(R.id.remind)).isChecked();
+        if (!on)
+            new NotificationHelper(context).cancelReminder();
 
-            LinearLayout layout = view.findViewById(R.id.remind_time_layout);
-            layout.setVisibility(on ? View.VISIBLE : View.INVISIBLE);
+        LinearLayout layout = view.findViewById(R.id.remind_time_layout);
+        layout.setVisibility(on ? View.VISIBLE : View.INVISIBLE);
 
-            DataReader.SaveBoolean(on, DataReader.REMINDER, context);
-        } else
-            Toast.makeText(context,
-                    "Напоминания не поддерживаются в этой верссии android",
-                    Toast.LENGTH_LONG)
-                    .show();
+        DataReader.SaveBoolean(on, DataReader.REMINDER, context);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public void reminderDropDown(View v) {
         TimePicker timePicker = (TimePicker) TimePicker.inflate(context,
                 R.layout.time_selector, null);
@@ -256,7 +240,6 @@ public class SettingsAppTab extends Fragment {
         Utils.FixDialog(dialog, context); // почему-то нужно для планшетов
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
     private void setAlarm(int hour, int minute) {
         TextView timetv = view.findViewById(R.id.remind_time);
 

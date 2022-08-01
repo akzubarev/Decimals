@@ -1,12 +1,7 @@
 package com.education4all.firebase;
 
 import android.content.Context;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.education4all.activities.StatiscticsActivity;
-import com.education4all.mathCoachAlg.DataReader;
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tours.Tour;
 import com.google.android.gms.tasks.Task;
@@ -15,37 +10,44 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class FireBaseUtils {
 
-    private static FirebaseUser user;
-    private static DatabaseReference usersDBR;
-    private static DatabaseReference statisticsDBR;
-    private static boolean online = true;
+    private final DatabaseReference mDatabase;
+    private final FirebaseAuth auth;
 
-//    private static void checkConnection() {
-//        DatabaseReference connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
-//        connectedRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                online = snapshot.getValue(Boolean.class);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                reportException(error.toException());
-//            }
-//        });
-//
-//    }
+    public FireBaseUtils() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        auth = FirebaseAuth.getInstance();
+    }
 
-    public static void updateTours(Context context) {
+    public void login(Context context, LoginCallback callback) {
+        try {
+            FirebaseUser user = auth.getCurrentUser();
+
+            if (user == null)
+                auth.signInAnonymously().addOnCompleteListener(
+                        (Task<AuthResult> task) -> callback.onCallback()
+                ).addOnFailureListener(FireBaseUtils::reportException);
+        } catch (Exception e) {
+            reportException(e);
+        }
+    }
+
+    public DatabaseReference getUserDBR() {
+        return mDatabase.child("users");
+    }
+
+    public DatabaseReference getStatsDBR() {
+        String userID = auth.getCurrentUser().getUid();
+        return getUserDBR().child(userID).child("statistics");
+    }
+
+    public void updateTours(Context context) {
         getUserStats(loaded_tours -> {
             if (loaded_tours.size() != StatisticMaker.getTourCount(context)) {
                 ArrayList<Tour> tours = new ArrayList<>();
@@ -56,95 +58,21 @@ public class FireBaseUtils {
         });
     }
 
-    private static void initFirebase(Context context) {
-        try {
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            usersDBR = database.getReference().child("users");
-            statisticsDBR = usersDBR.child(user.getUid()).child("statistics");
-            if (!DataReader.GetBoolean(DataReader.SIGNEDINTOFIREBASE, context)) {
-                Log.d("debuggggggggggggggggg", user.getUid());
-                statisticsDBR.setValue(new ArrayList<Tour>());
-                DataReader.SaveBoolean(true, DataReader.SIGNEDINTOFIREBASE, context);
-            }
-            getUserStats(loaded_tours -> {
-                if (loaded_tours.size() != StatisticMaker.getTourCount(context)) {
-                    ArrayList<Tour> tours = new ArrayList<>();
-                    for (int tourNumber = StatisticMaker.getTourCount(context) - 1; tourNumber >= 0; --tourNumber)
-                        tours.add(StatisticMaker.loadTour(context, tourNumber));
-                    uploadTours(tours);
-                }
-            });
-        } catch (Exception e) {
-            reportException(e);
-        }
-    }
-
-    public static void login(Context context) {
-//        checkConnection();
-        try {
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            user = auth.getCurrentUser();
-
-            if (user == null)
-                auth.signInAnonymously().addOnCompleteListener((Task<AuthResult> task) ->
-                {
-                    if (task.isSuccessful()) {
-                        user = task.getResult().getUser();
-                        initFirebase(context);
-                    } else
-                        online = false;
-                }).addOnFailureListener((Exception e) -> {
-                    online = false;
-                    reportException(e);
-                });
-            else
-                initFirebase(context);
-        } catch (Exception e) {
-            reportException(e);
-        }
+    public interface LoginCallback {
+        void onCallback();
     }
 
     public interface SettingsCallback {
         void onCallback(String id_text);
     }
 
-    public static void login(Context context, SettingsCallback callback) {
-        try {
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            user = auth.getCurrentUser();
-
-            if (user == null)
-                auth.signInAnonymously().addOnCompleteListener((Task<AuthResult> task) ->
-                {
-                    if (task.isSuccessful()) {
-                        user = task.getResult().getUser();
-                        initFirebase(context);
-                        callback.onCallback(user.getUid());
-                    } else
-                        online = false;
-                }).addOnFailureListener((Exception e) -> {
-                    online = false;
-                    reportException(e);
-                });
-            else
-                initFirebase(context);
-        } catch (Exception e) {
-            reportException(e);
-        }
-    }
-
-    public static FirebaseUser getUser() {
-        return user;
-    }
-
-
     public interface StatisticsCallback {
         void onCallback(ArrayList<Tour> loaded_tours);
     }
 
-    public static void getUserStats(String id, StatisticsCallback callback) {
+    public void getUserStats(String id, StatisticsCallback callback) {
         ArrayList<Tour> tours = new ArrayList<>();
-        usersDBR.child(id).child("statistics").get().addOnCompleteListener(
+        mDatabase.child("users").child(id).child("statistics").get().addOnCompleteListener(
                 (Task<DataSnapshot> task) -> {
                     if (task.getResult() != null && task.getResult().hasChildren())
                         for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
@@ -156,8 +84,8 @@ public class FireBaseUtils {
         ).addOnFailureListener(FireBaseUtils::reportException);
     }
 
-    public static void getUserStats(StatisticsCallback callback) {
-        getUserStats(user.getUid(), callback);
+    public void getUserStats(StatisticsCallback callback) {
+        getUserStats(auth.getCurrentUser().getUid(), callback);
     }
 
     private static void reportException(Exception e) {
@@ -167,25 +95,25 @@ public class FireBaseUtils {
         crashlytics.sendUnsentReports();
     }
 
-    public static void uploadTours(ArrayList<Tour> tours) {
+    public void uploadTours(ArrayList<Tour> tours) {
         try {
-            statisticsDBR.setValue(tours);
+            getStatsDBR().setValue(tours);
         } catch (Exception e) {
             reportException(e);
         }
     }
 
-    public static void uploadTour(Tour tour) {
+    public void uploadTour(Tour tour) {
         try {
-            statisticsDBR.push().setValue(tour);
+            getStatsDBR().push().setValue(tour);
         } catch (Exception e) {
             reportException(e);
         }
     }
 
-    public static void deleteTours() {
+    public void deleteTours() {
         try {
-            statisticsDBR.removeValue();
+            getStatsDBR().removeValue();
         } catch (Exception e) {
             reportException(e);
         }

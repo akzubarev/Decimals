@@ -85,7 +85,7 @@ public class StatisticMaker {
         SharedPreferences.Editor editor = context.getSharedPreferences(STATISTICS, Context.MODE_PRIVATE).edit();
         editor.clear();
         editor.apply();
-        FireBaseUtils.deleteTours();
+        new FireBaseUtils().deleteTours();
     }
 
     public static void removeTour(Context context, int tourNumber) {
@@ -125,6 +125,6 @@ public class StatisticMaker {
         editor.putString(TOURS + "_" + tourNumberString, serializedTour);
         editor.apply();
 
-        FireBaseUtils.uploadTour(tour);
+        new FireBaseUtils().uploadTour(tour);
     }
 }

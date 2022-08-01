@@ -1,7 +1,5 @@
 package com.education4all.activities;
 
-import static com.education4all.firebase.FireBaseUtils.updateTours;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.education4all.R;
+import com.education4all.firebase.FireBaseUtils;
 import com.education4all.utils.Utils;
 import com.education4all.mathCoachAlg.StatisticMaker;
 import com.education4all.mathCoachAlg.tasks.Task;
@@ -87,7 +86,7 @@ public class StatTourActivity extends AppCompatActivity {
 //        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         finish();
-        updateTours(getApplicationContext());
+        new FireBaseUtils().updateTours(getApplicationContext());
         //startActivity(intent);
     }
 

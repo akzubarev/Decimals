@@ -154,7 +154,7 @@
                 android:textAlignment="textStart"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/main"
-                android:textSize="@dimen/dimen3" />
+                android:textSize="@dimen/dimen4" />
 
 
             <com.warkiz.widget.IndicatorSeekBar
@@ -200,7 +200,7 @@
                 android:textAlignment="textStart"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/main"
-                android:textSize="@dimen/dimen3" />
+                android:textSize="@dimen/dimen4" />
 
 
             <com.warkiz.widget.IndicatorSeekBar

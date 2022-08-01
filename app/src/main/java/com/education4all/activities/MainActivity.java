@@ -31,6 +31,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     final String tasktype = BuildConfig.FLAVOR;
+    FireBaseUtils fireBaseUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +42,21 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
         Task.setType(tasktype);
 
-        FireBaseUtils.login(this);
+        fireBaseUtils = new FireBaseUtils();
+        fireBaseUtils.login(this, () -> {
+            try {
+                showStatitics();
+            } catch (Exception e) {
+                TextView statistics = findViewById(R.id.statistics);
+                statistics.setText("\nИзменен формат записи результатов\nПерейдите на экран результатов для обновления");
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        try {
-            showStatitics();
-        } catch (Exception e) {
-            TextView statistics = findViewById(R.id.statistics);
-            statistics.setText("\nИзменен формат записи результатов\nПерейдите на экран результатов для обновления");
-        }
+
         showSettings();
         disableButtons(true);
     }

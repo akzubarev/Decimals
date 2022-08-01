@@ -90,7 +90,7 @@ public class StatiscticsActivity extends AppCompatActivity {
         super.onResume();
         try {
             fill();
-            FireBaseUtils.getUserStats(tours -> {
+            new FireBaseUtils().getUserStats(tours -> {
             });
             setupProgress(findViewById(R.id.toggle));
             // setUpChart();
@@ -238,8 +238,9 @@ public class StatiscticsActivity extends AppCompatActivity {
                 final EditText input = new EditText(this);
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setTitle("Введите ID пользователя").setView(input).setPositiveButton("Ок", (dialog1, which) ->
-                                FireBaseUtils.getUserStats(input.getText().toString(), callback)
+                        .setTitle("Введите ID пользователя").setView(input).setPositiveButton("Ок",
+                                (dialog1, which) ->
+                               new FireBaseUtils().getUserStats(input.getText().toString(), callback)
                         ).setNegativeButton("Отмена", (dialog1, which) -> {
                         })
                         .show();
