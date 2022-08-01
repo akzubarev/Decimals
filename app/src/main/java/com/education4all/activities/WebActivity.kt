@@ -1,53 +1,42 @@
-package com.education4all.activities;
+package com.education4all.activities
 
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
-import android.os.Bundle;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.annotation.TargetApi
+import android.net.ConnectivityManager
+import android.os.Build
+import android.os.Bundle
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.education4all.R
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import com.education4all.R;
-
-public class WebActivity extends AppCompatActivity {
-    private WebView webView;
-    private boolean connected = false;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        connected = CheckForConnection();
+class WebActivity : AppCompatActivity() {
+    private var webView: WebView? = null
+    private var connected = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        connected = CheckForConnection()
         if (connected) {
-            setContentView(R.layout.web);
-            webView = findViewById(R.id.webView);
-            webView.getSettings().setJavaScriptEnabled(true);
-            webView.setWebViewClient(new MyWebViewClient());
-            webView.loadUrl("http://math-trainer.ru");
+            setContentView(R.layout.web)
+            webView = findViewById(R.id.webView)
+            webView.getSettings().javaScriptEnabled = true
+            webView.setWebViewClient(MyWebViewClient())
+            webView.loadUrl("http://math-trainer.ru")
         } else {
-            setContentView(R.layout.no_internet);
-//            TextView messagetext = findViewById(R.id.message);
+            setContentView(R.layout.no_internet)
+            //            TextView messagetext = findViewById(R.id.message);
 //            messagetext.setText(message);
         }
-
-
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        val myToolbar = findViewById<Toolbar>(R.id.my_toolbar)
+        setSupportActionBar(myToolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
-    private boolean CheckForConnection() {
-
-        boolean internetConnection = false;
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    private fun CheckForConnection(): Boolean {
+        var internetConnection = false
+        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            message = "Build version > M";
 //            Network nw = connectivityManager.getActiveNetwork();
 //            if (nw == null) {
@@ -66,39 +55,33 @@ public class WebActivity extends AppCompatActivity {
 //                message += actNw == null ? ", actNw==null" : ", no transport";
 //            }
         //      } else {
-        String message = "Build version < M";
-        NetworkInfo nwInfo = connectivityManager.getActiveNetworkInfo();
-        internetConnection = nwInfo != null && nwInfo.isConnected();
-        message += nwInfo == null ? ", nwInfo==null" : ", nw is not connected";
-//        }
-        return internetConnection;
+        var message = "Build version < M"
+        val nwInfo = connectivityManager.activeNetworkInfo
+        internetConnection = nwInfo != null && nwInfo.isConnected
+        message += if (nwInfo == null) ", nwInfo==null" else ", nw is not connected"
+        //        }
+        return internetConnection
     }
 
-    @Override
-    public void onBackPressed() {
-        if (connected && webView.canGoBack()) {
-            webView.goBack();
+    override fun onBackPressed() {
+        if (connected && webView!!.canGoBack()) {
+            webView!!.goBack()
         } else {
-            super.onBackPressed();
+            super.onBackPressed()
         }
     }
 
-    private static class MyWebViewClient extends WebViewClient {
+    private class MyWebViewClient : WebViewClient() {
         @TargetApi(Build.VERSION_CODES.N)
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            view.loadUrl(request.getUrl().toString());
-            return true;
+        override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+            view.loadUrl(request.url.toString())
+            return true
         }
 
         // Для старых устройств
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
+        override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+            view.loadUrl(url)
+            return true
         }
     }
-
 }
-
-

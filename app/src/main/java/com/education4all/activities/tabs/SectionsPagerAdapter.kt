@@ -1,40 +1,29 @@
-package com.education4all.activities.tabs;
+package com.education4all.activities.tabs
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 
-public class SectionsPagerAdapter extends FragmentStateAdapter {
-
-    private static final String[] TAB_TITLES = new String[]{"Задания", "Интерфейс"};
-
-    public SectionsPagerAdapter(FragmentActivity fm) {
-        super(fm);
+class SectionsPagerAdapter(fm: FragmentActivity?) : FragmentStateAdapter(fm!!) {
+    fun getPageTitle(position: Int): CharSequence {
+        return TAB_TITLES[position]
     }
 
-    public CharSequence getPageTitle(int position) {
-        return TAB_TITLES[position];
-    }
-
-    @NonNull
-    @Override
-    public Fragment createFragment(int position) {
-        Fragment fragment = null;
-        switch (position) {
-            case 0:
-            default:
-                fragment = new SettingsTaskTab();
-                break;
-            case 1:
-                fragment = new SettingsAppTab();
-                break;
+    override fun createFragment(position: Int): Fragment {
+        var fragment: Fragment? = null
+        fragment = when (position) {
+            0 -> SettingsTaskTab()
+            1 -> SettingsAppTab()
+            else -> SettingsTaskTab()
         }
-        return fragment;
+        return fragment
     }
 
-    @Override
-    public int getItemCount() {
-        return 2;
+    override fun getItemCount(): Int {
+        return 2
+    }
+
+    companion object {
+        private val TAB_TITLES = arrayOf("Задания", "Интерфейс")
     }
 }

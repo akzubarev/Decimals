@@ -1,48 +1,16 @@
-package com.education4all.firebase;
+package com.education4all.firebase
 
-import com.education4all.mathCoachAlg.tours.Tour;
+import com.education4all.mathCoachAlg.tours.Tour
 
-import java.util.ArrayList;
+class User {
+    var email: String? = null
+    var id: String? = null
+    var statistics: ArrayList<Tour>? = null
 
-public class User {
-
-    private String email;
-    private String id;
-    private ArrayList<Tour> statistics;
-
-    public User() {
+    constructor() {}
+    constructor(name: String?, email: String?, id: String?, statistics: ArrayList<Tour>?) {
+        this.email = email
+        this.id = id
+        this.statistics = statistics
     }
-
-    public User(String name, String email, String id, ArrayList<Tour> statistics) {
-        this.email = email;
-        this.id = id;
-        this.statistics = statistics;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public ArrayList<Tour> getStatistics() {
-        return statistics;
-    }
-
-    public void setStatistics(ArrayList<Tour> statistics) {
-        this.statistics = statistics;
-    }
-
-
 }
-

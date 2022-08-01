@@ -1,730 +1,668 @@
-package com.education4all.activities;
+package com.education4all.activities
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.format.DateUtils;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.SuperscriptSpan;
-import android.text.style.URLSpan;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.annotation.SuppressLint
+import android.content.*
+import android.graphics.Color
+import android.os.Bundle
+import android.os.Handler
+import android.text.Html
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.format.DateUtils
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.SuperscriptSpan
+import android.text.style.URLSpan
+import android.util.Log
+import android.view.*
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
+import androidx.gridlayout.widget.GridLayout
+import com.education4all.*
+import com.education4all.mathCoachAlg.DataReader
+import com.education4all.mathCoachAlg.StatisticMaker
+import com.education4all.mathCoachAlg.tasks.*
+import com.education4all.mathCoachAlg.tours.TaskQueue
+import com.education4all.mathCoachAlg.tours.Tour
+import com.education4all.utils.Enums
+import com.education4all.utils.Enums.ButtonsPlace
+import com.education4all.utils.Enums.TimerState
+import com.education4all.utils.Utils
+import java.util.*
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.gridlayout.widget.GridLayout;
+class TaskActivity : AppCompatActivity() {
+    val tasktype = BuildConfig.FLAVOR
+    var mode = Mode.integer
+    private val progressBarHandler = Handler()
+    private val taskDisapHandler = Handler()
+    private val currentTour = Tour()
+    private var task: Task? = null
+    private var correctionwork: Task? = null
+    var taskQueue: TaskQueue? = null
+    private var answer: String? = ""
+    private var answerI: String? = ""
 
-import com.education4all.BuildConfig;
-import com.education4all.R;
-import com.education4all.mathCoachAlg.DataReader;
-import com.education4all.mathCoachAlg.StatisticMaker;
-import com.education4all.mathCoachAlg.tasks.Fraction;
-import com.education4all.mathCoachAlg.tasks.Task;
-import com.education4all.mathCoachAlg.tours.TaskQueue;
-import com.education4all.mathCoachAlg.tours.Tour;
-import com.education4all.utils.Enums;
-import com.education4all.utils.Utils;
+    // текущая целая часть ответа
+    private var answerT = ""
 
-import java.util.Calendar;
-import java.util.Locale;
+    // текущий числитель ответа
+    private var answerB = ""
 
-public class TaskActivity extends AppCompatActivity {
-    final String tasktype = BuildConfig.FLAVOR;
-    Mode mode = Mode.integer;
+    // текущий знаменатель ответа
+    private var answerF = "" // текущая дробь ответа
+    private var timerText: TextView? = null
+    private var progressBar: ProgressBar? = null
+    private var progressStatus = 0
+    private val context: Context = this
+    private var answerShown = false
+    private var showTask = true
+    private var disapTime = 0f
+    var prevTaskTime: Long = 0
+    var prevAnswerTime: Long = 0
+    var tourStartTime: Long = 0
+    var tourLenght = 0
+    var secondsFromStart = 0
+    private var progressthread: Thread? = null
+    private var timerthread: Thread? = null
+    var solved = 0
+    var shown = 1
+    var answerWasShown = false
 
-    private final Handler progressBarHandler = new Handler(),
-            taskDisapHandler = new Handler();
-
-    private final Tour currentTour = new Tour();
-    private Task task, correctionwork = null;
-    TaskQueue taskQueue;
-
-    private String answer = "",
-            answerI = "", // текущая целая часть ответа
-            answerT = "", // текущий числитель ответа
-            answerB = "", // текущий знаменатель ответа
-            answerF = ""; // текущая дробь ответа
-
-    private TextView timerText;
-    private ProgressBar progressBar;
-    private int progressStatus = 0;
-    private final Context context = this;
-    private boolean answerShown = false, showTask = true;
-
-    private float disapTime;
-    long prevTaskTime, prevAnswerTime, tourStartTime;
-    int tourLenght, secondsFromStart;
-    private Thread progressthread, timerthread;
-
-    int solved = 0, shown = 1;
-    boolean answerWasShown = false;
-
-
-    enum Mode {
-        integer,
-        top,
-        bottom
+    enum class Mode {
+        integer, top, bottom
     }
 
-
-    String[] fractionSyms = new String[]{"□⁄□", "■⁄□", "□⁄■"};
-    SpannableString[] fractionSymsSpan = new SpannableString[3];
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.task);
+    var fractionSyms = arrayOf("□⁄□", "■⁄□", "□⁄■")
+    var fractionSymsSpan = arrayOfNulls<SpannableString>(3)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.task)
         //заполняем GridLayout
-        GridLayout gl = findViewById(R.id.buttonsLayout);
-        fillView(gl);
-
-        int size = (int) getResources().getDimension(R.dimen.dimen0) / 3;
-        for (int i = 0; i < fractionSyms.length; i++) {
-
-            fractionSymsSpan[i] = SpannableString.valueOf(fractionSyms[i]);
-            fractionSymsSpan[i].setSpan(new SuperscriptSpan(), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            fractionSymsSpan[i].setSpan(new AbsoluteSizeSpan(size), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        val gl = findViewById<GridLayout>(R.id.buttonsLayout)
+        fillView(gl)
+        val size = resources.getDimension(R.dimen.dimen0).toInt() / 3
+        for (i in fractionSyms.indices) {
+            fractionSymsSpan[i] = SpannableString.valueOf(fractionSyms[i])
+            fractionSymsSpan[i].setSpan(SuperscriptSpan(), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            fractionSymsSpan[i].setSpan(
+                AbsoluteSizeSpan(size),
+                0,
+                1,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
 
             // fractionSymsSpan[i].setSpan(new SubscriptSpan(), 2, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            fractionSymsSpan[i].setSpan(new AbsoluteSizeSpan(size), 2, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            fractionSymsSpan[i].setSpan(
+                AbsoluteSizeSpan(size),
+                2,
+                3,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
         }
 
 
         //обнуляем переменные и инициализируем элементы layout
         // массив разрешённых заданий
-        int[][] allowedTasks = DataReader.readAllowedTasks(this);
-        if (!Task.areTasks(allowedTasks)) {
-            finish();
+        val allowedTasks = DataReader.readAllowedTasks(this)
+        if (!Task.Companion.areTasks(allowedTasks)) {
+            finish()
             startActivity(
-                    new Intent(context, SettingsMainActivity.class)
-                            .putExtra("FromTask", true)
-            );
+                Intent(context, SettingsMainActivity::class.java)
+                    .putExtra("FromTask", true)
+            )
         } else {
-            answer = "";
-            handleTime();
-
-            taskQueue = new TaskQueue(allowedTasks, context);
-            if (!DataReader.GetBoolean(DataReader.QUEUE, context))
-                taskQueue.setEnabled(false);
-
-            Task.setAllowedTasks(allowedTasks);
-            task = taskQueue.newTask();
-
-            textViewUpdate();
+            answer = ""
+            handleTime()
+            taskQueue = TaskQueue(allowedTasks, context)
+            if (!DataReader.GetBoolean(DataReader.QUEUE, context)) taskQueue!!.setEnabled(false)
+            Task.Companion.setAllowedTasks(allowedTasks)
+            task = taskQueue!!.newTask()
+            textViewUpdate()
         }
     }
 
-    private void handleTime() {
-
-        tourStartTime = System.currentTimeMillis();
-        prevTaskTime = tourStartTime;
-        prevAnswerTime = tourStartTime;
-        tourLenght = DataReader.GetInt(DataReader.ROUND_TIME, this) * 60;
-
-        Enums.TimerState timerstate = Enums.TimerState.convert(
-                DataReader.GetInt(DataReader.TIMER_STATE, this));
-
-        progressBar = findViewById(R.id.taskProgress);
-        progressBar.setProgress(0);
-        progressBar.setVisibility(timerstate == Enums.TimerState.INVISIBlE ?
-                View.INVISIBLE : View.VISIBLE);
-
-        progressthread = new Thread(() -> {
+    private fun handleTime() {
+        tourStartTime = System.currentTimeMillis()
+        prevTaskTime = tourStartTime
+        prevAnswerTime = tourStartTime
+        tourLenght = DataReader.GetInt(DataReader.ROUND_TIME, this) * 60
+        val timerstate: TimerState = TimerState.Companion.convert(
+            DataReader.GetInt(DataReader.TIMER_STATE, this)
+        )
+        progressBar = findViewById(R.id.taskProgress)
+        progressBar.setProgress(0)
+        progressBar.setVisibility(if (timerstate == TimerState.INVISIBlE) View.INVISIBLE else View.VISIBLE)
+        progressthread = Thread(label@ Runnable {
             while (progressStatus < 100) {
-                progressStatus += 1;
-                if (timerstate == Enums.TimerState.CONTINIOUS)
-                    progressBarHandler.post(() -> progressBar.setProgress(progressStatus));
+                progressStatus += 1
+                if (timerstate == TimerState.CONTINIOUS) progressBarHandler.post {
+                    progressBar.setProgress(
+                        progressStatus
+                    )
+                }
                 try {
-                    Thread.sleep((tourLenght * 10L));
-                } catch (InterruptedException e) {
-                    return;
+                    Thread.sleep(tourLenght * 10L)
+                } catch (e: InterruptedException) {
+                    return@label
                 }
             }
-        });
-
-
-        timerText = findViewById(R.id.timertext);
-        timerText.setVisibility(timerstate == Enums.TimerState.INVISIBlE ?
-                View.INVISIBLE : View.VISIBLE);
-        timerText.setText(timeString(secondsFromStart, tourLenght));
-
-        timerthread = new Thread(() -> {
+        })
+        timerText = findViewById(R.id.timertext)
+        timerText.setVisibility(if (timerstate == TimerState.INVISIBlE) View.INVISIBLE else View.VISIBLE)
+        timerText.setText(timeString(secondsFromStart, tourLenght))
+        timerthread = Thread(label@ Runnable {
             while (secondsFromStart < tourLenght) {
-                secondsFromStart += 1;
-                if (timerstate == Enums.TimerState.CONTINIOUS)
-                    progressBarHandler.post(() -> timerText.setText(timeString(secondsFromStart, tourLenght)));
+                secondsFromStart += 1
+                if (timerstate == TimerState.CONTINIOUS) progressBarHandler.post {
+                    timerText.setText(
+                        timeString(secondsFromStart, tourLenght)
+                    )
+                }
                 try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    return;
+                    Thread.sleep(1000)
+                } catch (e: InterruptedException) {
+                    return@label
                 }
             }
-        });
+        })
 
 //        if (timerstate == Enums.TimerState.CONTINIOUS) {
-        timerthread.start();
-        progressthread.start();
-//        }
-
-        disapTime = DataReader.GetInt(DataReader.DISAP_ROUND_TIME, this);
-        resetDissapearing();
+        timerthread!!.start()
+        progressthread!!.start()
+        //        }
+        disapTime = DataReader.GetInt(DataReader.DISAP_ROUND_TIME, this).toFloat()
+        resetDissapearing()
     }
 
     // формирует вывод о прошедшем времени
-    private String timeString(int count, int max) {
-        return String.format(Locale.getDefault(), "%s/%s",
-                DateUtils.formatElapsedTime(count),
-                DateUtils.formatElapsedTime(max));
+    private fun timeString(count: Int, max: Int): String {
+        return String.format(
+            Locale.getDefault(), "%s/%s",
+            DateUtils.formatElapsedTime(count.toLong()),
+            DateUtils.formatElapsedTime(max.toLong())
+        )
     }
 
     //обновляет текстовый и визуальный таймеры
-    void updateTimers() {
-        progressBar.setProgress(progressStatus);
-        timerText.setText(timeString(secondsFromStart, tourLenght));
+    fun updateTimers() {
+        progressBar!!.progress = progressStatus
+        timerText!!.text = timeString(secondsFromStart, tourLenght)
     }
 
     //делаем все кнопки одинакового размера внутри GridLayout
     @SuppressLint("ClickableViewAccessibility")
-    public void fillView(GridLayout parent) {
+    fun fillView(parent: GridLayout) {
         //Button child;
-        Button sym;
-        switch (tasktype) {
-            case "integers":
-                sym = findViewById(R.id.Button_sym);
-                sym.setText("");
-                sym.setTag("empty");
-                sym.setOnClickListener(null);
-                sym.setOnLongClickListener(null);
-                sym.setOnTouchListener(null);
-                View linesym = findViewById(R.id.Line_sym);
-                linesym.setBackgroundColor(Color.TRANSPARENT);
-                break;
-            case "fractions":
-                sym = findViewById(R.id.Button_sym);
-                sym.setTag("/");
-                setModeSym();
-                break;
-            case "decimals":
-            default:
-//                sym.Text = ",";
-//                sym.Tag = ",";
-                break;
+        val sym: Button
+        when (tasktype) {
+            "integers" -> {
+                sym = findViewById(R.id.Button_sym)
+                sym.text = ""
+                sym.tag = "empty"
+                sym.setOnClickListener(null)
+                sym.setOnLongClickListener(null)
+                sym.setOnTouchListener(null)
+                val linesym = findViewById<View>(R.id.Line_sym)
+                linesym.setBackgroundColor(Color.TRANSPARENT)
+            }
+            "fractions" -> {
+                sym = findViewById(R.id.Button_sym)
+                sym.tag = "/"
+                setModeSym()
+            }
+            "decimals" -> {}
+            else -> {}
         }
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            RelativeLayout childLayout = (RelativeLayout) parent.getChildAt(i);
-            View child = childLayout.getChildAt(0);
-            View line = childLayout.getChildAt(1);
-            if (child.getClass() == AppCompatButton.class && !child.getTag().equals("empty")) {
-                if (child.getTag().equals("del"))
-                    child.setOnLongClickListener(v -> {
-                        answer = "";
-                        textViewUpdate();
-                        return true;
-                    });
-                else
-                    child.setOnLongClickListener(v -> {
-                        numberPress(v);
-                        return true;
-                    });
-
-                child.setOnTouchListener((v, event) -> {
-                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                        case MotionEvent.ACTION_DOWN:
-                            line.setBackgroundColor(getResources().getColor(R.color.main));
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            line.setBackgroundColor(getResources().getColor(R.color.shadowed));
-                            v.performClick();
-                            break;
-                        default:
-                            break;
+        for (i in 0 until parent.childCount) {
+            val childLayout = parent.getChildAt(i) as RelativeLayout
+            val child = childLayout.getChildAt(0)
+            val line = childLayout.getChildAt(1)
+            if (child.javaClass == AppCompatButton::class.java && child.tag != "empty") {
+                if (child.tag == "del") child.setOnLongClickListener { v: View? ->
+                    answer = ""
+                    textViewUpdate()
+                    true
+                } else child.setOnLongClickListener { v: View ->
+                    numberPress(v)
+                    true
+                }
+                child.setOnTouchListener { v: View, event: MotionEvent ->
+                    when (event.action and MotionEvent.ACTION_MASK) {
+                        MotionEvent.ACTION_DOWN -> line.setBackgroundColor(
+                            resources.getColor(R.color.main)
+                        )
+                        MotionEvent.ACTION_UP -> {
+                            line.setBackgroundColor(resources.getColor(R.color.shadowed))
+                            v.performClick()
+                        }
+                        else -> {}
                     }
-                    return true;
-                });
+                    true
+                }
             }
         }
-
-
-        Enums.ButtonsPlace buttonsPlace = Enums.ButtonsPlace.convert(
-                DataReader.GetInt(DataReader.BUTTONS_PLACE, this)
-        );
-
-        Enums.LayoutState layoutState = Enums.LayoutState.convert(
-                DataReader.GetInt(DataReader.LAYOUT_STATE, this)
-        );
-
-        if (buttonsPlace == Enums.ButtonsPlace.LEFT)
-            alterActionSides();
-        if (layoutState == Enums.LayoutState._123)
-            alterLayout();
+        val buttonsPlace: ButtonsPlace = ButtonsPlace.Companion.convert(
+            DataReader.GetInt(DataReader.BUTTONS_PLACE, this)
+        )
+        val layoutState: Enums.LayoutState = Enums.LayoutState.Companion.convert(
+            DataReader.GetInt(DataReader.LAYOUT_STATE, this)
+        )
+        if (buttonsPlace == ButtonsPlace.LEFT) alterActionSides()
+        if (layoutState == Enums.LayoutState._123) alterLayout()
     }
 
     //меняет раскладку с 789 на 123
-    void alterLayout() {
-        switchPlaces(findViewById(R.id.Layout_7),
-                findViewById(R.id.Layout_1));
-        switchPlaces(findViewById(R.id.Layout_8),
-                findViewById(R.id.Layout_2));
-        switchPlaces(findViewById(R.id.Layout_9),
-                findViewById(R.id.Layout_3));
+    fun alterLayout() {
+        switchPlaces(
+            findViewById(R.id.Layout_7),
+            findViewById(R.id.Layout_1)
+        )
+        switchPlaces(
+            findViewById(R.id.Layout_8),
+            findViewById(R.id.Layout_2)
+        )
+        switchPlaces(
+            findViewById(R.id.Layout_9),
+            findViewById(R.id.Layout_3)
+        )
     }
 
     //меняет местами два объекта
-    void switchPlaces(View b1, View b2) {
-        ViewGroup.LayoutParams temp = b1.getLayoutParams();
-        b1.setLayoutParams(b2.getLayoutParams());
-        b2.setLayoutParams(temp);
+    fun switchPlaces(b1: View, b2: View) {
+        val temp = b1.layoutParams
+        b1.layoutParams = b2.layoutParams
+        b2.layoutParams = temp
     }
 
     //перемещает кнопки-значки в левую сторону экрана
-    void alterActionSides() {
-        View imagebutton = findViewById(R.id.Layout_Del);
-        switchPlaces(findViewById(R.id.Layout_9), imagebutton);
-        switchPlaces(findViewById(R.id.Layout_8), imagebutton);
-        switchPlaces(findViewById(R.id.Layout_7), imagebutton);
-
-        imagebutton = findViewById(R.id.Layout_skip);
-        switchPlaces(findViewById(R.id.Layout_6), imagebutton);
-        switchPlaces(findViewById(R.id.Layout_5), imagebutton);
-        switchPlaces(findViewById(R.id.Layout_4), imagebutton);
-
-        imagebutton = findViewById(R.id.Layout_help);
-        switchPlaces(findViewById(R.id.Layout_3), imagebutton);
-        switchPlaces(findViewById(R.id.Layout_2), imagebutton);
-        switchPlaces(findViewById(R.id.Layout_1), imagebutton);
-
-        imagebutton = findViewById(R.id.Layout_check);
-        switchPlaces(findViewById(R.id.Layout_sym), imagebutton);
-        switchPlaces(findViewById(R.id.Layout_0), imagebutton);
-        switchPlaces(findViewById(R.id.Layout_empty), imagebutton);
+    fun alterActionSides() {
+        var imagebutton = findViewById<View>(R.id.Layout_Del)
+        switchPlaces(findViewById(R.id.Layout_9), imagebutton)
+        switchPlaces(findViewById(R.id.Layout_8), imagebutton)
+        switchPlaces(findViewById(R.id.Layout_7), imagebutton)
+        imagebutton = findViewById(R.id.Layout_skip)
+        switchPlaces(findViewById(R.id.Layout_6), imagebutton)
+        switchPlaces(findViewById(R.id.Layout_5), imagebutton)
+        switchPlaces(findViewById(R.id.Layout_4), imagebutton)
+        imagebutton = findViewById(R.id.Layout_help)
+        switchPlaces(findViewById(R.id.Layout_3), imagebutton)
+        switchPlaces(findViewById(R.id.Layout_2), imagebutton)
+        switchPlaces(findViewById(R.id.Layout_1), imagebutton)
+        imagebutton = findViewById(R.id.Layout_check)
+        switchPlaces(findViewById(R.id.Layout_sym), imagebutton)
+        switchPlaces(findViewById(R.id.Layout_0), imagebutton)
+        switchPlaces(findViewById(R.id.Layout_empty), imagebutton)
     }
 
-    @Override
-    public void onBackPressed() {
-        crossClick(findViewById(R.id.cross));
+    override fun onBackPressed() {
+        crossClick(findViewById(R.id.cross))
     }
 
     //сохраняем информацию о данной попытке и обновляем информацию раунда
-    private void saveTaskStatistic(boolean finished) {
-        task.makeUserAnswer(answer, String.valueOf((System.currentTimeMillis() - prevAnswerTime) / 1000));
-        prevAnswerTime = System.currentTimeMillis();
-
+    private fun saveTaskStatistic(finished: Boolean) {
+        task!!.makeUserAnswer(
+            answer,
+            ((System.currentTimeMillis() - prevAnswerTime) / 1000).toString()
+        )
+        prevAnswerTime = System.currentTimeMillis()
         if (finished) {
-            task.setTimeTaken((System.currentTimeMillis() - prevTaskTime) / 1000);
-            currentTour.addTask(task);
-            prevTaskTime = prevAnswerTime;
+            task!!.timeTaken = (System.currentTimeMillis() - prevTaskTime) / 1000
+            currentTour.addTask(task)
+            prevTaskTime = prevAnswerTime
         } else {
-            currentTour.addTask(task);
-            task = Task.makeTask(task);
+            currentTour.addTask(task)
+            task = Task.Companion.makeTask(task)
         }
 
         //обновляем реальную продолжительность раунда
-        currentTour.setTourTime((Calendar.getInstance().getTimeInMillis() - currentTour.getTourDateTime()) / 1000);
+        currentTour.tourTime =
+            (Calendar.getInstance().timeInMillis - currentTour.tourDateTime) / 1000
     }
 
     //нажатие на кнопку "ОК", проверяем правильность ответа и заносим в статистику
-    public void okButtonClick(View view) {
-        resetMode();
-        if (answer.equals(""))
-            return;
-
-        resetDissapearing();
-        updateTimers();
-
+    fun okButtonClick(view: View?) {
+        resetMode()
+        if (answer == "") return
+        resetDissapearing()
+        updateTimers()
         if (answerShown) {
-            answerI = "?";
-            answerT = "";
-            answerB = "";
-            answerF = "";
-            answer = "?";
-            answerShown = false;
+            answerI = "?"
+            answerT = ""
+            answerB = ""
+            answerF = ""
+            answer = "?"
+            answerShown = false
         }
-
-        if (answer.equals(task.getAnswer())) {
-            updateProgressIcons(getString(R.string.star));
-            startNewTask();
+        if (answer == task.getAnswer()) {
+            updateProgressIcons(getString(R.string.star))
+            startNewTask()
         } else {
-            saveTaskStatistic(false);
-            if (!answer.equals("?")) {
-                saveCorrectionWork();
-                updateWrongAnswers(answer);
-                updateProgressIcons(getString(R.string.dot));
-                answerWasShown = false;
+            saveTaskStatistic(false)
+            if (answer != "?") {
+                saveCorrectionWork()
+                updateWrongAnswers(answer)
+                updateProgressIcons(getString(R.string.dot))
+                answerWasShown = false
             }
-            answerI = "";
-            answerT = "";
-            answerB = "";
-            answerF = "";
-            answer = "";
-            textViewUpdate();
+            answerI = ""
+            answerT = ""
+            answerB = ""
+            answerF = ""
+            answer = ""
+            textViewUpdate()
         }
     }
 
     //выводит новый неправильный ответ к остальным
-    private void updateWrongAnswers(String answer) {
-        TextView wrongAnswers = findViewById(R.id.wrongAnswers);
-        StringBuilder text = new StringBuilder();
-        String line = wrongAnswers.getText().toString();
+    private fun updateWrongAnswers(answer: String?) {
+        val wrongAnswers = findViewById<TextView>(R.id.wrongAnswers)
+        val text = StringBuilder()
+        val line = wrongAnswers.text.toString()
         if (!line.isEmpty()) {
-            String[] answers = line.split(", ");
-            for (String s : answers)
-                text.append(String.format(Locale.getDefault(), "<strike>%s</strike>, ", s));
+            val answers = line.split(", ").toTypedArray()
+            for (s in answers) text.append(
+                String.format(
+                    Locale.getDefault(),
+                    "<strike>%s</strike>, ",
+                    s
+                )
+            )
         }
-        text.append(String.format(Locale.getDefault(), "<strike>%s</strike>", answer));
-        wrongAnswers.setText(Html.fromHtml(text.toString()));
+        text.append(String.format(Locale.getDefault(), "<strike>%s</strike>", answer))
+        wrongAnswers.text = Html.fromHtml(text.toString())
     }
 
     //пропуск задания
-    public void skipTask(View view) {
-        resetDissapearing();
-        updateTimers();
+    fun skipTask(view: View?) {
+        resetDissapearing()
+        updateTimers()
         if (answerShown) {
-            answer = "?";
+            answer = "?"
         } else {
-            answer = "\u2026";
-            updateProgressIcons(getString(R.string.arrow));
+            answer = "\u2026"
+            updateProgressIcons(getString(R.string.arrow))
         }
-        startNewTask();
+        startNewTask()
     }
 
     //запуск нового задания
-    private void startNewTask() {
-        saveTaskStatistic(true);
-        task = taskQueue.newTask();
-
-
-        correctionwork = null;
-        answerShown = false;
-        answerWasShown = false;
-
-        answer = "";
-        answerI = "";
-        answerT = "";
-        answerB = "";
-        answerF = "";
-        resetMode();
-
-        TextView wrongAnswers = findViewById(R.id.wrongAnswers);
-        wrongAnswers.setText("");
-
-        updateTimers();
-
-        if ((System.currentTimeMillis() - tourStartTime) / 1000 >= tourLenght)
-            endRound();
-        else
-            textViewUpdate();
+    private fun startNewTask() {
+        saveTaskStatistic(true)
+        task = taskQueue!!.newTask()
+        correctionwork = null
+        answerShown = false
+        answerWasShown = false
+        answer = ""
+        answerI = ""
+        answerT = ""
+        answerB = ""
+        answerF = ""
+        resetMode()
+        val wrongAnswers = findViewById<TextView>(R.id.wrongAnswers)
+        wrongAnswers.text = ""
+        updateTimers()
+        if ((System.currentTimeMillis() - tourStartTime) / 1000 >= tourLenght) endRound() else textViewUpdate()
     }
 
     //добавляем иконку в зависимости от статуса задания
-    private void updateProgressIcons(String icon) {
-        TextView pi = findViewById(R.id.progressIcons);
-        String text = pi.getText().toString();
-        text += icon;
-        pi.setText(text);
-
-        shown++;
-        if (icon.equals(getString(R.string.star)))
-            solved++;
-
-        TextView statistics = findViewById(R.id.statistics);
-        statistics.setText(String.format(Locale.getDefault(), "Решено %d/%d (%d%%)",
-                solved, shown - 1, solved * 100 / (shown - 1)));
+    private fun updateProgressIcons(icon: String) {
+        val pi = findViewById<TextView>(R.id.progressIcons)
+        var text = pi.text.toString()
+        text += icon
+        pi.text = text
+        shown++
+        if (icon == getString(R.string.star)) solved++
+        val statistics = findViewById<TextView>(R.id.statistics)
+        statistics.text = String.format(
+            Locale.getDefault(), "Решено %d/%d (%d%%)",
+            solved, shown - 1, solved * 100 / (shown - 1)
+        )
     }
 
     //завершение раунда
-    private void endRound() {
+    private fun endRound() {
         if (answerShown) {
-            answer = "?";
-            saveTaskStatistic(true);
+            answer = "?"
+            saveTaskStatistic(true)
         }
-        StatisticMaker.saveTour(currentTour, context);
-        Log.d("debuggggggggggggggggg", "2222222");
-        taskQueue.save();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)//, R.style.AlertDialogTheme)
-                .setTitle("Раунд завершён")
-                .setMessage(String.format(Locale.getDefault(), "Решено заданий: %d/%d (%d%%)",
-                        currentTour.getRightTasks(),
-                        currentTour.getTotalTasks(),
-                        100 * currentTour.getRightTasks() / currentTour.getTotalTasks()))
-                .setCancelable(false);
-
-        LayoutInflater inflater = getLayoutInflater();
+        StatisticMaker.saveTour(currentTour, context)
+        Log.d("debuggggggggggggggggg", "2222222")
+        taskQueue!!.save()
+        val builder = AlertDialog.Builder(this) //, R.style.AlertDialogTheme)
+            .setTitle("Раунд завершён")
+            .setMessage(
+                String.format(
+                    Locale.getDefault(), "Решено заданий: %d/%d (%d%%)",
+                    currentTour.rightTasks,
+                    currentTour.totalTasks,
+                    100 * currentTour.rightTasks / currentTour.totalTasks
+                )
+            )
+            .setCancelable(false)
+        val inflater = layoutInflater
         // Pass null as the parent view because its going in the dialog layout
-        View view = inflater.inflate(R.layout.dialog_endround, null);
-
-        TextView donate = view.findViewById(R.id.donate);
-        SpannableString ss = new SpannableString(getString(R.string.donatetext));
-        ss.setSpan(new URLSpan(getString(R.string.donatelink)), 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        donate.setText(ss);
-
+        val view = inflater.inflate(R.layout.dialog_endround, null)
+        val donate = view.findViewById<TextView>(R.id.donate)
+        val ss = SpannableString(getString(R.string.donatetext))
+        ss.setSpan(
+            URLSpan(getString(R.string.donatelink)),
+            0,
+            ss.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        donate.text = ss
         builder.setView(view)
-                .setNeutralButton("Ещё раунд", (dialog, which) -> {
-                    finish();
-                    startActivity(getIntent());
-                })
-                .setNegativeButton("Подробнее", (dialog, which) -> {
-                    finish();
-                    int tourCount = StatisticMaker.getTourCount(context);
-                    Intent i = new Intent(context, StatTourActivity.class);
-                    i.putExtra("Tour", (Integer) (tourCount - 1));
-                    startActivity(i);
-                })
-                .setPositiveButton("В начало", (dialog, which) -> finish());
-
-        AlertDialog dialog = builder.create();
-        dialog.setOnKeyListener((arg0, keyCode, event) -> {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                dialog.getButton(dialog.BUTTON_POSITIVE).callOnClick();
+            .setNeutralButton("Ещё раунд") { dialog: DialogInterface?, which: Int ->
+                finish()
+                startActivity(intent)
             }
-            return true;
-        });
-        dialog.show();
-        Utils.FixDialog(dialog, context); // почему-то нужно для планшетов
+            .setNegativeButton("Подробнее") { dialog: DialogInterface?, which: Int ->
+                finish()
+                val tourCount = StatisticMaker.getTourCount(context)
+                val i = Intent(context, StatTourActivity::class.java)
+                i.putExtra("Tour", (tourCount - 1))
+                startActivity(i)
+            }
+            .setPositiveButton("В начало") { dialog: DialogInterface?, which: Int -> finish() }
+        val dialog = builder.create()
+        dialog.setOnKeyListener { arg0: DialogInterface?, keyCode: Int, event: KeyEvent? ->
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).callOnClick()
+            }
+            true
+        }
+        dialog.show()
+        Utils.FixDialog(dialog, context) // почему-то нужно для планшетов
     }
 
-    public void goToWeb(View view) {
-        Intent intent = new Intent(this, WebActivity.class);
-        startActivity(intent);
-        finish();
+    fun goToWeb(view: View?) {
+        val intent = Intent(this, WebActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     //досрочное завершение раунда по нажатию выхода
-    public void crossClick(View view) {
-        if (currentTour.getTotalTasks() == 0 && task.getUserAnswer().length() == 0 && !answerShown) {
-            finish();
-            return;
+    fun crossClick(view: View?) {
+        if (currentTour.totalTasks == 0 && task.getUserAnswer().length == 0 && !answerShown) {
+            finish()
+            return
         }
-
-        AlertDialog dialog =
-                new AlertDialog.Builder(this)//, R.style.AlertDialogTheme)
-                        .setTitle("Досрочное завершение раунда")
-                        .setMessage("Сохранить результаты?")
-                        .setNeutralButton("Отмена", (dialog1, which) -> {
-                        })
-                        .setNegativeButton("Нет", (dialog12, which) -> {
-                            taskQueue.save();
-                            finish();
-                        })
-                        .setPositiveButton("Да", (dialog13, which) -> endRound()).show();
-        Utils.FixDialog(dialog, context);// почему-то нужно для планшетов
-
+        val dialog = AlertDialog.Builder(this) //, R.style.AlertDialogTheme)
+            .setTitle("Досрочное завершение раунда")
+            .setMessage("Сохранить результаты?")
+            .setNeutralButton("Отмена") { dialog1: DialogInterface?, which: Int -> }
+            .setNegativeButton("Нет") { dialog12: DialogInterface?, which: Int ->
+                taskQueue!!.save()
+                finish()
+            }
+            .setPositiveButton("Да") { dialog13: DialogInterface?, which: Int -> endRound() }.show()
+        Utils.FixDialog(dialog, context) // почему-то нужно для планшетов
     }
 
     //обновляем поля вывода выражения
-    private void textViewUpdate() {
-        TextView expressionTV = findViewById(R.id.expTextView);
-
-        if (tasktype.equals("fractions")) {
-            answerF = Fraction.makeFraction(answerT, answerB);
-            if (answerF.isEmpty() && mode == Mode.top)
-                answerF = " ⁄";
-            answer = answerI + answerF;
+    private fun textViewUpdate() {
+        val expressionTV = findViewById<TextView>(R.id.expTextView)
+        if (tasktype == "fractions") {
+            answerF = Fraction.Companion.makeFraction(answerT, answerB)
+            if (answerF.isEmpty() && mode == Mode.top) answerF = " ⁄"
+            answer = answerI + answerF
         }
-
-        if (showTask)
-            expressionTV.setText(task.getExpression() + " = " + answer);
-        else
-            expressionTV.setText(getString(R.string.threedots) + " = " + answer);
+        if (showTask) expressionTV.text =
+            task.getExpression() + " = " + answer else expressionTV.text =
+            getString(R.string.threedots) + " = " + answer
     }
 
     //нажатие на цифровую кнопку
-    public void numberPress(View view) {
-        if (answerShown && answer.length() > 0) {
-            return;
+    fun numberPress(view: View) {
+        if (answerShown && answer!!.length > 0) {
+            return
         }
-        String symbol = view.getTag().toString();
-
-        if (answer.equals("0") && !symbol.equals(",")) {
-            answer = "";
-            textViewUpdate();
-        } else if (symbol.equals(",") && (answer.contains(",") || answer.isEmpty()))
-            return;
-
-        if (symbol.equals("/")) {
-            switchMode(true);
-            textViewUpdate();
-            return;
+        val symbol = view.tag.toString()
+        if (answer == "0" && symbol != ",") {
+            answer = ""
+            textViewUpdate()
+        } else if (symbol == "," && (answer!!.contains(",") || answer!!.isEmpty())) return
+        if (symbol == "/") {
+            switchMode(true)
+            textViewUpdate()
+            return
         }
-
-        if (!tasktype.equals("fractions"))
-            answer += symbol;
-        else
-            switch (mode) {
-                case integer:
-                    if (!(symbol.equals("0") && answerI.isEmpty()))
-                        answerI += symbol;
-                    break;
-                case top:
-                    if (!(symbol.equals("0") && answerT.isEmpty()))
-                        answerT += symbol;
-                    break;
-                case bottom:
-                    if (!(symbol.equals("0") && answerB.isEmpty()))
-                        answerB += symbol;
-                    break;
-            }
-
-        textViewUpdate();
+        if (tasktype != "fractions") answer += symbol else when (mode) {
+            Mode.integer -> if (!(symbol == "0" && answerI!!.isEmpty())) answerI += symbol
+            Mode.top -> if (!(symbol == "0" && answerT.isEmpty())) answerT += symbol
+            Mode.bottom -> if (!(symbol == "0" && answerB.isEmpty())) answerB += symbol
+        }
+        textViewUpdate()
     }
 
-    void switchMode(boolean forward) {
-        if (forward)
-            switch (mode) {
-                case integer:
-                    mode = Mode.top;
-                    break;
-                case top:
-                    if (!answerT.isEmpty())
-                        mode = Mode.bottom;
-                    break;
-                case bottom:
-                default:
-                    break;
-            }
-        else
-            switch (mode) {
-                case top:
-                    mode = Mode.integer;
-                    break;
-                case bottom:
-                    mode = Mode.top;
-                    break;
-                case integer:
-                default:
-                    break;
-            }
-        setModeSym();
+    fun switchMode(forward: Boolean) {
+        if (forward) when (mode) {
+            Mode.integer -> mode = Mode.top
+            Mode.top -> if (!answerT.isEmpty()) mode = Mode.bottom
+            Mode.bottom -> {}
+            else -> {}
+        } else when (mode) {
+            Mode.top -> mode = Mode.integer
+            Mode.bottom -> mode = Mode.top
+            Mode.integer -> {}
+            else -> {}
+        }
+        setModeSym()
     }
 
-    private void setModeSym() {
-        ((Button) findViewById(R.id.Button_sym)).
-                setText(fractionSymsSpan[mode.ordinal()],
-                        TextView.BufferType.SPANNABLE);
+    private fun setModeSym() {
+        (findViewById<View>(R.id.Button_sym) as Button).setText(
+            fractionSymsSpan[mode.ordinal],
+            TextView.BufferType.SPANNABLE
+        )
     }
 
-    void resetMode() {
-        if (tasktype.equals("fractions")) {
-            mode = Mode.integer;
-            setModeSym();
+    fun resetMode() {
+        if (tasktype == "fractions") {
+            mode = Mode.integer
+            setModeSym()
         }
     }
 
     //удаление одного символа
-    public void charDelete(View view) {
+    fun charDelete(view: View?) {
         if (!answerShown) {
-            if (answer.length() > 0 || tasktype.equals("fractions")) {//(answerI + answerT + answerB).length() > 0) {
-                if (!tasktype.equals("fractions"))
-                    answer = answer.substring(0, answer.length() - 1);
-                else
-                    switch (mode) {
-                        case bottom:
-                            if (!answerB.isEmpty()) {
-                                answerB = answerB.substring(0, answerB.length() - 1);
-                                break;
-                            } else
-                                switchMode(false);
-                        case top:
-                            if (!answerT.isEmpty()) {
-                                answerT = answerT.substring(0, answerT.length() - 1);
-                                break;
-                            } else
-                                switchMode(false);
-                        case integer:
-                        default:
-                            if (!answerI.isEmpty())
-                                answerI = answerI.substring(0, answerI.length() - 1);
-                            break;
+            if (answer!!.length > 0 || tasktype == "fractions") { //(answerI + answerT + answerB).length() > 0) {
+                if (tasktype != "fractions") answer =
+                    answer!!.substring(0, answer!!.length - 1) else when (mode) {
+                    Mode.bottom -> {
+                        if (!answerB.isEmpty()) {
+                            answerB = answerB.substring(0, answerB.length - 1)
+                            break
+                        } else switchMode(false)
+                        if (!answerT.isEmpty()) {
+                            answerT = answerT.substring(0, answerT.length - 1)
+                            break
+                        } else switchMode(false)
+                        if (!answerI!!.isEmpty()) answerI =
+                            answerI!!.substring(0, answerI!!.length - 1)
                     }
-                textViewUpdate();
+                    Mode.top -> {
+                        if (!answerT.isEmpty()) {
+                            answerT = answerT.substring(0, answerT.length - 1)
+                            break
+                        } else switchMode(false)
+                        if (!answerI!!.isEmpty()) answerI =
+                            answerI!!.substring(0, answerI!!.length - 1)
+                    }
+                    Mode.integer -> if (!answerI!!.isEmpty()) answerI =
+                        answerI!!.substring(0, answerI!!.length - 1)
+                    else -> if (!answerI!!.isEmpty()) answerI =
+                        answerI!!.substring(0, answerI!!.length - 1)
+                }
+                textViewUpdate()
             }
         }
     }
 
     //показать ответ
-    public void showAnswer(View view) {
-        resetMode();
-        answer = task.getAnswer();
-        answerI = task.getAnswer();
-        answerF = "";
-
-        answerShown = true;
-        if (!answerWasShown)
-            updateProgressIcons("?");
-        answerWasShown = true;
-        textViewUpdate();
-
-        saveCorrectionWork();
+    fun showAnswer(view: View?) {
+        resetMode()
+        answer = task.getAnswer()
+        answerI = task.getAnswer()
+        answerF = ""
+        answerShown = true
+        if (!answerWasShown) updateProgressIcons("?")
+        answerWasShown = true
+        textViewUpdate()
+        saveCorrectionWork()
     }
 
-    void saveCorrectionWork() {
+    fun saveCorrectionWork() {
         if (correctionwork == null) {
-            correctionwork = task;
-            taskQueue.Add(task);
+            correctionwork = task
+            taskQueue!!.Add(task)
         }
     }
 
     //таймер для исчезновения задания
-    private final Runnable disapTask = () -> {
-        showTask = false;
-        textViewUpdate();
-        TextView pressToShowTaskTV = findViewById(R.id.pressToShowTaskTV);
+    private val disapTask = Runnable {
+        showTask = false
+        textViewUpdate()
+        val pressToShowTaskTV = findViewById<TextView>(R.id.pressToShowTaskTV)
         //pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
-        pressToShowTaskTV.setVisibility(View.VISIBLE);
-        TextView pi = findViewById(R.id.progressIcons);
-        pi.setVisibility(View.INVISIBLE);
-    };
+        pressToShowTaskTV.visibility = View.VISIBLE
+        val pi = findViewById<TextView>(R.id.progressIcons)
+        pi.visibility = View.INVISIBLE
+    }
 
     //Таймер перезапускается в 4-х случаях:
     //1) При первичной инициализации, 2) при нажатии на ОК, 3) при нажатии на пропуск задания, 4) при нажатии на showTask.
     //Не перезапускается при цифровых кнопках, DEL, показывании ответа
     //При перезапуске таймера необходимо показать задание. Это нужно делать перед textViewUpdate.
-    private void resetDissapearing() {
-        showTask = true;
-        TextView pressToShowTaskTV = findViewById(R.id.pressToShowTaskTV);
+    private fun resetDissapearing() {
+        showTask = true
+        val pressToShowTaskTV = findViewById<TextView>(R.id.pressToShowTaskTV)
         //pressToShowTaskTV.setText("Нажмите, чтобы показать задание");
-        pressToShowTaskTV.setVisibility(View.INVISIBLE);
-        TextView pi = findViewById(R.id.progressIcons);
-        pi.setVisibility(View.VISIBLE);
-
-        taskDisapHandler.removeCallbacks(disapTask);
+        pressToShowTaskTV.visibility = View.INVISIBLE
+        val pi = findViewById<TextView>(R.id.progressIcons)
+        pi.visibility = View.VISIBLE
+        taskDisapHandler.removeCallbacks(disapTask)
         if (disapTime > -1) {
-            taskDisapHandler.postDelayed(disapTask, (long) (disapTime * 1000));
+            taskDisapHandler.postDelayed(disapTask, (disapTime * 1000).toLong())
         }
     }
 
     //просмотр задания, если оно исчезло
-    public void showTask(View view) {
-        resetDissapearing();
-        TextView pressToShowTaskTV = findViewById(R.id.pressToShowTaskTV);
+    fun showTask(view: View?) {
+        resetDissapearing()
+        val pressToShowTaskTV = findViewById<TextView>(R.id.pressToShowTaskTV)
         //pressToShowTaskTV.setText("");
-        pressToShowTaskTV.setVisibility(View.INVISIBLE);
-        textViewUpdate();
+        pressToShowTaskTV.visibility = View.INVISIBLE
+        textViewUpdate()
     }
 
     //при выходе из активности необходимо остановить все таймеры
-    @Override
-    protected void onDestroy() {
-        taskDisapHandler.removeCallbacks(disapTask);
-        if (progressthread != null)
-            progressthread.interrupt();
-        if (timerthread != null)
-            timerthread.interrupt();
-        super.onDestroy();
+    override fun onDestroy() {
+        taskDisapHandler.removeCallbacks(disapTask)
+        if (progressthread != null) progressthread!!.interrupt()
+        if (timerthread != null) timerthread!!.interrupt()
+        super.onDestroy()
     }
 }

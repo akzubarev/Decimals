@@ -1,106 +1,72 @@
-package com.education4all;
+package com.education4all
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.education4all.TourAdapter.TourViewHolder
+import com.education4all.mathCoachAlg.tours.Tour
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class TourAdapter(private val tours: ArrayList<Tour>, var context: Context) :
+    RecyclerView.Adapter<TourViewHolder>() {
+    private var listener: OnUserClickListener? = null
 
-import com.education4all.mathCoachAlg.tours.Tour;
-
-import java.util.ArrayList;
-
-public class TourAdapter
-        extends RecyclerView.Adapter<TourAdapter.TourViewHolder> {
-
-    private ArrayList<Tour> tours;
-    private OnUserClickListener listener;
-    private Context context;
-
-    public Context getContext() {
-        return context;
+    interface OnUserClickListener {
+        fun onUserClick(position: Int)
     }
 
-    public void setContext(Context context) {
-        this.context = context;
+    fun setOnUserClickListener(listener: OnUserClickListener?) {
+        this.listener = listener
     }
 
-
-    public interface OnUserClickListener {
-        void onUserClick(int position);
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): TourViewHolder {
+        val view = LayoutInflater.from(viewGroup.context)
+            .inflate(R.layout.tourblock, viewGroup, false)
+        return TourViewHolder(view, listener)
     }
 
-    public void setOnUserClickListener(OnUserClickListener listener) {
-        this.listener = listener;
+    override fun onBindViewHolder(tourViewHolder: TourViewHolder, tourNumber: Int) {
+        val tour = tours[tourNumber]
+        var info = tour.info()
+        val datetime = tour.dateTime()
+        if (tour.rightTasks == tour.totalTasks) info = context.getString(R.string.star) + " " + info
+        val tourdatetime = tourViewHolder.tourdatetime
+        tourdatetime.id = tourNumber + 1
+        tourdatetime.text = datetime
+        tourdatetime.tag = tourNumber
+        val tourinfo = tourViewHolder.tourinfo
+        tourinfo.id = tourNumber
+        tourinfo.text = info
+        tourinfo.tag = tourNumber
+        val arrow = tourViewHolder.arrow
+        arrow.tag = tourNumber
     }
 
-    public TourAdapter(ArrayList<Tour> users, Context context) {
-        this.tours = users;
-        this.context = context;
+    override fun getItemCount(): Int {
+        return tours.size
     }
 
-    @NonNull
-    @Override
-    public TourViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.tourblock, viewGroup, false);
-        TourViewHolder viewHolder = new TourViewHolder(view, listener);
-        return viewHolder;
-    }
+    class TourViewHolder(itemView: View, listener: OnUserClickListener?) :
+        RecyclerView.ViewHolder(itemView) {
+        var tourdatetime: TextView
+        var tourinfo: TextView
+        var arrow: Button
 
-    @Override
-    public void onBindViewHolder(@NonNull TourViewHolder tourViewHolder, int tourNumber) {
-        Tour tour = tours.get(tourNumber);
-        String info = tour.info();
-        String datetime = tour.dateTime();
-
-        if (tour.getRightTasks() == tour.getTotalTasks())
-            info = context.getString(R.string.star) + " " + info;
-
-        TextView tourdatetime = tourViewHolder.tourdatetime;
-        tourdatetime.setId(tourNumber + 1);
-        tourdatetime.setText(datetime);
-        tourdatetime.setTag(tourNumber);
-
-        TextView tourinfo = tourViewHolder.tourinfo;
-        tourinfo.setId(tourNumber);
-        tourinfo.setText(info);
-        tourinfo.setTag(tourNumber);
-
-        Button arrow = tourViewHolder.arrow;
-        arrow.setTag(tourNumber);
-    }
-
-    @Override
-    public int getItemCount() {
-        return tours.size();
-    }
-
-    public static class TourViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tourdatetime;
-        TextView tourinfo;
-        Button arrow;
-
-        public TourViewHolder(@NonNull View itemView, final OnUserClickListener listener) {
-            super(itemView);
-            tourdatetime = itemView.findViewById(R.id.tourdatetime);
-            tourinfo = itemView.findViewById(R.id.tourinfo);
-            arrow = itemView.findViewById(R.id.arrow);
-
-            itemView.setOnClickListener(v -> {
+        init {
+            tourdatetime = itemView.findViewById(R.id.tourdatetime)
+            tourinfo = itemView.findViewById(R.id.tourinfo)
+            arrow = itemView.findViewById(R.id.arrow)
+            itemView.setOnClickListener { v: View? ->
                 if (listener != null) {
-                    int position = getAdapterPosition();
+                    val position = adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
-                        listener.onUserClick(position);
+                        listener.onUserClick(position)
                     }
                 }
-            });
+            }
         }
     }
 }
-

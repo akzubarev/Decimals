@@ -1,121 +1,115 @@
-package com.education4all.firebase;
+package com.education4all.firebase
 
-import android.content.Context;
+import android.content.*
+import com.education4all.mathCoachAlg.StatisticMaker
+import com.education4all.mathCoachAlg.tours.Tour
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
-import com.education4all.mathCoachAlg.StatisticMaker;
-import com.education4all.mathCoachAlg.tours.Tour;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-
-public class FireBaseUtils {
-
-    private final DatabaseReference mDatabase;
-    private final FirebaseAuth auth;
-
-    public FireBaseUtils() {
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        auth = FirebaseAuth.getInstance();
-    }
-
-    public void login(Context context, LoginCallback callback) {
+class FireBaseUtils {
+    private val mDatabase: DatabaseReference
+    private val auth: FirebaseAuth
+    fun login(context: Context?, callback: LoginCallback) {
         try {
-            FirebaseUser user = auth.getCurrentUser();
-
-            if (user == null)
-                auth.signInAnonymously().addOnCompleteListener(
-                        (Task<AuthResult> task) -> callback.onCallback()
-                ).addOnFailureListener(FireBaseUtils::reportException);
-        } catch (Exception e) {
-            reportException(e);
+            val user = auth.currentUser
+            if (user == null) auth.signInAnonymously()
+                .addOnCompleteListener { task: Task<AuthResult?>? -> callback.onCallback() }
+                .addOnFailureListener { e: Exception -> reportException(e) }
+        } catch (e: Exception) {
+            reportException(e)
         }
     }
 
-    public DatabaseReference getUserDBR() {
-        return mDatabase.child("users");
-    }
+    val userDBR: DatabaseReference
+        get() = mDatabase.child("users")
+    val statsDBR: DatabaseReference
+        get() {
+            val userID = auth.currentUser!!.uid
+            return userDBR.child(userID).child("statistics")
+        }
 
-    public DatabaseReference getStatsDBR() {
-        String userID = auth.getCurrentUser().getUid();
-        return getUserDBR().child(userID).child("statistics");
-    }
-
-    public void updateTours(Context context) {
-        getUserStats(loaded_tours -> {
-            if (loaded_tours.size() != StatisticMaker.getTourCount(context)) {
-                ArrayList<Tour> tours = new ArrayList<>();
-                for (int tourNumber = StatisticMaker.getTourCount(context) - 1; tourNumber >= 0; --tourNumber)
-                    tours.add(StatisticMaker.loadTour(context, tourNumber));
-                uploadTours(tours);
+    fun updateTours(context: Context) {
+        getUserStats(StatisticsCallback { loaded_tours: ArrayList<Tour?> ->
+            if (loaded_tours.size != StatisticMaker.getTourCount(context)) {
+                val tours = ArrayList<Tour?>()
+                for (tourNumber in StatisticMaker.getTourCount(context) - 1 downTo 0) tours.add(
+                    StatisticMaker.loadTour(context, tourNumber)
+                )
+                uploadTours(tours)
             }
-        });
+        })
     }
 
-    public interface LoginCallback {
-        void onCallback();
+    interface LoginCallback {
+        fun onCallback()
     }
 
-    public interface SettingsCallback {
-        void onCallback(String id_text);
+    interface SettingsCallback {
+        fun onCallback(id_text: String?)
     }
 
-    public interface StatisticsCallback {
-        void onCallback(ArrayList<Tour> loaded_tours);
+    interface StatisticsCallback {
+        fun onCallback(loaded_tours: ArrayList<Tour?>?)
     }
 
-    public void getUserStats(String id, StatisticsCallback callback) {
-        ArrayList<Tour> tours = new ArrayList<>();
-        mDatabase.child("users").child(id).child("statistics").get().addOnCompleteListener(
-                (Task<DataSnapshot> task) -> {
-                    if (task.getResult() != null && task.getResult().hasChildren())
-                        for (DataSnapshot postSnapshot : task.getResult().getChildren()) {
-                            Tour tour = postSnapshot.getValue(Tour.class);
-                            tours.add(tour);
-                        }
-                    callback.onCallback(tours);
+    fun getUserStats(id: String?, callback: StatisticsCallback) {
+        val tours = ArrayList<Tour?>()
+        mDatabase.child("users").child(id!!).child("statistics").get()
+            .addOnCompleteListener { task: Task<DataSnapshot?> ->
+                if (task.result != null && task.result!!
+                        .hasChildren()
+                ) for (postSnapshot in task.result!!.children) {
+                    val tour = postSnapshot.getValue(Tour::class.java)
+                    tours.add(tour)
                 }
-        ).addOnFailureListener(FireBaseUtils::reportException);
+                callback.onCallback(tours)
+            }.addOnFailureListener { e: Exception -> reportException(e) }
     }
 
-    public void getUserStats(StatisticsCallback callback) {
-        getUserStats(auth.getCurrentUser().getUid(), callback);
+    fun getUserStats(callback: StatisticsCallback) {
+        getUserStats(auth.currentUser!!.uid, callback)
     }
 
-    private static void reportException(Exception e) {
-        FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
-        crashlytics.recordException(e);
-        crashlytics.setCustomKey("Cause", "FirebaseUtils");
-        crashlytics.sendUnsentReports();
-    }
-
-    public void uploadTours(ArrayList<Tour> tours) {
+    fun uploadTours(tours: ArrayList<Tour?>?) {
         try {
-            getStatsDBR().setValue(tours);
-        } catch (Exception e) {
-            reportException(e);
+            statsDBR.setValue(tours)
+        } catch (e: Exception) {
+            reportException(e)
         }
     }
 
-    public void uploadTour(Tour tour) {
+    fun uploadTour(tour: Tour?) {
         try {
-            getStatsDBR().push().setValue(tour);
-        } catch (Exception e) {
-            reportException(e);
+            statsDBR.push().setValue(tour)
+        } catch (e: Exception) {
+            reportException(e)
         }
     }
 
-    public void deleteTours() {
+    fun deleteTours() {
         try {
-            getStatsDBR().removeValue();
-        } catch (Exception e) {
-            reportException(e);
+            statsDBR.removeValue()
+        } catch (e: Exception) {
+            reportException(e)
         }
+    }
+
+    companion object {
+        private fun reportException(e: Exception) {
+            val crashlytics = FirebaseCrashlytics.getInstance()
+            crashlytics.recordException(e)
+            crashlytics.setCustomKey("Cause", "FirebaseUtils")
+            crashlytics.sendUnsentReports()
+        }
+    }
+
+    init {
+        mDatabase = FirebaseDatabase.getInstance().reference
+        auth = FirebaseAuth.getInstance()
     }
 }

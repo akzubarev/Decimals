@@ -1,24 +1,17 @@
-package com.education4all.utils;
+package com.education4all.utils
 
-import android.content.Context;
-import android.util.Pair;
+import android.content.Context
+import android.util.Pair
+import androidx.appcompat.app.AlertDialog
+import com.education4all.BuildConfig
+import com.education4all.mathCoachAlg.DataReader
+import com.education4all.mathCoachAlg.StatisticMaker
+import com.education4all.utils.Enums.twodates
+import java.text.SimpleDateFormat
+import java.util.*
 
-import androidx.appcompat.app.AlertDialog;
-
-import com.education4all.BuildConfig;
-import com.education4all.mathCoachAlg.DataReader;
-import com.education4all.mathCoachAlg.StatisticMaker;
-import com.education4all.mathCoachAlg.tours.Tour;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-
-public class Utils {
-
-    public static void FixDialog(AlertDialog dialog, Context context) {
+object Utils {
+    fun FixDialog(dialog: AlertDialog?, context: Context?) {
 //        Resources res = context.getResources();
 //        TextView textView = dialog.findViewById(android.R.id.message);
 //        textView.setTextSize(res.getDimension(R.dimen.dimen4) / res.getDisplayMetrics().density);
@@ -36,73 +29,55 @@ public class Utils {
 //            btn.setTextColor(colormain);
     }
 
-    public static int randomly_select(List<Pair<Integer, Integer>> list) {
-        int sum = 0;
-        for (Pair<Integer, Integer> item : list)
-            sum += item.second;
-
-        int index = new Random().nextInt(sum) + 1;
-        sum = 0;
-        for (Pair<Integer, Integer> item2 : list) {
-            sum += item2.second;
-            if (sum >= index)
-                return item2.first;
+    fun randomly_select(list: List<Pair<Int, Int>>): Int {
+        var sum = 0
+        for (item in list) sum += item.second
+        val index = Random().nextInt(sum) + 1
+        sum = 0
+        for (item2 in list) {
+            sum += item2.second
+            if (sum >= index) return item2.first
         }
-        return -1;
+        return -1
     }
 
-    public static boolean reachedGoal(Context context) {
-        int secondstoday = 0;
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        String today = sdf.format(c.getTime());
-
-        if (StatisticMaker.getTourCount(context) > 0) {
-            for (int tourNumber = 0; tourNumber < StatisticMaker.getTourCount(context); tourNumber++) {
-
-                Tour tour = StatisticMaker.loadTour(context, tourNumber);
-                if (tour.getTotalTasks() == 0)
-                    return false;
-
-                int seconds = (int) tour.getTourTime();
-                String date = tour.date();
-                if (Enums.isSubsequent(date, today) == Enums.twodates.equal)
-                    secondstoday += seconds;
+    fun reachedGoal(context: Context): Boolean {
+        var secondstoday = 0
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val c = Calendar.getInstance()
+        c.time = Date()
+        val today = sdf.format(c.time)
+        return if (StatisticMaker.getTourCount(context) > 0) {
+            for (tourNumber in 0 until StatisticMaker.getTourCount(context)) {
+                val tour = StatisticMaker.loadTour(context, tourNumber)
+                if (tour.totalTasks == 0) return false
+                val seconds = tour.tourTime.toInt()
+                val date = tour!!.date()
+                if (Enums.isSubsequent(date, today) == twodates.equal) secondstoday += seconds
             }
-
-            int goal = DataReader.GetInt(DataReader.GOAL, context) * 60;
-            return secondstoday > goal;
-        } else
-            return false;
+            val goal = DataReader.GetInt(DataReader.GOAL, context) * 60
+            secondstoday > goal
+        } else false
     }
 
-    public static String VERSIONING_REMOVEFIREBASE = "removeFirebaseDetails";
-
-    public static String versioningTool() {
-        String result = "normalBuild";
-        String version = "other";
-        String flavor = BuildConfig.FLAVOR;
-        int versionCode = BuildConfig.VERSION_CODE;
-
-        if (flavor.equals("decimals") && versionCode <= 5)
-            version = "decimalsBeta";
-        if (flavor.equals("integers") && versionCode <= 1)
-            version = "integersBeta";
-
-        if (version.equals("decimalsBeta") || version.equals("integersBeta"))
-            result = VERSIONING_REMOVEFIREBASE;
-
-        return result;
-    }
-//        TextView statistics = findViewById(R.id.statistics);
-//        SpannableString ss = new SpannableString("Разные шрифты");
-//
-//        Typeface font = Typeface.DEFAULT_BOLD,
-//                font2 = Typeface.MONOSPACE;
-//
-//        ss.setSpan(new CustomTypefaceSpan("", font2), 0, 6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-//        ss.setSpan(new CustomTypefaceSpan("", font), 6, ss.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-//        statistics.setText(ss);
+    var VERSIONING_REMOVEFIREBASE = "removeFirebaseDetails"
+    fun versioningTool(): String {
+        var result = "normalBuild"
+        var version = "other"
+        val flavor = BuildConfig.FLAVOR
+        val versionCode = BuildConfig.VERSION_CODE
+        if (flavor == "decimals" && versionCode <= 5) version = "decimalsBeta"
+        if (flavor == "integers" && versionCode <= 1) version = "integersBeta"
+        if (version == "decimalsBeta" || version == "integersBeta") result =
+            VERSIONING_REMOVEFIREBASE
+        return result
+    } //        TextView statistics = findViewById(R.id.statistics);
+    //        SpannableString ss = new SpannableString("Разные шрифты");
+    //
+    //        Typeface font = Typeface.DEFAULT_BOLD,
+    //                font2 = Typeface.MONOSPACE;
+    //
+    //        ss.setSpan(new CustomTypefaceSpan("", font2), 0, 6, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+    //        ss.setSpan(new CustomTypefaceSpan("", font), 6, ss.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+    //        statistics.setText(ss);
 }

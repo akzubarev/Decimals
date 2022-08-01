@@ -1,110 +1,101 @@
-package com.education4all.utils;
+package com.education4all.utils
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
-public class Enums {
+object Enums {
+    fun isSubsequent(prevdate: String?, date: String?): twodates {
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val c1 = Calendar.getInstance()
+        val c2 = Calendar.getInstance()
+        try {
+            c1.time = sdf.parse(prevdate)
+            c2.time = sdf.parse(date)
+            if (c1 == c2) return twodates.equal
+            c1.add(Calendar.DATE, 1)
+            if (c1 == c2) return twodates.subsequent
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return twodates.unrelated
+    }
 
-    public enum TimerState {
+    enum class TimerState {
         CONTINIOUS, DISCRETE, INVISIBlE;
 
-        public static TimerState convert(int i) {
-            switch (i) {
-                case 0:
-                default:
-                    return CONTINIOUS;
-                case 1:
-                    return DISCRETE;
-                case 2:
-                    return INVISIBlE;
+        companion object {
+            fun convert(i: Int): TimerState {
+                return when (i) {
+                    0 -> CONTINIOUS
+                    1 -> DISCRETE
+                    2 -> INVISIBlE
+                    else -> CONTINIOUS
+                }
             }
-        }
 
-        public static int convert(TimerState ts) {
-            return ts.ordinal();
+            fun convert(ts: TimerState): Int {
+                return ts.ordinal
+            }
         }
     }
 
-    public enum ButtonsPlace {
+    enum class ButtonsPlace {
         RIGHT, LEFT;
 
-        public static ButtonsPlace convert(int i) {
-            switch (i) {
-                case 0:
-                default:
-                    return RIGHT;
-                case 1:
-                    return LEFT;
+        companion object {
+            fun convert(i: Int): ButtonsPlace {
+                return when (i) {
+                    0 -> RIGHT
+                    1 -> LEFT
+                    else -> RIGHT
+                }
             }
-        }
 
-        public static int convert(ButtonsPlace bp) {
-            return bp.ordinal();
+            fun convert(bp: ButtonsPlace): Int {
+                return bp.ordinal
+            }
         }
     }
 
-    public enum LayoutState {
+    enum class LayoutState {
         _789, _123;
 
-        public static LayoutState convert(int i) {
-            switch (i) {
-                case 0:
-                default:
-                    return _789;
-                case 1:
-                    return _123;
+        companion object {
+            fun convert(i: Int): LayoutState {
+                return when (i) {
+                    0 -> _789
+                    1 -> _123
+                    else -> _789
+                }
             }
-        }
 
-        public static int convert(LayoutState ls) {
-            return ls.ordinal();
+            fun convert(ls: LayoutState): Int {
+                return ls.ordinal
+            }
         }
     }
 
-    public enum Theme {
+    enum class Theme {
         DARK, LIGHT, SYSTEM;
 
-        public static Theme convert(int i) {
-            switch (i) {
-                case 0:
-                default:
-                    return DARK;
-                case 1:
-                    return LIGHT;
-                case 2:
-                    return SYSTEM;
+        companion object {
+            fun convert(i: Int): Theme {
+                return when (i) {
+                    0 -> DARK
+                    1 -> LIGHT
+                    2 -> SYSTEM
+                    else -> DARK
+                }
+            }
+
+            fun convert(t: Theme): Int {
+                return t.ordinal
             }
         }
-
-        public static int convert(Theme t) {
-            return t.ordinal();
-        }
     }
 
-    public enum twodates {
-        equal,
-        subsequent,
-        unrelated
+    enum class twodates {
+        equal, subsequent, unrelated
     }
-
-    public static twodates isSubsequent(String prevdate, String date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        Calendar c1 = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
-        try {
-            c1.setTime(sdf.parse(prevdate));
-            c2.setTime(sdf.parse(date));
-            if (c1.equals(c2))
-                return twodates.equal;
-            c1.add(Calendar.DATE, 1);
-            if (c1.equals(c2))
-                return twodates.subsequent;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return twodates.unrelated;
-    }
-
 }
